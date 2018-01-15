@@ -1,7 +1,7 @@
 <?php
 App::uses('AppController', 'Controller');
 include('ChromePHP.php');
-require_once 'D:/xampp/htdocs/bizupon/app/webroot/phpmailer2/class.phpmailer.php'; //Not required with Composer
+require_once ROOT.'/app/webroot/phpmailer2/class.phpmailer.php'; //Not required with Composer
 class HomeController extends AppController
 {
 	/**

@@ -1,6 +1,6 @@
 <?php
 App::uses('AppController', 'Controller'); 
-require_once 'D:/xampp/htdocs/bizupon/app/webroot/phpmailer2/class.phpmailer.php'; //Not required with Composer
+require_once ROOT.'/app/webroot/phpmailer2/class.phpmailer.php'; //Not required with Composer
 //require_once 'e://xampp/htdocs/bizupon/app/webroot/phpmailer2/class.phpmailer.php'; //Not required with Composer
 #require_once '/var/www/html/website/app/webroot/phpmailer/PHPMailerAutoload.php'; //Not required with Composer
 
