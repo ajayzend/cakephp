@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="google-translate-customization" content="2208ec156e4f2452-bac77c56421353f7-g4352fe1138ad94ca-2f"/>
+<meta name="viewport" content="width=device-width initial-scale=1"/>
+<title>UK Cars</title>
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+ <?php echo $this->Html->css(array('bootstrap', 'custom','chosen', 'docs','font-awesome','font-awesome.min','animate')); ?>
+<?php echo $this->Html->script(array('jquery-1.9.1.min','bootstrap','jquery-form','jquery.bxslider','jquery-migrate-1.2.1.min'));?>
+
+	<link rel="shrtcut icon" href="<?php echo $this->webroot;?>favicon.ico">
+
+	<!-- <link href="css/datepicker.css" rel="stylesheet" type="text/css" />
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script type="text/j" >
+	$('#sandbox-container .input-append.date').datepicker({
+});
+	</script> -->
+	
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="<?php echo $this->Html->script('html5shiv');?>"></script>
+      <script src="<?php echo $this->Html->script('respond.min');?>"></script>
+    <![endif]-->
+    <script> 
+		function login(myform,e){
+			var keycode;
+			if (window.event) keycode = window.event.keyCode;
+			else if (e) keycode = e.which;
+			else return true;
+
+			if (keycode == 13)
+			   {
+				var pass = $("#exampleInputPassword1").val();
+				var email = $("#exampleInputEmail1").val()
+				if(email == undefined || pass == undefined){
+				$("#loginErrorDiv").html("User Name or Password is incorrect");
+					$("#loginErrorDiv").show();
+					alert('error');
+				}else{
+					
+					
+					$.ajax({
+					url:"<?php echo $this->Html->url('/login',true);?>",
+					type:"POST",
+					data:{data:{User:{'ajaxCall':'true','email':email,'password':pass}}},
+					dataType:"JSON",
+					success:function(result)
+					{
+						if(result.status == 'success'){
+							window.location = '<?php echo $this->Html->url('/',true);?>'+result.redirect;
+							}else{
+					
+						$("#loginErrorDiv").html(result.message);
+						$("#loginErrorDiv").show();
+						
+						
+					}
+						
+					}
+				});
+					
+				}
+			   return false;
+			   }
+			else
+			   return true; 
+		}
+		
+		
+		
+		
+		function loginW(){
+			var pass = $("#exampleInputPassword1").val();
+			var email = $("#exampleInputEmail1").val() 
+			 if(email == undefined || pass == undefined){
+				$("#loginErrorDiv").html("User Name or Password is incorrect");
+					$("#loginErrorDiv").show();
+				//	alert('error');
+			}else{
+					
+					
+					$.ajax({
+					url:"<?php echo $this->Html->url('/login',true);?>",
+					type:"POST",
+					data:{data:{User:{'ajaxCall':'true','username':email,'password':pass}}},
+					dataType:"JSON",
+					success:function(result)
+					{
+						if(result.status == 'success'){
+							window.location = '<?php echo $this->Html->url('/',true);?>'+result.redirect;
+							}else{
+					
+						$("#loginErrorDiv").html(result.message);
+						$("#loginErrorDiv").show();
+						
+						
+					}
+						
+					}
+				});
+					
+				}
+			
+			}
+    
+    function changeLanguageText() {
+		
+ /* if ($('.goog-te-menu-value span:first-child').text() == "Select Language") {    
+   $('.goog-te-menu-value span:first-child').html('Language');
+ 
+    $('#google_translate_element').fadeIn('slow');
+  } else {
+    setTimeout(changeLanguageText, 50);
+  }*/
+}
+
+
+$(document).ready(function()
+{
+	//var curClass = $(".goog-te-combo").val();
+	//if(curClass)
+	//$("body").attr('class',curClass); 
+	
+	$(".goog-te-combo").on('change',function()
+	{	 
+	
+		$("body").attr('class',$(this).val()); 
+	});
+
+});
+
+    </script>
+	
+<style type="text/css">
+	@media (max-width:320px){
+		.slider1 .overview li{ width:60px !important;}
+		.slider1 .overview li a{ font-size: 10px !important;}
+		.brand-slider-bg {
+			height: 120px;
+			margin: 6px 0;
+			padding-bottom: 0;
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+			padding-top: 0;
+		}
+		.brand-slider-bg .overview li {
+			
+			margin: 0 2px !important;
+			
+		}
+		.slider1 {padding: 0 7px 10px;}
+		
+	}
+@media only screen and (min-width:321px) and (max-width: 360px)  {
+	.slider1 .overview li{ width:70px !important;}
+	.slider1 .overview li a{ font-size: 10px !important;}
+		.brand-slider-bg {
+			height: 120px;
+			margin: 6px 0;
+			padding-bottom: 0;
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+			padding-top: 0;
+		}
+		.brand-slider-bg .overview li {
+			
+			margin: 0 2px !important;
+			
+		}
+		.slider1 {padding: 0 7px 10px;}
+		
+		
+}
+
+
+@media only screen and (min-width:361px) and (max-width: 480px)  {
+	.slider1 .overview li{ width:95px !important;}
+		.slider1 .overview li a{ font-size: 10px !important;}
+		.brand-slider-bg {
+			height: 120px;
+			margin: 6px 0;
+			padding-bottom: 0;
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+			padding-top: 0;
+		}
+		.brand-slider-bg .overview li {
+			
+			margin: 0 2px !important;
+			
+		}
+		.slider1 {padding: 0 7px 10px;}
+}
+	
+</style>
+	
+	
+</head>
+
+<body>
+	
+<!--header-->
+<header>
+<div class="top_header">
+	<div class="container">
+	<div class="row">
+	<div class="col-lg-3 col-md-3 logoarea">
+			<a href="<?php echo $this->Html->url('/',true); ?>"><img src="<?php echo $this->webroot;?>images/logo.png" /></a>
+        </div>
+	<style type="text/css">iframe.goog-te-banner-frame{ display: none !important;}</style>
+			<style type="text/css">body {position: static !important; top:0px !important;}</style>
+
+			<div id="artitleTranslate"></div><!-- Google Translate Div -->
+
+			<!-- Custom Language dropdown -->
+			<select id="customTranslate" class='pull-right' >
+				<option value="English" class="eng">English</option>            
+				<option value="German" class="ger">German</option>
+				<option value="Japanese" class="jap">Japanese</option>
+				<option value="Russian" class="rus">Russian</option>
+				<option value="Spanish" class="spa">Spanish</option>
+			</select>
+
+                        <div class="" style=" float: right;width: 126px;"> <img style="float: left; width: 120px;" src="http://ukcarstokyo.com/images/w-logo_3.png"></div>
+			
+		<!-- Styles -->
+			<style type="text/css">
+			#artitleTranslate, #customTranslate, .goog-te-banner-frame {
+			 display: none;
+			}
+			</style>
+		<!-- Styles -->
+			<script type="text/javascript">
+				function googleTranslateElementInit() {
+					new google.translate.TranslateElement(
+						{
+							pageLanguage: 'en', 
+							includedLanguages: 'de,es,ja,ru,en',
+							layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+							autoDisplay: false
+						},
+						'artitleTranslate'
+					);
+
+					googObj.translator.init();
+				}
+		
+		</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+		<!-- End google translator --> 
+		<script>  
+		
+		var googObj = googObj || {};
+
+			(function($) {
+			  googObj.translator = {
+				  langCode: {
+					  'en': 'English',
+					  'de': 'German',
+					  'ja': 'Japanese',
+					  'ru': 'Russian',
+					  'es': 'Spanish'
+				  },
+				  
+				  initDropdown: function() {
+					  $('#customTranslate').change(function() {
+						  $(this).blur();
+						  var lang = $(this).val();
+						  $("body").attr('class',$(this).val()); 						 
+						  var $frame = $('iframe.goog-te-menu-frame:first');
+						  if (!$frame.size()) {
+							  return false;
+						  }
+
+						  $( $frame.contents().find('.goog-te-menu2-item span.text') ).each(function( index ) {
+							  if ($(this).text() == lang) {
+								  if (lang == 'English') {
+									  googObj.translator.showOriginalText();
+									  return false;
+								  }
+								  
+								  $(this).click();
+
+								  return false;
+							  }
+						  });
+						  return false;
+						  
+					  });
+				  },
+				  
+				  showOriginalText: function() {
+					  var googBar = $('iframe.goog-te-banner-frame:first');
+					  $( googBar.contents().find('.goog-te-button button') ).each(function( index ) {
+						  if ( $(this).text() == 'Show original' ) {
+							  $(this).trigger('click');
+
+							  if ($('#customTranslate').val() != 'English') {
+								  $('#customTranslate').val('English');
+							  }
+							  return false;
+						  }
+					  });
+				  },
+				  
+				  setLangDropdown: function() {
+					  var cookieVal = this.getCookieValue();
+					  if (cookieVal) {
+						  $('#customTranslate').val( this.langCode[cookieVal] );
+					  }
+				  },
+				  
+				  getCookieValue: function() {
+					  var transCookie = getCookie('googtrans');
+					  if ( transCookie ) {
+						  transCookie = transCookie.split('/');
+						  transCookie = transCookie[2];
+						  return transCookie;
+					  }
+					  
+					  return false;
+				  },
+				  
+				  init: function() {
+					  if (document.getElementById('customTranslate')) {
+						  $('#customTranslate').show();
+						  this.initDropdown();
+						  this.setLangDropdown();
+					  }
+				  }
+			  }
+			})(jQuery);
+
+			function getCookie(name) {
+				var nameEQ = name + "=";
+				var ca = document.cookie.split(';');
+				for (var i=0; i < ca.length; i++) {
+					var c = ca[i];
+					while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+					if ( c.indexOf(nameEQ) == 0 ) {
+						return c.substring(nameEQ.length,c.length);
+					}
+				}
+				return null;
+			}
+		
+		</script>		
+	</div>
+	</div>
+		
+</div>
+<div class="inner_header">
+	<div class="container">
+    	
+        <!-- mini-start -->
+		
+		<div class="container demo-1">						
+				<div class="column">
+					<div id="dl-menu" class="dl-menuwrapper navbar-header">
+						<button class="dl-trigger">Open Menu</button>
+						<ul class="dl-menu">
+							<?php if($this->UserAuth->isLogged() && $this->UserAuth->isAdmin()){
+				
+							?>
+							<li><a href="<?php echo $this->Html->url('/',true); ?>admin/cars">Balance Details</a></li>
+								<?php } else if($this->UserAuth->isLogged()){ ?>
+							<li><a href="<?php echo $this->Html->url('/',true); ?>home/dashboard">Balance Details</a></li>					
+							<?php }else{ ?>					
+							<?php  } ?>	
+							<li><a href="<?php echo $this->Html->url('/',true); ?>">Home</a></li>	
+							<li>
+								<a href="<?php echo $this->Html->url('/',true); ?>pages/aboutus">About</a>
+								<ul class="dl-submenu">
+									<li><a href="<?php echo $this->Html->url('/',true); ?>pages/aboutus">Company Info</a></li>
+									<li><a href="<?php echo $this->Html->url('/',true); ?>pages/terms_condition"> Terms &amp; Condition</a></li>
+									<li><a href="<?php echo $this->Html->url('/',true); ?>pages/policy">Payment Policies</a></li>   				
+								</ul>
+							</li>
+							<li>
+								<a href="<?php echo $this->Html->url('/',true); ?>pages/services">Services</a>
+								<ul class="dl-submenu">
+									<li><a href="<?php echo $this->Html->url('/',true); ?>home/chasis_check">Chassis Check</a></li>
+									<li><a href="<?php echo $this->Html->url('/',true); ?>home/shipping_schedule">Shipping Schedule</a></li>						
+								</ul>
+							</li>
+							<li>
+								<a href="#">Stock List</a>
+								<ul class="dl-submenu">
+									<li><a href="<?php echo $this->Html->url('/',true); ?>home/stocklist/country:2/brand:9/type:1">Russia</a></li>
+									<li><a href="<?php echo $this->Html->url('/',true); ?>home/allstockList">All Stock List</a></li> 					
+								</ul>
+							</li>
+							<li>
+								<a href="#">Place an Order</a>
+								<ul class="dl-submenu">
+									<li><a href="<?php echo $this->Html->url('/',true); ?>home/how_to_buy">How To Buy</a></li>
+									<li><a href="<?php echo $this->Html->url('/',true); ?>home/request_car">Order a Car</a></li>
+									<li><a href="<?php echo $this->Html->url('/',true); ?>home/request_part">Order a Part</a></li> 				
+								</ul>
+							</li>
+							
+
+
+							<li>
+								<a href="#">Auction</a>
+								<ul class="dl-submenu">
+									<li>
+										<a href="<?php  echo $this->Html->url('/',true); ?>home/arrival_car_list"> Bid/Auction</a>
+									</li>
+									<li><a href="http://auc.ukcarstokyo.com">Live Auction</a></li>
+								</ul>
+							</li>
+
+							<li>
+								<a href="<?php echo $this->Html->url('/',true); ?>pages/Contactus">Contact US</a>
+							</li>
+							
+						</ul>
+						
+					</div><!-- /dl-menuwrapper -->
+				</div>
+			</div>
+
+       <script>
+			$(function() {
+				$( '#dl-menu' ).dlmenu({
+					animationClasses : { classin : 'dl-animate-in-4', classout : 'dl-animate-out-4' }
+				});
+			});
+		</script>
+        <!-- mini-stop -->
+		<div class="row">
+		<?php if($this->UserAuth->isLogged() && $this->UserAuth->isAdmin())
+			{
+				$class = 'col-lg-10 col-md-10';
+				$class1 = 'col-md-2 col-lg-2'; 
+			}
+			else if($this->UserAuth->isLogged())
+			{
+				$class = 'col-lg-10 col-md-10';
+				$class1 = 'col-md-2 col-lg-2'; 
+			}
+			else
+			{
+				$class =  'col-lg-8 col-md-8';
+				$class1 = 'col-md-4 col-lg-4';
+			}
+			 
+			?>	
+        <div class="navbar <?php echo $class; ?> nav_bar">
+          <div class="del_menu" role="navigation">
+            <ul class="nav navbar-nav  cl-effect-21"><!--  class="active" -->
+			
+			<?php if($this->UserAuth->isLogged() && $this->UserAuth->isAdmin()){
+				
+				?>
+				<li><a href="<?php echo $this->Html->url('/',true); ?>admin/cars">Dashboard</a></li>
+				<?php } else if($this->UserAuth->isLogged()){ ?>
+					<li><a href="<?php echo $this->Html->url('/',true); ?>home/dashboard">Balance Details</a></li>
+					
+					<?php }else{ ?>
+					
+					<?php  } ?>	
+				<li><a href="<?php echo $this->Html->url('/',true); ?>">Home</a></li>	
+              <li class="dropdown dropdown-hover"><a  class="dropdown-toggle" data-toggle="dropdown" href="<?php echo $this->Html->url('/',true); ?>pages/aboutus">About</a>
+				  <ul class="dropdown-menu" role="menu"> 					
+					<li><a href="<?php echo $this->Html->url('/',true); ?>pages/aboutus">Company Info</a></li>
+					<li><a href="<?php echo $this->Html->url('/',true); ?>pages/terms_condition"> Terms &amp; Condition</a></li>
+					<li><a href="<?php echo $this->Html->url('/',true); ?>pages/policy">Payment Policies</a></li>   
+				  </ul>
+			  </li>
+             <li class="dropdown dropdown-hover"><a href="<?php echo $this->Html->url('/',true); ?>pages/services"   class="dropdown-toggle" data-toggle="dropdown">Services</a>
+				<ul class="dropdown-menu" role="menu">					
+					<li><a href="<?php echo $this->Html->url('/',true); ?>home/chasis_check">Chassis Check</a></li>
+					<li><a href="<?php echo $this->Html->url('/',true); ?>home/shipping_schedule">Shipping Schedule</a></li>
+				  </ul>
+			 </li>
+			    <!--li><a href="<?php echo $this->Html->url('/',true); ?>pages/payment">Payment</a></li>-->   
+
+				
+                 <li class="dropdown dropdown-hover"><a class="dropdown-toggle" data-toggle="dropdown">Stock List</a>
+					<ul class="dropdown-menu animated bounceInUp " role="menu">					
+						<!--<li><a href="<?php echo $this->Html->url('/',true); ?>home/stocklist/country:2/brand:9/type:1">Russia</a></li>-->
+						<li><a href="<?php echo $this->Html->url('/',true); ?>home/allstockList">All Stock List</a></li> 
+						<!--<li><a href="<?php echo $this->Html->url('/',true); ?>home/stocklist/country:3/type:1">Chille</a></li>
+						<li><a href="<?php echo $this->Html->url('/',true); ?>home/stocklist/country:16/type:1">U.A.E</a></li>   
+						<li><a href="<?php echo $this->Html->url('/',true); ?>home/stocklist/country:1/type:1">Japan</a></li>   
+						<li><a href="<?php echo $this->Html->url('/',true); ?>home/stocklist/country:17/type:1">Germany</a></li>-->   
+					</ul>
+				 </li>
+				  <li class="dropdown dropdown-hover"><a  class="dropdown-toggle" data-toggle="dropdown" href="#">Place an Order</a>
+				  <ul class="dropdown-menu" role="menu">					
+					<li><a href="<?php echo $this->Html->url('/',true); ?>home/how_to_buy">How To Buy</a></li>
+					<li><a href="<?php echo $this->Html->url('/',true); ?>home/request_car">Order a Car</a></li>
+					<li><a href="<?php echo $this->Html->url('/',true); ?>home/request_part">Order a Part</a></li> 
+				  </ul>
+			  </li>
+			  
+
+		  	<li class="dropdown dropdown-hover"> 
+		  		<a  class="dropdown-toggle" data-toggle="dropdown" href="#">Auction</a>
+					<ul class="dropdown-menu" role="menu">
+						<li>
+							<a href="<?php  echo $this->Html->url('/',true); ?>home/arrival_car_list"> Bid/Auction</a>
+						</li>
+						<li><a href="http://auc.ukcarstokyo.com">Live Auction</a></li>
+					</ul>
+				</li>
+
+
+			 <!-- <li><a href="<?php // echo $this->Html->url('/',true); ?>home/arrival_car_brand"> Bid/Auction</a></li> 
+              <li><a href="<?php // echo $this->Html->url('/',true); ?>home/arrival_show"> Bid/Auction</a></li> -->  
+				<li><a href="<?php echo $this->Html->url('/',true); ?>pages/Contactus">Contact US</a></li>	
+            </ul>
+		  </div><!--/.nav-collapse -->
+	
+        </div>
+		<div class="<?php echo $class1; ?> login_menu">
+		<?php if($this->UserAuth->isLogged() && $this->UserAuth->isAdmin()){
+				?>            
+				<!--<a href="<?php //echo $this->Html->url('/',true); ?>users/register">Register</a>|-->
+				<a class="logout"  href="<?php echo $this->Html->url("/");?>admin/logout">Logout</a>
+			<?php
+				
+			}else if($this->UserAuth->isLogged())
+			{?>					 
+				<a class="logout" href="<?php echo $this->Html->url("/");?>admin/logout">Logout</a>				
+
+			<?php }else{
+				echo $this->element('login_header_front');
+				
+				}
+				?>
+     </div>
+     </div>
+</div>
+</header>
+ 
+<!--header stop-->
+<div   class="main-content" >
+<?php echo $this->fetch('content'); ?>
+</div>
+
+<!--  Footer Starts from here   -->
+<footer>
+	<div class="container">
+		<div class="col-md-9">
+			<?php $this->Page = ClassRegistry::init('Page'); 
+				$result = $this->Page->find('first',array('conditions'=>array('Page.title'=>'Footer')));
+			  echo $result['Page']['content'];
+			?>
+		</div>
+		<div class="col-lg-3 col-md-3">
+			<div class="row">
+			<h2>Find Us On</h2>
+			<ul class="social">
+				<li><a href="https://www.facebook.com/pages/UK-Corporation/247158068818396" class="facebook"><img src="<?php echo $this->webroot;?>images/facebook.png" alt="facebook"/></a></li>
+				<li >
+					<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
+					<a href="javascript:void(0);" class="skype"><img src="<?php echo $this->webroot;?>images/skype.png" alt="skype"/></a>
+						<div id="SkypeButton_Call_uk.corporation14_1">
+						  <script type="text/javascript">
+							Skype.ui({
+							  "name": "dropdown",
+							  "element": "SkypeButton_Call_uk.corporation14_1",
+							  "participants": ["uk.corporation14"],  
+							  "imageSize": 0.
+							});
+						  </script>
+						</div>
+					<!--<a href="callto:uk.corporation14" class="skype"><i class="fa fa-skype"></i></a>--></li>
+				<li><a href="mailto:ukcarsjapan@gmail.com" class="vimeo"><img src="<?php echo $this->webroot;?>images/mail.png" alt="mail"/></a></li>
+			</ul>
+		</div>
+		</div>
+	</div>
+	<div class="bottomfoot">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-md-12">
+					<p class="col-sm-6 pul-right">&copy; UK Cars - 2013 All right Reserved</p>
+					<p class="col-sm-6 pul-left powered">Powered by <a href="http://www.webenturetech.com" target="blank" title="Webenture">Webenture</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<?php
+	//echo $this->Html->script('bootstrap-transition'); 6feb
+	//echo $this->Html->script('bootstrap-collapse');
+	echo $this->Html->script('bootstrap-typeahead'); //Auto Complete
+	echo $this->Html->script('jquery.chosen.min');
+	//echo $this->Html->script('jquery.uniform.min');
+	//echo $this->Html->script('charisma');
+	echo $this->Html->script('modernizr.custom');
+	echo $this->Html->script('jquery.dlmenu');
+	//echo $this->Html->script('jquery.tinycarousel'); 6feb
+	
+		//echo $this->Html->script('jquery.scrollTo-min');
+	
+		
+		//echo $this->Html->script('jquery.jcarousel.min'); 6feb
+		//echo $this->Html->script('jquery.touchwipe.min.js'); 6feb
+		echo $this->Html->css('jquery.lightbox');
+		echo $this->Html->script('bootstrap-modal');
+		echo $this->Html->script('hover_transition_slider');
+		echo $this->Html->script('jquery.lightbox.min');
+?>
+<?php //echo $this->element('sql_dump'); ?>
+<!--  Footer Ends here   -->
+<script>
+
+
+</script>
+</body>
+</html>
