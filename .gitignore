@@ -1,0 +1,16 @@
+# IDEs and Editors
+.idea
+
+# config
+app/Config
+
+#tmp
+app/tmp
+
+# Uploads
+app/webroot/dbadmin
+app/webroot/files
+app/webroot/fonts
+app/webroot/images
+app/webroot/img
+app/webroot/uploads

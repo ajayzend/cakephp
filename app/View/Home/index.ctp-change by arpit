@@ -1,0 +1,1128 @@
+
+	<?php
+//echo phpinfo();'thumbnail-slider'
+
+ //echo $this->Html->script(array('jquery-form')); ?>
+ <?php //echo $this->Html->css(array('select2'));?>
+<?php //echo $this->Html->script(array('select2.min'));?>
+
+<script type="text/Javascript">
+	
+
+/*$("#locationId").change(function(){ 
+  
+		var id = $(this).val();
+		
+		var datas  =  {'id':id}; 
+		$.ajax({
+			url:"<?php echo $this->Html->url('/home/getMakeBrand/',true)?>"+$(this).val(),
+			type:"POST",
+			data:datas,
+			success:function(result)
+			{
+				$('#makeId').html(result);
+					
+			}					
+		});	
+     });*/
+
+ 
+ $(function(){
+	 
+jQuery(document).ready(function(){
+	jQuery("#makeId").chosen();
+	jQuery("#modelId").chosen();  
+	jQuery("#yearFromId").chosen();
+	jQuery("#yearToId").chosen();
+	jQuery("#quickCCId").chosen();
+	jQuery("#locationId").chosen();
+});	 
+	 
+	 
+	 
+/* $("#makeId").change(function(){ 
+  
+		var id = $(this).val();
+		var countryId = $("#locationId").val();
+		var datas  =  {'id':id,'countryId':countryId}; 
+		$.ajax({
+			url:"<?php echo $this->Html->url('/home/getModelCar/',true)?>"+$(this).val(),
+			type:"POST",
+			data:datas,
+			success:function(result)
+			{
+				$('#modelId').html(result);
+					
+			}					
+		});	
+     });*/
+ });
+</script>
+<style type="text/css" media="screen">
+	  body { background: #EEF0F7; }
+	 .layout { padding: 50px; font-family: Georgia, serif; }
+	 .layout-slider { margin-bottom: 60px; width: 50%; }
+	 .layout-slider-settings { font-size: 12px; padding-bottom: 10px; }
+	 .layout-slider-settings pre { font-family: Courier; }
+	</style>
+ <?php //echo $this->Html->css(array('jslider')); ?>
+<?php //echo $this->Html->script(array('jquery.tinycarousel.min'));?>
+<script type="text/javascript">
+		/*$(document).ready(function(){			
+			$('#slider2').tinycarousel({ display: 1, interval: true });
+				
+			$.ajax({
+				type: "GET",
+				url: "<?php  echo $this->Html->url('/',true);?>home/arrivalDetails ",
+				data: {},
+                dataType:'JSON',
+                //$countryName['Country']['id']
+                
+				success: function(data){
+					//console.log(data.length);
+					//img/carimages/
+					var content ="";
+					for(var i in data)
+					{ 
+						//console.log(data);
+						if(data[i].CarImage[0]!=undefined)
+						{
+							content +='<li><a href="<?php echo $this->Html->url('/',true);?>home/arrival_show#'+data[i].Car.id+'"><img   alt="" height="70%" width="80%" class="img-thumbnail" src="'+data[i].CarImage[0].image_source+'" /></a><h4>'+data[i].CarName.car_name+'</h4><p>'+data[i].Car.package+'</p><p>'+data[i].Car.manufacture_year+'</p></li>';
+						}
+					}
+					//console.log(content);
+					$("#arrival").html(content);
+				}
+			});		
+		});	*/	
+	</script>
+
+	
+
+	
+	
+	
+<script type="text/javascript">
+		/*$(document).ready(function(){
+			$('#slider3').tinycarousel({interval: true, axis: 'y'});
+		});	*/	
+	</script>
+			<script type="text/javascript">
+			/*$(document).ready(function() 
+			{
+				$("#lista1").als({
+					visible_items: 4,
+					scrolling_items: 2,
+					orientation: "vertical",
+					circular: "yes",
+					autoscroll: "yes",
+					interval: 5000,
+					direction: "up",
+					start_from: 2
+				});
+			});*/
+		</script>
+	 
+
+<script type="text/javascript" charset="utf-8"> 
+     
+     $(function(){
+    
+      jQuery("#price_range").slider({ from: 1000, to: 100000, step: 500, smooth: true, round: 0, dimension: "&nbsp;$", skin: "plastic" });
+      jQuery("#mileage").slider({ from: 1000, to: 100000, step: 500, smooth: true, round: 0, skin: "plastic" });
+    });
+    </script>
+	
+	
+	<script>
+
+
+function showCarName(){
+  $(".brands li a").click(function(){
+	$(".details").fadeIn();
+	$(".brands li img").addClass("active_effects");
+	$(this).children().removeClass('active_effects');
+	$(this).parent().addClass('active');	
+    });
+	
+  $(".nav-tabs > li > a").click(function(){
+    $(".brands li img").removeClass("active_effects");
+	$(".nav-tabs > li > a").addClass("active_effects");	
+	$(this).removeClass('active_effects');	
+    });
+	
+
+$(".nav-tabs > li > a").click(function(){
+    $(".details").hide();
+    });
+	
+};
+</script>	
+<!--  Body Container Starts from here   -->
+<div class="row">
+	<div class="container">
+		<div class="row">
+		<div class="col-sm-3 typesearch " id="new-arrival">
+			<div class="side_search">
+		<h2>Quick Search</h2> 
+		
+		<?php echo $this->Form->create('Home',array('url'=>array('controller'=>'home','action'=>'/all_car'),'class'=>'form-horizontal','id'=>'searchCountry'));?>
+		<div class="form-group">
+			<label for="locationId" class="col-sm-3 control-label">Country</label>
+			<div class="col-sm-9">
+			  <?php 
+						$arr=array();
+						foreach ($carDetail as $keyCarDet=>$valCarDet)
+						{		
+							
+							$arr[@$valCarDet['Country']['id']] = @$valCarDet['Country']['country_name'];
+							
+						}
+				echo $this->Form->input('country_name',array('type'=>'select','empty'=>'Any','options'=>$arr,'class'=>'form-control','label'=>false,'data-rel'=>'chosen','div'=>false,'id'=>'locationId')); 	
+				?>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		
+		<div class="form-group">
+			<label for="makeId" class="col-sm-3 control-label">Make</label>
+			<div class="col-sm-9">
+			  <?php 
+					/*$arrBrand = array();
+					foreach($Brand as $keyBrand=>$valBrand){
+						$arrBrand[$valBrand['Brand']['id']] = $valBrand['Brand']['brand_name'];
+						//pr($valBrand['Brand']['brand_name']);
+					}	*/
+
+				echo $this->Form->input('brand_name',array('type'=>'select','empty'=>'Any','options'=>$Brand,'class'=>'form-control','label'=>false,'div'=>false,'data-rel'=>'chosen','id'=>'makeId')); 	
+				?>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+				
+		<div class="form-group">
+			<label for="modelId" class="col-sm-3 control-label">Model</label>
+			<div class="col-sm-9">
+			  <?php 
+						
+				/*$arrCarModel = array();
+				foreach($carName as $keycarName=>$valcarName){
+					$arrCarModel[$valcarName['CarName']['id']] = $valcarName['CarName']['car_name'];
+					
+				}*/
+				echo $this->Form->input('model',array('type'=>'select','empty'=>'Any','options'=>$carName,'class'=>'form-control','label'=>false,'data-rel'=>'chosen','div'=>false,'id'=>'modelId')); 	
+				?>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+				
+		<div class="form-group">
+			<label for="yearFromId" class="col-sm-3 control-label">Year</label>
+			<div class="col-sm-9 from-to-date">
+				
+			  <?php 
+						
+					//$arrYearFrom = array('2014'=>'2014','2013'=>'2013','2012'=>'2012','2011'=>'2011','2010'=>'2010','2009'=>'2009','2008'=>'2008','2007'=>'2007','2006'=>'2006','2005'=>'2005','2004'=>'2004','2003'=>'2003','2002'=>'2002','2001'=>'2001','2000'=>'2000','1999'=>'1999','1998'=>'1998','1997'=>'1997');
+				echo $this->Form->input('yearFrom',array('type'=>'select','empty'=>'From','options'=>$option_year,'class'=>'form-control','label'=>false,'data-rel'=>'chosen','div'=>false,'id'=>'yearFromId',)); 	
+				?>
+				<?php 
+						
+				//$arrYearTo = array('2014'=>'2014','2013'=>'2013','2012'=>'2012','2011'=>'2011','2010'=>'2010','2009'=>'2009','2008'=>'2008','2007'=>'2007','2006'=>'2006','2005'=>'2005','2004'=>'2004','2003'=>'2003','2002'=>'2002','2001'=>'2001','2000'=>'2000','1999'=>'1999','1998'=>'1998','1997'=>'1997');
+				
+				echo $this->Form->input('yearTo',array('type'=>'select','empty'=>'To','options'=>$option_year,'class'=>'form-control','label'=>false,'data-rel'=>'chosen','div'=>false,'id'=>'yearToId')); 	
+				?>	
+			</div>
+			<div class="clearfix"></div>
+		</div>
+				
+	<!--<div class="form-group">
+		<label for="" class="col-sm-12">Price Range</label>
+		<div class="col-sm-5">
+		  <?php 
+				$arrPriceTo = array('0'=>'US$ 0','1000'=>'US$ 1,000','2000'=>'US$ 2,000','3000'=>'US$ 3,000','5000'=>'US$ 5,000','10000'=>'US$ 10,000','20000'=>'US$ 20,000');	
+
+			echo $this->Form->input('priceFrom',array('type'=>'select','empty'=>'Any','options'=>$arrPriceTo,'class'=>'form-control','label'=>false,'data-rel'=>'chosen','div'=>false,'id'=>'yearFromId')); 	
+			?>
+		</div>
+		<label class="col-sm-2 control-label">To</label>
+			<div class="col-sm-5">
+			<?php 
+					
+				$arrPriceFrom = array('1000'=>'US$ 1,000','2000'=>'US$ 2,000','3000'=>'US$ 3,000','5000'=>'US$ 5,000','10000'=>'US$ 10,000','20000'=>'US$ 20,000');
+			echo $this->Form->input('priceTo',array('type'=>'select','empty'=>'Any','options'=>$arrPriceFrom,'class'=>'form-control','label'=>false,'data-rel'=>'chosen','div'=>false,'id'=>'priceToId')); 	
+			?>	
+			</div>
+			<div class="clearfix"></div>
+		</div>-->
+						
+		<div class="form-group">
+			<label for="quickCCId" class="col-sm-3 control-label">CC</label>
+			<div class="col-sm-9">
+			  <?php 
+					$arrCc = array('0,1000'=>'1000 CC and Less','1000,1500'=>'1000 CC - 1500 CC','1500,1800'=>'1500 CC - 1800 CC','1800,2000'=>'1800 CC - 2000 CC','2000,2500'=>'2000 CC - 2500 CC','2500,4000'=>'2500 CC - 4000 CC','4000,99999'=>'4000 CC and Over');
+
+					echo $this->Form->input('cc',array('type'=>'select','empty'=>'Any','options'=>$arrCc,'class'=>'form-control','label'=>false,'data-rel'=>'chosen','div'=>false,'id'=>'quickCCId')); 	
+				?>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		
+		<div class="form-group">
+			<label for="quickCCId" class="col-sm-3 control-label">Stock</label>
+			<div class="col-sm-9">
+			  <?php
+					echo $this->Form->input('stock',array('type'=>'text','class'=>'form-control','placeholder'=>'Stock ID','label'=>false,'data-rel'=>'','div'=>false,'id'=>'quickCCId')); 	
+				?>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		
+		<div class="form-group">
+			<label for="quickCCId" class="col-sm-3 control-label">Chassis No.</label>
+			<div class="col-sm-9">
+				<div class="ui-widget">
+			  <?php
+					echo $this->Form->input('cnumber',array('type'=>'text','class'=>'form-control','placeholder'=>'Enter Chassis no.','label'=>false,'data-rel'=>'','div'=>false,'id'=>'cnumber')); 	
+				?>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		
+		<div class="clearfix"></div>
+			<?php  echo $this->Form->submit('Quick Search', array('class'=>'btn btn-red pull-right','div'=>false));?>
+		<?php echo $this->Form->end();?>  
+	</div>
+	</div>
+		<div class="slideshow col-sm-9 col-xs-12">
+		 <!-- Carousel
+			================================================== -->
+			 <!--======Slider======-->
+			<div id="myCarousel" class="carousel slide" data-ride="carousel"> 
+				<div class="carousel-inner">
+				  <?php 
+						$i = 0;	//pr($homePages_slides);
+						foreach($homePages_slides as $item):   ?>
+						<div class="item <?php if($i==0) echo "active"; ?>">          
+						<div class="row">		  
+							<img class="bigImage img-responsive" style='width:852px;height:366px;' src="<?php echo $this->webroot."img/HomePageManagements/".$item['HomePageSlide']['image_source']?>" alt="" title="">
+							
+							<?php 
+							/*echo $img = $this->webroot."img/HomePageManagements/".$item['HomePageSlide']['image_source'];
+							
+							echo $this->Timthumb->image($img, array('width' => 852, 'height' => 366),array('class'=>'bigImage img-responsive'));*/?>	       
+						</div>
+					</div> 
+				<?php $i++; endforeach; ?>
+			</div>
+			<!--Controls-->
+			<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+			<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+		</div><!-- /.carousel -->
+	</div>
+  <!--======Slider-end======-->  
+  </div>
+  <div class="row">
+	  
+	<div class="col-sm-9 searchcountry col-xs-12 web-view">
+		<!-- Nav tabs -->
+		<div class="row nav-tabs" >
+		  <?php 
+			foreach($carDetail as $key=>$value){  
+				if(strtoupper($value['Country']['country_name'])=="RUSSIA")
+				{
+				 ?>
+				 <div class="col-sm-3">
+				<a href="#home1" onClick="getBrandName('<?php echo $value['Country']['id']?>');" data-toggle="tab"><img  src="images/russia-tab-bg.jpg"    /><strong><?php echo @$value['Country']['country_name'];?></strong></a> 
+				<div class="tab-content">
+				<div class="tab-pane" id="home1">
+				<!-- Tab1 -->  
+					<ul class="brands truck" id="brandsUlId1">												
+					</ul>
+					<div class="clearfix"></div>
+					<!-- Tab 1 Ends-->
+				</div>
+			</div>
+				</div>
+			<?php 
+			}
+			}?>
+			<div class="col-sm-3">
+				<a href="#home2" onClick="getTruckData()" data-toggle="tab"><img   src="images/truck.jpg" /><strong>Truck Stock</strong></a>
+				
+			
+			
+			<div class="tab-content">
+				<div class="tab-pane " id="home2">
+				<!-- Tab1 -->  
+					<ul class="brands truck" id="brandsUlId2">												
+					</ul>
+					<div class="clearfix"></div>
+					<!-- Tab 1 Ends-->
+				</div>
+			</div>
+			</div>
+			<div class="col-sm-3">
+				<a href="#home3" onClick="getHeavyData()"  data-toggle="tab" ><img     src="images/haveymachine.jpg" /><strong>Heavy Machinery</strong></a>
+				<div class="tab-content">
+				<div class="tab-pane" id="home3">
+				<!-- Tab1 -->  
+					<ul class="brands truck" id="brandsUlId3">												
+					</ul>
+					<div class="clearfix"></div>
+					<!-- Tab 1 Ends-->
+				</div>
+			</div>
+			</div>
+			<div class="col-sm-3">
+				<a href="<?php echo $this->Html->url('/',true); ?>home/arrival_car_list"><img  src="images/new_arrival_tab.jpg" /><strong>3AKA3 C AYKЦИOHOB</strong></a>
+			</div>
+		</div>	
+			
+		</div>
+		
+	
+	
+	<div class="col-sm-3 search-country">
+			<h2>Search By Location</h2>
+			
+			
+			<ul>
+				<?php  foreach($pCountryDetails1 as $country) {  
+					
+		
+					
+					?>
+					
+					<li><a href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'allstockList','country'=>$country['Car']['purchase_country_id'],'brand'=>$country['Car']['brand_id'],'type'=>"location"));?>"><img src="<?php echo $this->webroot.$country['Country']['country_image'];?>" alt="Flag">&nbsp;&nbsp;<?php echo $country['Country']['country_name'];?> STOCK (<?php echo $country[0]['Total'];?>)</a></li>
+					
+					
+			<?php  }?>	
+									
+				
+			</ul>
+		</div>
+	</div>
+	<div class="row typesearch">
+			
+		<div class="col-sm-12">
+		<header class="section-header ">
+          <div data-animation="bounceInLeft" class="animated animation-done bounceInLeft"> <i class="fa fa-autologo"></i> </div>
+          <div class="heading-wrap">
+           	<h2 class="heading">Search By Type</h2>
+          </div>
+        </header>
+		<?php $arr_c=array(4,6,11,14,13,5,12,7);
+		//echo "<pre>";
+		foreach($countarr as $key=>$v)
+		{
+		
+		//print_r($v); 
+			if($v['Car']['vehicle_type_id'] == 4)
+			{
+				$wogon_count = $v[0]['cnt'];
+			}
+			
+			if($v['Car']['vehicle_type_id'] == 6)
+			{
+				$sedan_count = $v[0]['cnt'];
+			}
+			
+			if($v['Car']['vehicle_type_id'] == 11)
+			{
+				$van_count = $v[0]['cnt'];
+			}
+			if($v['Car']['vehicle_type_id'] == 14)
+			{
+				$pick_count = $v[0]['cnt'];
+			}
+			if($v['Car']['vehicle_type_id'] == 13)
+			{
+				$sport_count = $v[0]['cnt'];
+			}else
+			{
+				$sport_count = '0';
+			}
+			if($v['Car']['vehicle_type_id'] == 5)
+			{
+				$coube_count = $v[0]['cnt'];
+			}
+			if($v['Car']['vehicle_type_id'] == 12)
+			{
+				$bus_count = $v[0]['cnt'];
+			}
+			if($v['Car']['vehicle_type_id'] == 7)
+			{
+				$jeep_count = $v[0]['cnt'];
+			}
+		}
+		
+		
+		
+		?>
+			<ul class="search-type">
+				<li><a href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>4));?>"><img src="<?php echo $this->webroot;?>images/wagon-type.jpg" alt="Wagon" class="img-responsive"><span>Wagon<br/>(<?php echo $wogon_count; ?>)</span></a></li>
+				<li><a href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>6));?>"><img src="<?php echo $this->webroot;?>images/sedan-type.jpg" alt="Sedan" class="img-responsive"><span>Sedan<br/>(<?php echo $sedan_count; ?>)</span></a></li>
+				<li><a href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>11));?>"><img src="<?php echo $this->webroot;?>images/van-type.jpg" alt="Van" class="img-responsive"><span>Van<br/>(<?php echo $van_count; ?>)</span></a></li>
+				<li><a href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>14));?>"><img src="<?php echo $this->webroot;?>images/pickup-type.jpg" alt="Pickup" class="img-responsive"><span>Pickup/Truck<br/>(<?php echo $pick_count; ?>)</span></a></li>
+				
+				<li>
+					<?php $convertible_sport = '13';?>
+					
+					<a href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>$convertible_sport));?>"><img src="<?php echo $this->webroot;?>images/convertible-type.jpg" alt="Convertible" class="img-responsive"><span>Convertible/Sport<br/>(<?php echo $sport_count; ?>)</span></a></li>
+				
+				<li><a href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>5));?>"><img src="<?php echo $this->webroot;?>images/coupe-type.jpg" alt="Coupe" class="img-responsive"><span>Coupe/Hatchback<br/>(<?php echo $coube_count; ?>)</span></a></li>
+				<li><a href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>12));?>"><img src="<?php echo $this->webroot;?>images/bus-type.png" alt="Bus" class="img-responsive"><span>Bus<br/>(<?php echo $bus_count; ?>)</span></a></li>
+				
+				
+				<li>
+					<?php $svu_jeep = '7';?>
+					<a href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>$svu_jeep));?>"><img src="<?php echo $this->webroot;?>images/suv.png" alt="Bus" class="img-responsive"><span>Suv/Jeep<br/>(<?php echo $jeep_count; ?>)</span></a></li>
+				
+				<!-- 16,17<li><a href="<?php //echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>16));?>"><img src="<?php //echo $this->webroot;?>images/coupe-type.jpg" alt="Bus" class="img-responsive"><span>Jeep</span></a></li>
+				
+				
+				<li><a href="<?php //echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>17));?>"><img src="<?php //echo $this->webroot;?>images/sports.png" alt="Bus" class="img-responsive"><span>Sport</span></a></li> -->
+			</ul>
+			<!-- <li><a href="<?php //echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_brand','cartype'=>15));?>"><img src="<?php //echo $this->webroot;?>images/coupe-type.jpg" alt="Bus" class="img-responsive"><span>Muv</span></a></li><button type="submit" class="btn btn-danger btn-default">Search <i class="fa fa-search"></i></button>-->
+		</div>
+		</div>
+		</div>
+		</div>
+		
+	<div class="chasi_back">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 typesearch" id="new-arrival">
+				<h2>Chassis Check</h2> 
+					<form name="frameno_form" id="frameno_form" class="form-horizontal form_sec_home">
+						<!--<p>Determining the date of issuance of the Japanese car:</p>
+						<p>Enter the number and select the brand:</p>-->
+						<div class="col-sm-5 col-xs-12">
+							<!--label for="no" class="col-sm-6 control-label">Frame number:</label-->
+								<input type="text" name="no" id="no" class="form-control" placeholder="Frame number"/>
+						</div>
+						<div class="col-sm-5 col-xs-12">
+							<!--label for="firm" class="col-sm-6 control-label">Firm:&nbsp;</label-->
+							<select name="firm" id="firm" class="form-control" >
+							  <option value="0">Select Firm:</option>
+							  <option value="9">Toyota</option>
+							  <option value="6">Nissan</option>
+							  <option value="5">Mitsubishi</option>
+							  <option value="2">Honda</option>
+							  <option value="4">Mazda</option>
+							  <option value="7">Subaru</option>
+							  <option value="8">Suzuki</option>
+							  <option value="3">Isuzu</option>
+							  <option value="1">Daihatsu</option>
+							</select>
+							<div class="clearfix"></div>
+						</div>
+						<div class="col-sm-2 col-xs-12">
+						<input type="button" onclick="getData();" class="btn btn-red " value="Chassis Check"></td>
+						</div>
+					</form>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	 		
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="arine_sec">
+					<header class="section-header ">
+						<div data-animation="bounceInLeft" class="animated animation-done bounceInLeft"> <i class="fa fa-autologo"></i> </div>
+						<div class="heading-wrap">
+							<h2 class="heading">New Arrival</h2>
+						</div>
+					</header>
+					<?php if(@$countNewArrivals > 0){ ?>	
+					<div class="slider1">
+						
+						<div class="viewport">
+						    <?php if(count($countNewArrivals)>5)
+							{
+								$cls = 'bxslider';
+							}
+							else
+							{
+								$cls = '';
+							}
+							?>
+							<ul class="overview <?php echo $cls; ?>">
+							<?php foreach ($topNewArrivals as $key=>$val)
+							{?>
+							<li class='count'><a  style="text-decoration:none;"   href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'arrival_car_list','brand'=>$val['Brand']['id'],'type'=>$val['Car']['car_type_id']));?>"><img src="<?php echo $val['Brand']['brand_image']; ?>" /></br><span ><?php echo $val['Brand']['brand_name'];?><br/>(<?php echo $val['0']['TotalCar'];?>)</span></a></li>
+
+							<?php }?>	
+							
+							</ul>
+							
+						</div>						
+					</div>
+					<?php }
+					else
+					{
+					echo '<div align="center" style="border:1px solid #ccc" ><h1>No New Arrival cars.</h1></div>';
+					}?>	
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="arine_sec">
+					<header class="section-header ">
+						<div data-animation="bounceInLeft" class="animated animation-done bounceInLeft"> <i class="fa fa-autologo"></i> </div>
+						<div class="heading-wrap">
+							<h2 class="heading">Stock list</h2>
+						</div>
+					</header>	
+					<div class="slider1">
+						
+						<div class="viewport">
+							<?php if(count($topStock)>5)
+							{
+								$cls = 'bxslider';
+							}
+							else
+							{
+								$cls = '';
+							}
+							?>
+							
+							<ul class="overview <?php echo $cls; ?>">
+								<?php foreach ($topStock as $val)
+								//pr($val['CarImage'][0]);
+							{
+
+								/*if(@$val['CarImage'][0]['image_source']=='')	
+								{
+									$img_path = 'images/new_arrival01.png';
+								}else
+								{*/
+									$img_path = $val['Brand']['brand_image'];
+								//}
+
+
+								?>
+ 
+							<li class='count'><a style="text-decoration:none;" href="<?php echo $this->Html->url(array('controller' => 'home', 'action' => 'allstockList','brand'=>$val['Brand']['id']));?>"><img  src="<?php echo $img_path; ?>"  /><span><?php echo $val['Brand']['brand_name'];?></br>(<?php echo $val['0']['TotalCar'];?>)</span></a></li>
+							<?php }?>
+
+							
+							</ul>
+						</div>						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 col-xs-12 about_part">
+				<header class="section-header ">
+					<div data-animation="bounceInLeft" class="animated animation-done bounceInLeft"> <i class="fa fa-autologo"></i> </div>
+					<div class="heading-wrap">
+						<h2 class="heading">About Us</h2>
+					</div>
+				</header>
+			</div>
+			<div class="col-sm-6">
+				<article data-animation="fadeInDown" class="clearfix animated text-left animation-done fadeInDown"> 
+           
+          <!-- Nav tabs -->
+			<ul id="about"  class="nav mini_area tabs_effect" role="tablist">
+          	<?php 
+			$active = '';
+				foreach ($abouts as $key=>$val)
+				{
+				
+					if(trim($val['About']['id']) == 1 )
+					{
+						$active='active';
+					}else{
+					$active='';
+					}
+
+				?>
+				
+
+          <li class="<?php echo $active; ?>"><a href="#tab<?php echo $key;?>" onmouseover="bigImg('tab<?php echo $key;?>');" onmouseout="hideImg('tab<?php echo $key;?>');" role="tab" data-toggle="tab"><i class="auto8 fa fa-car"></i>
+          <p><?php echo $val['About']['discription'];?></p></a>			
+		 </li>
+            <!--<li class=""><a href="#tab3" role="tab" onmouseover="bigImg('tab3');" onmouseout="hideImg('tab3');" data-toggle="tab"> <i class="auto8 fa fa-car"></i><p>We sincerely look forward to serve you at our best by promising quality vehicles on most reasonable prices possible.</p></a>
+			</li>
+            <li class=""><a href="#tab4" role="tab" onmouseover="bigImg('tab4');" onmouseout="hideImg('tab4');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>We ship vehicles across the globe.</p></a></li>
+			
+			 <li class=""><a href="#tab2" role="tab" onmouseover="bigImg('tab2');" onmouseout="hideImg('tab2');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>Parking space of more than 1800 cars through different yards.</p></a></li>
+			 
+			  <li class=""><a href="#tab5" role="tab" onmouseover="bigImg('tab5');" onmouseout="hideImg('tab5');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>Stock of minimum 1000 cars available at any point of time.</p></a></li>
+			  
+			 <li class=""><a href="#tab6" role="tab" onmouseover="bigImg('tab6');" onmouseout="hideImg('tab6');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>We specialise in the supply of new and used cars from all leading manufacturers and offer a full range of products and services</p></a></li>
+			   
+			 <li class=""><a href="#tab7" role="tab" onmouseover="bigImg('tab7');" onmouseout="hideImg('tab7');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>Parts, equipment and accessories are also available upon request.</p></a> </li>
+			
+			 <li class=""><a href="#tab8" role="tab" onmouseover="bigImg('tab8');" onmouseout="hideImg('tab8');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>Wide stock range and access to auctions in JAPAN allows us to provide any sort of continental, Japanese and American vehicles to our clients in shortest period of time with best price.</p></a></li>
+			 
+			 <li class=""><a href="#tab9" role="tab" onmouseover="bigImg('tab9');" onmouseout="hideImg('tab9');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>We focus only on the superior customer satisfaction in order to build healthy relations.</p></a></li>
+				 
+			 <li class=""><a href="#tab10" role="tab" onmouseover="bigImg('tab10');" onmouseout="hideImg('tab10');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>We are very much interested in having long relationship business partners. We have a rich experience and network of contacts through the most regions of Japanese Used Cars, Trucks, Buses and Other vehicles.</p></a></li>
+			 
+			 <li class=""><a href="#tab11" role="tab" onmouseover="bigImg('tab11');" onmouseout="hideImg('tab11');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>We deals in used cars, brand new cars, trucks, vans, buses, machineries and all sort of spare parts ( new and used )</p></a></li>
+			 
+			 <li class=""><a href="#tab12" role="tab" onmouseover="bigImg('tab12');" onmouseout="hideImg('tab12');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>Our goal is to give you our best service so that you can concentrate on growing your business and making money.</p></a></li>
+			 
+			 <li class=""><a href="#tab13" role="tab" onmouseover="bigImg('tab13');" onmouseout="hideImg('tab13');" data-toggle="tab"><i class="auto8 fa fa-car"></i><p>It is our desire to continue building a good foundation of trust with each of our clients and with every individual we meet, and together achieve success.</p></a></li>
+		 -->
+			 
+			 
+			 
+			 <?php }?>
+			 
+          </ul>
+        </article>	
+			</div>		
+			<div class="col-sm-6">
+				<div class="tab-content tab_sec_padd" id='tab-content'>
+					<div class="tab-pane" id="tab_hide"><img src="/uploads/about_img/stock_14_1421048070.jpg" class="img-responsive"/></div>	
+				<?php 
+			$active = '';
+				foreach ($abouts as $key=>$val)
+				{					
+					if(trim($val['About']['id']) == 0 )
+					{
+						$active='active';
+					}else{
+						$active=''; 
+					}
+
+				?>
+				  
+				  <div   class="tab-pane <?php echo $active; ?> " id="tab<?php echo $key;?>">
+				  <img  src="<?php echo $this->webroot.'uploads/about_img/'.@$val['About']['img_source'];?>" style='width:553px;height:307;' class="img-responsive"/></div>
+				  <!--<div class="tab-pane" id="tab2"><img src="images/about-cart.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab3"><img src="images/brand.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab4"><img src="images/wide.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab5"><img src="images/1_2.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab6"><img src="images/1_3.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab7"><img src="images/1_4.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab8"><img src="images/1_5.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab9"><img src="images/1_6.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab10"><img src="images/1_7.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab11"><img src="images/1_8.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab12"><img src="images/1_9.jpg" class="img-responsive"/></div>
+				  <div class="tab-pane" id="tab13"><img src="images/2_0.jpg" class="img-responsive"/></div>-->
+				  <?php }?>
+				</div>					
+			</div>
+		</div>
+		<!--<div class="row">
+		
+			<div class="col-sm-12 col-xs-12 about_part">
+				<header class="section-header ">
+					<div data-animation="bounceInLeft" class="animated animation-done bounceInLeft"> <i class="fa fa-autologo"></i> </div>
+					<div class="heading-wrap">
+						<h2 class="heading">Our Reviews</h2>
+					</div>
+				</header>
+			</div>
+			
+			
+			<div class="col-md-12">
+				
+				<div class="slider2">
+					<!-- 	<a class="buttons prev" href="#">&#60;</a> 
+						<div class="viewport">
+							<ul class="overview">
+								<li>
+									<div class="review-slider">
+										<div class="team-member animated  fadeIn animation-done" data-animation="fadeIn">
+											<div class="avatar-review"> <img alt="img" src="images/testi1.png">
+											</div>
+											<div class="details-review">
+												<div class="desc-det">
+													Phasellus imperdiet libero sit amet ante. Donec convallis elementum leo. Cum muslobortis consequat purus. Duis viverra malesuada mi. Fusce ante augue, convallis sit am		  et volutpat ac, posuere vel, quam.
+												</div>
+												<div class="review-autor">
+												  <h3 class="heading">John Deo</h3>
+												  <h4 class="sub-heading">CAR OWNER</h4>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="review-slider">
+										<div class="team-member animated  fadeIn animation-done" data-animation="fadeIn">
+											<div class="avatar-review"> <img alt="img" src="images/testi2.png">
+											</div>
+											<div class="details-review">
+												<div class="desc-det"> 
+													Phasellus imperdiet libero sit amet ante. Donec convallis elementum leo. Cum muslobortis consequat purus. Duis viverra malesuada mi. Fusce ante augue, convallis sit am et volutpat ac, posuere vel, quam.
+												</div>
+												<div class="review-autor">
+												  <h3 class="heading">John Deo</h3>
+												  <h4 class="sub-heading">CAR OWNER</h4>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="review-slider">
+										<div class="team-member animated  fadeIn animation-done" data-animation="fadeIn">
+											<div class="avatar-review"> <img alt="img" src="images/testi1.png">
+											</div>
+											<div class="details-review">
+												<div class="desc-det">
+													Phasellus imperdiet libero sit amet ante. Donec convallis elementum leo. Cum muslobortis consequat purus. Duis viverra malesuada mi. Fusce ante augue, convallis sit am		  et volutpat ac, posuere vel, quam.
+												</div>
+												<div class="review-autor">
+												  <h3 class="heading">John Deo</h3>
+												  <h4 class="sub-heading">CAR OWNER</h4>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>						
+							</ul>
+							
+							
+							<div class="portfolio-navigation"> <a href="javascript:void(0);" class="next btn btn-primary slider-direction next-page"><i class="fa fa-angle-right"></i></a> 
+			
+			<a href="javascript:void(0);" class="prev btn btn-primary slider-direction prev-page"><i class="fa fa-angle-left"></i></a>
+			
+       
+      </div> 
+							
+							
+						</div>
+					<!-- 	<a class="buttons next" href="#">&#62;</a> 						
+					</div>			
+			</div>	
+		</div>
+	</div>		-->	
+		
+	<script>
+		
+		function bigImg(tab_id)
+		{		
+			
+			$('#tab1').removeClass("active");
+			$('#'+tab_id).addClass( "active" );			
+			$('#tab_hide').hide();
+			$('.show_hide').show();
+		}
+		
+		function hideImg(tab_id)
+		{
+			
+			$('#'+tab_id).removeClass("active");
+			$('#tab1').addClass("active");
+			$('#tab_hide').hide();
+			$('.show_hide').show();
+			
+		}
+		
+		function getBrandName(countryId){
+			//alert(countryId);
+			
+			var str='';
+			$.ajax({
+				type: "POST",
+				url: "<?php  echo $this->Html->url('/',true);?>home/gatBrandDetail",
+				data: {'countryId':countryId},
+                dataType:'json',
+                beforeSend:function(){ 
+						  $('#fountainG').show('');
+						},
+				success: function(data){
+					console.log(data);
+					for(var i in data.brands)
+					{
+						//console.log(data.brands);
+						str+= '<li class="brand-name" style="text-align:center;">\
+						<a title="'+data.brands[i].Brand.brand_name+'"  href="<?php  echo $this->Html->url('/',true);?>home/allBrand/country:'+data.country_id+'/brand:'+data.brands[i].Brand.id+'/type:'+data.brands[i].Car.car_type_id+'"><img src="'+data.brands[i].Brand.brand_image+'" alt="'+data.brands[i].Brand.brand_name+'"/></a><span class="total_car">'+data.brands[i].Brand.brand_name+'</br> ('+data.brands[i][0].TotalCar+')</span></li>';
+						
+						
+					}
+					  
+					
+					$("#brandsUlId1").html(str);
+					$("#brandsUlId1").show();
+					$("#brandsUlId2").hide();
+					$("#brandsUlId3").hide();
+					$('#fountainG').hide();
+				}
+			});
+		}
+		
+		function getCarName(countryId,brandId){
+			
+			var str='';
+			$.ajax({
+				type: "POST",
+				url: "<?php  echo $this->Html->url('/',true);?>home/getCarName",
+				data: {'countryId':countryId,'brandId':brandId},
+				beforeSend:function(){ 
+						  $('#fountainGg').show('');
+						},
+                dataType:'json',
+				success: function(data){
+					//console.log(data);
+					
+					for(var i in data.carNames)
+					{
+						str+= '<li><a href= "<?php  echo $this->Html->url('/',true);?>home/showAllCar/'+data.country_id+'/'+data.brand_id+'/'+data.carNames[i].Car.car_name_id+'"> '+data.carNames[i].CarName.car_name+'  </a></li>';
+					}
+					$("#carNameUlId").html(str);
+					$('#fountainGg').hide(); 
+				}
+			});
+			
+		}
+
+	function quickSearch(){
+		$("#quickSearchForm").ajaxSubmit({
+			url:"<?php echo $this->Html->url('/home/quickSearch',true);?>",
+			type:"POST",
+			dataType:'JSON',
+			success:function(data){
+				alert(data);
+				
+				
+			
+			}
+			
+		});	
+	}
+
+function getTruckData() 
+{
+		var str=''; 
+		var type = '';
+		var str='';
+			$.ajax({
+				type: "POST",
+				url: "<?php  echo $this->Html->url('/',true);?>home/gatTruckDetail",
+				//data: {'countryId':countryId},
+                dataType:'json',
+                beforeSend:function(){ 
+						  $('#fountainG').show('');
+						},
+					success: function(data)
+					{
+						/*old code
+						
+						str = '<li style="text-align:center;" class="col-sm-4"  ><a title=""  href="<?php  echo $this->Html->url('/',true);?>home/allBrand/type:'+2+'/vtype:'+8+'"><img src="images/bus-tab.jpg"/><span class="total_car">Bus Stock</span></a></li><li style="text-align:center;" class="col-sm-4"><a title=""  href="<?php  echo $this->Html->url('/',true);?>home/allBrand/type:'+2+'/vtype:'+9+'"><img src="images/Dump_stock_tab.jpg"/><span class="total_car">Dump Stock</span></a></li><li style="text-align:center;" class="col-sm-4"><a title=""  href="<?php  echo $this->Html->url('/',true);?>home/allBrand/type:'+2+'/vtype:'+10+'"><img src="images/mix_tab.jpg"/><span class="total_car">Mixture Stock</span></a></li>';*/
+						
+						//==== new code=======
+						
+						str = '<li style="text-align:center;" class="col-sm-4"  ><a title=""  href="<?php  echo $this->Html->url('/',true);?>home/allTruckStock/type:'+2+'/vtype:'+8+'"><img src="images/bus-tab.jpg"/><span class="total_car">Bus Stock</span></a></li><li style="text-align:center;" class="col-sm-4"><a title=""  href="<?php  echo $this->Html->url('/',true);?>home/allTruckStock/type:'+2+'/vtype:'+9+'"><img src="images/Dump_stock_tab.jpg"/><span class="total_car">Dump Stock</span></a></li><li style="text-align:center;" class="col-sm-4"><a title=""  href="<?php  echo $this->Html->url('/',true);?>home/allTruckStock/type:'+2+'/vtype:'+10+'"><img src="images/mix_tab.jpg"/><span class="total_car">Mixture Stock</span></a></li>';
+						
+						$("#brandsUlId1").hide();
+						$("#brandsUlId3").hide();
+						$("#brandsUlId2").html(str);
+						$("#brandsUlId2").show();
+					
+						$('#fountainG').hide();
+			       	}
+			     });
+		
+              }
+              
+           /* function for get haevy machinery  */   
+              
+      function getHeavyData() 
+      {
+		var str=''; 
+			$.ajax({
+				type: "POST",
+				url: "<?php  echo $this->Html->url('/',true);?>home/getHeavyMachinery",
+				//data: {'countryId':countryId},
+                dataType:'json',
+                beforeSend:function(){ 
+						  $('#fountainG').show('');
+						},
+						success: function(data)
+						{
+							if(data.brands.length > 0 )
+							{
+								for(var i in data.brands)
+								{	
+									str+= '<li class="brand-name" style="text-align:center;">\
+									<a title="'+data.brands[i].Brand.brand_name+'"  href="<?php  echo $this->Html->url('/',true);?>home/allHeavyBrand/brand:'+data.brands[i].Brand.id+'/type:'+data.brands[i].Car.car_type_id+'/vtype:'+data.brands[i].Car.vehicle_type_id+'"><img src="'+data.brands[i].Brand.brand_image+'" alt="'+data.brands[i].Brand.brand_name+'"/></a><span class="total_car">'+data.brands[i].Brand.brand_name+'</br> ('+data.brands[i][0].TotalCar+')</span></li>';
+								}
+								
+								$("#brandsUlId1").hide();
+								$("#brandsUlId2").hide();
+								$("#brandsUlId3").html(str);
+								$("#brandsUlId3").show();
+								$("#brandsUlId3").trigger("liszt:updated");
+								$('#fountainG').hide(); 
+							}else
+							{
+								$("#brandsUlId1").hide();
+								$("#brandsUlId2").hide();
+								$("#brandsUlId3").html('<div style="text-align:center;"><h4><font color="#b00e10">No heavy machineary found !!!</h4></font></div>');
+								$("#brandsUlId3").trigger("liszt:updated");
+								$("#brandsUlId3").show();
+								$('#fountainG').hide(); 
+								
+							}
+						}
+					/*success: function(data)
+					{
+						for(var i in data.brands)
+						{	
+							str+= '<li class="brand-name" style="text-align:center;">\
+							<a title="'+data.brands[i].Brand.brand_name+'"  href="<?php  echo $this->Html->url('/',true);?>home/allHeavyBrand/brand:'+data.brands[i].Brand.id+'/type:'+data.brands[i].Car.car_type_id+'/vtype:'+data.brands[i].Car.vehicle_type_id+'"><img src="'+data.brands[i].Brand.brand_image+'" alt="'+data.brands[i].Brand.brand_name+'"/></a><span class="total_car">'+data.brands[i].Brand.brand_name+'</br> ('+data.brands[i][0].TotalCar+')</span></li>';
+						}
+						$("#brandsUlId").html(str);
+						$("#brandsUlId").trigger("liszt:updated");
+						$('#fountainG').hide(); 
+			       	}*/
+			     });
+              } 
+	</script>
+	<script >
+function getData()
+{
+var firm_id = document.getElementById("frameno_form").firm.value;
+var frame_no = document.getElementById("frameno_form").no.value;
+window.open("http://www.drom.ru/frameno/common.php?firm="+firm_id+"&no="+frame_no+"&lang=eng&httpreferer=<?php echo $this->Html->url('/home/chasis_check',true);?>","", "toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars="+1+", resizable=yes,width="+350+",height="+250+",top=100,left=100");
+//window.open("http://www.drom.ru/frameno/common.php?firm="+firm_id+"&no="+frame_no+"&httpreferer==http://sbtjapan.com/chassis_check&lang=eng","", "toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars="+1+", resizable=yes,width="+350+",height="+250+",top=100,left=100");
+return false;
+}
+
+
+
+
+$(function(){
+	
+	
+	$('#tab_hide').show();
+	$('.show_hide').hide();
+	//get_jpy_price();	 
+    
+    });
+
+function get_jpy_price(){
+		$.ajax({
+				'url':'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20%28%22USDJPY%22%29&format=json&env=store://datatables.org/alltableswithkeys',
+				'type':'get',
+				"dataType":'json',
+				'success':function(obj){
+					
+							var newRate = Math.floor(obj.query.results.rate.Rate) -1 ;	
+							$.ajax({
+							url:"<?php echo $this->Html->url('/admin/users/current_doller_to_yen_rate',true);?>",
+							type:'POST',
+							data:{'newrate':newRate},
+							success:function(result)
+							{
+								
+							}					
+						});
+					
+				},
+				'error':function(error){
+						//alert(error);
+					
+					
+					}
+			
+			
+		});
+	
+	
+}
+
+
+
+</script>
+
+<!--function for get country id-->
+			<script>
+			/*$( "#locationId" ).change(function() {
+				
+				var CountryId=$(this).val();
+				//	alert(CountryId);
+			});
+            $(function()
+            {
+				$("#locationId").change(function()
+				{
+					
+					if($("#makeId").is(":empty")){
+					
+					$("#searchCountry").attr('action','/ukcars_dashboard/home/showAllCar/country:'+$(this).val());
+						}else{
+						
+					$("#searchCountry").attr('action','/ukcars_dashboard/home/showAllCar/country:'+$(this).val()+'/make:'+$("#makeId").val());	
+						}
+				});
+				$("#makeId").change(function()
+				{
+					
+					//$("#searchCountry").attr('action','/ukcars_dashboard/home/showAllCar/make:'+$(this).val());
+				});
+				
+				
+			});*/
+			</script>
+
+			<script type="text/javascript">
+		$(document).ready(function()
+		{
+			//$('.slider1').tinycarousel();
+			//$('.slider2').tinycarousel();
+			
+			/*var n = $( ".count" ).size();
+			if(n/2 != 5)
+			{
+				$("li.mirrored").remove(); 
+			}	*/
+		});	
+		
+		
+	/*$(document).ready(function(){
+    $('#cnumber').select2({
+    minimumInputLength: 2,
+    ajax: {
+    url:  "<?php  echo $this->Html->url('/',true);?>home/chassis_list",
+    dataType: 'json',
+    data: function (term, page) {
+    return {
+    q: term
+    };
+    },
+    results: function (data, page) {
+	 
+    return { results: data };
+    }
+    }
+    });
+    });	*/	
+	</script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script>
+	
+$(function() {
+$("#cnumber").autocomplete({
+source: "<?php  echo $this->Html->url('/',true);?>home/chassis_list"
+});
+});
+
+$(function(){	
+$('.bxslider').bxSlider({
+  minSlides: 1,
+  maxSlides: 5,
+  slideWidth: 91,
+  slideMargin: 0,
+  responsive:true,
+  //infiniteLoop:true,
+  pager:false  
+});
+});
+</script>

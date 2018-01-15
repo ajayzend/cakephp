@@ -1,0 +1,125 @@
+
+a.exampleTip {
+	color: #FEC92C;
+}
+
+a.exampleTip:hover{
+	text-decoration: underline;
+}
+
+.section {
+	text-align: left;
+	padding-bottom: 18px;
+	border-bottom: 1px solid #333;
+	margin-bottom: 18px;
+}
+
+p {
+	margin: 0 0 18px;
+}
+
+h2 {
+	color: #fff;
+	font-size: 22px;
+	line-height: 24px;
+	margin: 0 0 24px;
+	padding: 0;
+	font-weight: normal;
+}
+
+h3{
+	color: #ddd;
+	font-size: 14px;
+	line-height: 18px;
+	margin: 0 0 18px;
+}
+
+
+h1.logo {
+	display: block;
+	height: 80px;
+	width: 260px;
+	margin: 40px auto 0;
+}
+
+	h1.logo a{
+		display: block;
+		height: 80px;
+		width: 260px;
+		text-indent: -9999px;
+		background: url(../img/logo.png) no-repeat;
+	}
+
+
+ul.demos {
+	list-style-type: none;
+
+}
+
+ul.demos li{
+	margin: 0 0 10px 0;
+}
+
+
+.primaryWrapper {
+	margin: 0 auto;
+	width: 960px;
+	text-align: center;
+}
+
+.branding{
+	text-align: center;
+	display: block;
+	height: 120px;
+}
+
+
+.ctaBtns {border: none; text-align: center;}
+
+.ctaBtns p {
+	width: 263px;
+	margin: 0 auto;
+}
+
+
+.ctaBtns a{
+	display: block;
+	height: 37px;
+	width: 122px;
+	text-indent: -9999px;
+}
+
+a.dloadBtn {
+	background: url(../img/dload-btn.png) no-repeat top left;
+	float: left;
+	margin-right: 18px;
+}
+
+a.demoBtn {
+	background: url(../img/demo-btn.png) no-repeat top left;
+	float: left;
+}
+
+a.dloadBtn:hover,
+a.demoBtn:hover {
+	background-position: bottom left;
+}
+
+
+
+.usage p {
+	margin-bottom: 2px;
+}
+
+ul.quickFacts {
+	list-style-position: inside;
+	list-style-type: disc;
+}
+
+p.license,
+p.copyright {
+	font-size: 11px;
+}
+
+
+
