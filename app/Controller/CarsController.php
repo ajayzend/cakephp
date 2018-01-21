@@ -1182,18 +1182,18 @@ $mail = new phpmailer;
 $mail->IsAmazonSES();
 
 // Set AWSAccessKeyId and AWSSecretKey provided by amazon.
-$mail->AddAmazonSESKey("AKIAJ5M2NHGGTQAP5R7Q", "5RNS+jWRVb8IklsD1cDUf5jGK4ATfeDEigQz8IBK");
+$mail->AddAmazonSESKey(AWSAccessKeyId, AWSSecretKey);
 $mail->SMTPDebug = false;
 // "From" must be a verified address.
-$mail->From = 'uktoyama@ukcarstokyo.com';
-    $mail->FromName = 'uktoyama';
+$mail->From = EMAIL_FROM;
+    $mail->FromName = FromName;
 //$mail->AddAddress($toEmail);
 
 $mail->AddAddress($emailArr); 
 
 if($emailArr2)
 $mail->AddAddress($emailArr2);  
-$mail->AddCC('uktoyama@ukcarstokyo.com','uktoyama');
+$mail->AddCC(EMAIL_FROM, FromName);
 foreach($img as $im){
 	$mail->Addattachment($im['file'],$im['name']);
 }

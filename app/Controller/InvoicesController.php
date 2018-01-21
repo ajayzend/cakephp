@@ -976,10 +976,10 @@ $mail->IsSMTP();
 $mail->SMTPAuth   = true;
 $mail->SMTPSecure = "tls";
 $mail->SMTPDebug = false;
-$mail->Host       = "email-smtp.us-west-2.amazonaws.com";
-$mail->Username   = "AKIAIBXOFSO6ZQA3SCVQ";
-$mail->Password   = "AviXTW+/nrZWC2KHiqV28wWlVrnEboIbrAZNe7XkyccR";
-$mail->SetFrom('uktoyama@ukcarstokyo.com', 'uktoyama'); //from (verified email address)
+$mail->Host       = EMAIL_HOST;
+$mail->Username   = AWSAccessKeyId;
+$mail->Password   = AWSSecretKey;
+$mail->SetFrom(EMAIL_FROM, FromName); //from (verified email address)
 $mail->Subject = 'INVOICE/'.$this->data['invoiceId'];
 
 $mail->MsgHTML($data);

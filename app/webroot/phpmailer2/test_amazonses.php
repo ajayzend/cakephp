@@ -5,9 +5,9 @@ $mail = new phpmailer;
 // Set mailer to use AmazonSES.
 
 
-			$fromEmail = "uktoyama@ukcarstokyo.com";
+			$fromEmail = EMAIL_FROM;
 			#$toEmail  = $emailArr;
-			$toEmail  = "jainmca4444@gmail.com";
+			$toEmail  = "ajay.kumar.iimt@gmail.com";
 			$toName = "";
 			$fromName ="";
 
@@ -16,7 +16,7 @@ $mail = new phpmailer;
 $mail->IsAmazonSES();
 
 // Set AWSAccessKeyId and AWSSecretKey provided by amazon.
-$mail->AddAmazonSESKey("AKIAIBXOFSO6ZQA3SCVQ", "AviXTW+/nrZWC2KHiqV28wWlVrnEboIbrAZNe7XkyccR");
+$mail->AddAmazonSESKey(AWSAccessKeyId, AWSSecretKey);
 $mail->SMTPDebug = true;
 // "From" must be a verified address.
 
