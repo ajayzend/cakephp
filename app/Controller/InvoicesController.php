@@ -912,7 +912,7 @@ class InvoicesController extends AppController
 		//echo 'no access'; die;
 
 		if($this->request->is('post'))
-		{//echo 'no access'; die;			
+		{ //echo 'no access'; die;
 			$user_id = $this->data['userId'];
 
 			$userDetails = $this->User->find('first', array('fields'=>array('User.email','User.alternate_email'),'conditions' => array('User.user_group_id !=' => 1,'User.id'=>$user_id)));								
@@ -968,19 +968,20 @@ class InvoicesController extends AppController
 			$toName = "";
 			$fromName ="";
 
-
+			$toEmail = 'ajaysearch123@gmail.com';
 
 //SMTP Settings
 $mail = new PHPMailer();
 $mail->IsSMTP();
 $mail->SMTPAuth   = true;
-$mail->SMTPSecure = "tls";
+$mail->SMTPSecure = "ssl";
 $mail->SMTPDebug = false;
 $mail->Host       = EMAIL_HOST;
-$mail->Username   = AWSAccessKeyId;
-$mail->Password   = AWSSecretKey;
+$mail->Username   = EMAIL_ACCOUNT;
+$mail->Password   = EMAIL_PASSWORD;
 $mail->SetFrom(EMAIL_FROM, FromName); //from (verified email address)
 $mail->Subject = 'INVOICE/'.$this->data['invoiceId'];
+$mail->Port = 465;
 
 $mail->MsgHTML($data);
 $mail->AddAttachment($file);
@@ -997,7 +998,7 @@ if($sendMail)
   }
   else
   {
-    echo json_encode(array("status"=>"error","message"=>"Your detail something wrong!"));
+    echo json_encode(array("status"=>"error","message"=>"Your detail something wrong! $toEmail"));
   }
 
 /*
@@ -1094,7 +1095,7 @@ if($sendMail)
 			 
 			
 		}else{
-			echo json_encode(array("status"=>"error","message"=>"Your detail something wrong!"));
+			echo json_encode(array("status"=>"error","message"=>"Your detail something wrong111!"));
 		}
 		
 		

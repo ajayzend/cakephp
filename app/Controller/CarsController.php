@@ -1176,31 +1176,35 @@ class CarsController extends AppController {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$mail = new phpmailer;
-
-// Set mailer to use AmazonSES.
-$mail->IsAmazonSES();
-
-// Set AWSAccessKeyId and AWSSecretKey provided by amazon.
-$mail->AddAmazonSESKey(AWSAccessKeyId, AWSSecretKey);
+$mail = new PHPMailer();
+$mail->IsSMTP();
+$mail->SMTPAuth   = true;
+$mail->SMTPSecure = "ssl";
 $mail->SMTPDebug = false;
-// "From" must be a verified address.
-$mail->From = EMAIL_FROM;
-    $mail->FromName = FromName;
-//$mail->AddAddress($toEmail);
+$mail->Host       = EMAIL_HOST;
+$mail->Username   = EMAIL_ACCOUNT;
+$mail->Password   = EMAIL_PASSWORD;
+$mail->SetFrom(EMAIL_FROM, FromName); //from (verified email address)
+$mail->Subject = $c_name.'  pics';
+$mail->Port = 465;
+$mail->IsHTML(true);                                  // Set email format to HTML
 
-$mail->AddAddress($emailArr); 
 
-if($emailArr2)
-$mail->AddAddress($emailArr2);  
-$mail->AddCC(EMAIL_FROM, FromName);
+$mail->Body    = 'PFA';
 foreach($img as $im){
 	$mail->Addattachment($im['file'],$im['name']);
 }
-$mail->IsHTML(true);                                  // Set email format to HTML
 
-$mail->Subject = $c_name.'  pics';
-$mail->Body    = 'PFA';
+$emailArr = 'ajaysearch123@gmail.com';
+$mail->AddAddress($emailArr);
+
+//if($emailArr2) // uncomment after testing
+//$mail->AddAddress($emailArr2);
+$mail->AddCC(EMAIL_FROM, FromName);
+
+
+
+
 
 
 
