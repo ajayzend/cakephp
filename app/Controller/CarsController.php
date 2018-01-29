@@ -1189,13 +1189,15 @@ $mail->Subject = $c_name.'  pics';
 $mail->Port = 465;
 $mail->IsHTML(true);                                  // Set email format to HTML
 
+				$data = "<strong>Hello</strong>,<br>
+					<strong>We appreciate your trust in our company and promise to serve you better in future.<br>
+					For any further purchase please visit </strong> <a href='www.bizupon.com'> <strong>Bizupon</strong></a> ";
 
-$mail->Body    = 'PFA';
+$mail->Body    = $data;
 foreach($img as $im){
 	$mail->Addattachment($im['file'],$im['name']);
 }
-
-$emailArr = 'ajaysearch123@gmail.com';
+				
 $mail->AddAddress($emailArr);
 
 //if($emailArr2) // uncomment after testing

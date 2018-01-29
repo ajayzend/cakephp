@@ -957,7 +957,9 @@ class InvoicesController extends AppController
           */
 
 
-			$data = "hello........";
+			$data = "<strong>Hello</strong>,<br>
+					<strong>We appreciate your trust in our company and promise to serve you better in future.<br>
+					For any further purchase please visit </strong> <a href='www.bizupon.com'> <strong>Bizupon</strong></a> ";
 			#$attachment = file_get_contents($file);
 			#$attachment_encoded = base64_encode($attachment);
 
@@ -967,8 +969,7 @@ class InvoicesController extends AppController
 			#$toEmail  = "jainmca4444@gmail.com";
 			$toName = "";
 			$fromName ="";
-
-			$toEmail = 'ajaysearch123@gmail.com';
+			
 
 //SMTP Settings
 $mail = new PHPMailer();
