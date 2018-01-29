@@ -155,6 +155,35 @@ class UserAuthComponent extends Component {
 		}
 		return false;
 	}
+
+// added by Ajay Date:22012018
+	/**
+	 * Used to check is Client admin logged in
+	 *
+	 * @access public
+	 * @return string
+	 */
+	public function isClientAdmin() {
+
+		$groupId = $this->Session->read('UserAuth.User.user_group_id');
+
+		if($groupId==DEFAULT_GROUP_ID) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Used to check is Client admin logged in Page Permission
+	 *
+	 * @access public
+	 * @return string
+	 */
+	public function getClientAdminPagePermission()
+	{
+		return array(1, 10, 11);
+	}
+	
 	/**
 	 * Used to check is guest logged in
 	 *

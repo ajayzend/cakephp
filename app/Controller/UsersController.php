@@ -680,6 +680,11 @@ class UsersController extends AppController {
 			$this->redirect('/admin/DashboardUser/');
 		}
 
+		// added by Ajay Date:22012018
+		if ($this->UserAuth->isClientAdmin()) {
+			$this->redirect('/admin/DashboardUser/');
+		}
+
 	if ($this->request -> isPost()) {
 
 
@@ -734,12 +739,18 @@ class UsersController extends AppController {
 						}
 						$OriginAfterLogin=$this->Session->read('OriginAfterLogin');
 						$this->Session->delete('OriginAfterLogin');
-						
+
 						$this->Session->write('PerMissioUser', $user['User']['permission']);
-						
+
+						$this->Session->delete('User_Group_ID');
+						$this->Session->write('User_Group_ID', $user['User']['user_group_id']);
 						if($user['User']['user_group_id'] == 2)
 						{
-							$this->redirect('/home/dashboard/');
+							//$this->redirect('/home/dashboard/');
+							//added by Ajay Date:22012018
+							$client_permission = json_encode($this->UserAuth->getClientAdminPagePermission());
+							$this->Session->write('PerMissioUser', $client_permission);
+							$this->redirect('/admin/DashboardUser/');
 						}else
 						{
 							$this->redirect('/admin/DashboardUser/');
