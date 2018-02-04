@@ -1321,6 +1321,10 @@ class HomeController extends AppController
 	{
 		$this->layout = 'default';
 		$id = $this->Session->read('UserAuth.User.id');
+		$pTotal = 0;
+		$sTotalDoller = 0;
+		$pTotalYen = 0;
+		$sTotalYen = 0;
 
 		$userDetails = $this->User->find('first', array('order' => 'User.id desc', 'conditions' => array('User.user_group_id !=' => 1, 'User.id' => $id)));
 
@@ -1329,10 +1333,13 @@ class HomeController extends AppController
 
 		$this->set('data', 'empty');
 
-		// show all car sale details .
+		// show all car Buy details .
 		$result = $this->getInvoiceDetailsByUser($id);
-		//pr($result);die;
-		$this->set('SaleDetails', $result);
+		$this->set('BuyDetails', $result);
+
+		// show all Sale Buy details .
+		$result_sale = $this->getInvoiceDetailsByUser($id, 'sale');
+		$this->set('SaleDetails', $result_sale);
 
 		$payPrice = '';
 		foreach ($result as $pay) {
@@ -1351,16 +1358,12 @@ class HomeController extends AppController
 				$pTotal = $v['0']['Amount'];
 				$pTotalYen = $v['0']['AmountYen'];
 				//$yenInDoller = $pTotalYen / $this->Session->read('yenRate');
-				$this->set('pTotalYen', $pTotalYen);
 				$allPaymentTotal = $pTotal + $pTotalYen;
 				$allPaymentTotal = round($allPaymentTotal, 2);
-				$this->set('pTotal', $pTotal);
 			}
 		} else {
 			$pTotal = 0;
-			$this->set('pTotal', $pTotal);
 			$pTotalYen = 0;
-			$this->set('pTotalYen', $pTotalYen);
 		}
 
 		/*if($paymentTotal)
@@ -1390,25 +1393,25 @@ class HomeController extends AppController
 		if ($saleTotalDoller) {
 			foreach ($saleTotalDoller as $k => $v) {
 				$sTotalDoller = $v['0']['Sale_Amount'];
-				$this->set('sTotalDoller', $sTotalDoller);
 			}
 		} else {
 			$sTotalDoller = 0;
-			$this->set('sTotalDoller', $sTotalDoller);
 		}
 
 		/*For yen sale price*/
 		if ($saleTotalYen) {
 			foreach ($saleTotalYen as $k => $v) {
 				$sTotalYen = $v['0']['Sale_Amount'];
-				$this->set('sTotalYen', $sTotalYen);
 			}
 		} else {
 			$sTotalYen = 0;
-			$this->set('sTotalYen', $sTotalYen);
+
 		}
 
-
+		$this->set('pTotalYen', $pTotalYen);
+		$this->set('pTotal', $pTotal);
+		$this->set('sTotalDoller', $sTotalDoller);
+		$this->set('sTotalYen', $sTotalYen);
 		$balanceTotalDoller = $pTotal - $sTotalDoller;
 		$this->set('balanceTotalDoller', $balanceTotalDoller);
 
@@ -1459,7 +1462,6 @@ class HomeController extends AppController
 		// Show all payment details according user
 		$PaymentDetails = $this->ClientPaymentHistory->find('all', array('conditions' => array('ClientPaymentHistory.client_id' => $id), 'order' => array('ClientPaymentHistory.payment_date' => 'DESC')));
 		$this->set('PaymentDetails', $PaymentDetails);
-
 		// Show all sale details according user
 		//$SaleDetais = $this->CarPayment->find('all',array('conditions' => array('CarPayment.user_id' => $id),'order'=>array('CarPayment.updated_on'=>'DESC')));
 		$SaleDetais = $this->User->getAllHistoryByUserId($id);
@@ -1529,18 +1531,24 @@ class HomeController extends AppController
 		$this->layout = null;
 	}
 
-	public function getInvoiceDetailsByUser($userId)
+	public function getInvoiceDetailsByUser($userId, $sale_buy_flag = '')
 	{
-		$result = $this->User->query('SELECT Logistic.remark,Car.user_doc_updated,Logistic.ship_port,Logistic.destination_port,Logistic.departure_date,Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.currency,CarPayment.yen,CarPayment.currency,CarPayment.sale_price, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
-					FROM  `car_payments` AS CarPayment
-					LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
+		$sub_query = " CarPayment.user_id = $userId ";
+		if($sale_buy_flag == 'sale')
+			$sub_query = " Car.created_by = $userId ";
+
+		$query = "SELECT Logistic.remark,Car.id, Car.user_doc_updated,Logistic.ship_port,Logistic.destination_port,Logistic.departure_date,Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.currency,CarPayment.yen,CarPayment.currency,CarPayment.sale_price, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
+					FROM  cars AS Car					
+					LEFT JOIN `car_payments` AS CarPayment ON Car.id = CarPayment.car_id
 					LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
 					LEFT JOIN shippings AS Shipping ON Logistic.shipping_id = Shipping.id
 					LEFT JOIN car_names AS CarName ON CarName.id = Car.car_name_id
 					LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
 					LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
 					LEFT JOIN ports AS Port ON Port.id = Logistic.port_id
-					WHERE CarPayment.user_id =' . $userId . '  AND Car.deleted = 0 and  CarPayment.deleted = 0 group by Car.stock ORDER BY CarPayment.updated_on DESC');
+					WHERE $sub_query  AND Car.deleted = 0 and  CarPayment.deleted = 0 group by Car.stock ORDER BY CarPayment.updated_on DESC";
+
+		$result = $this->User->query($query);
 		return $result;
 	}
 
@@ -3635,11 +3643,22 @@ class HomeController extends AppController
 	}
 
 
-	public function export_sale_history_xls()
+	public function export_buy_history_xls()
 	{
 
 		$id = $this->UserAuth->getUserId();
 		$SaleDetails = $this->getInvoiceDetailsByUser($id);
+		//pr($SaleDetails);die;
+		$this->set('SaleDetails', $SaleDetails);
+
+		$this->render('export_sale_history_xls', 'export_sale_history_xls');
+	}
+
+	public function export_sale_history_xls()
+	{
+
+		$id = $this->UserAuth->getUserId();
+		$SaleDetails = $this->getInvoiceDetailsByUser($id, 'sale');
 		//pr($SaleDetails);die;
 		$this->set('SaleDetails', $SaleDetails);
 
