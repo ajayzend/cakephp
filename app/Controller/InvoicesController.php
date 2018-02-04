@@ -987,7 +987,7 @@ $mail->Port = 465;
 $mail->MsgHTML($data);
 $mail->AddAttachment($file);
 
-$mail->AddAddress(EMAIL_ACCOUNT);
+//$mail->AddAddress(EMAIL_ACCOUNT);
 $mail->AddAddress($toEmail);
 
 $sendMail = $mail->Send();
