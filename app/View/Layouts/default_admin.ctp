@@ -16,7 +16,7 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
+$groupId = $this->Session->read('UserAuth.User.user_group_id');
 $cakeDescription = __d('cake_dev', 'Bizupon'); 
 ?>
 <!DOCTYPE html>
@@ -71,7 +71,11 @@ $cakeDescription = __d('cake_dev', 'Bizupon');
 
   
 <div class="page-container">
-		<?php echo $this->element('admin_sidebar'); //left menu ?>
+		<?php if($groupId == 2)
+			echo $this->element('admin_client_sidebar');
+		else
+			echo $this->element('admin_sidebar');
+		//left menu ?>
 		<?php echo $this->fetch('content'); ?>		
 		<?php echo $this->element('admin_footer'); ?>
 </div><!--/.row-fluid-->
