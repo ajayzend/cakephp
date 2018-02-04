@@ -80,11 +80,18 @@ class UserGroup extends AppModel {
 		if (!PERMISSIONS) {
 			return true;
 		}
+
 		if ($userGroupID==ADMIN_GROUP_ID && !ADMIN_PERMISSIONS) {
 			return true;
 		}
 
+		if ($userGroupID==DEFAULT_GROUP_ID && !ADMIN_PERMISSIONS) { // added by Ajay Date:22012018
+			return true;
+		}
+
+
 		$permissions = $this->getPermissions($userGroupID,$includeGuestPermission);
+
 		$access =str_replace(' ','',ucwords(str_replace('_',' ',$controller))).'/'.$action;
 		if (in_array($access, $permissions)) {
 			return true;

@@ -1,7 +1,7 @@
 <?php
 App::uses('AppController', 'Controller');
 include('ChromePHP.php');
-require_once 'D:/xampp/htdocs/bizupon/app/webroot/phpmailer2/class.phpmailer.php'; //Not required with Composer
+require_once ROOT.'/app/webroot/phpmailer2/class.phpmailer.php'; //Not required with Composer
 class HomeController extends AppController
 {
 	/**
@@ -3880,12 +3880,12 @@ class HomeController extends AppController
 					$mail->IsAmazonSES();
 
 // Set AWSAccessKeyId and AWSSecretKey provided by amazon.
-					$mail->AddAmazonSESKey("AKIAJ5M2NHGGTQAP5R7Q", "5RNS+jWRVb8IklsD1cDUf5jGK4ATfeDEigQz8IBK");
+					$mail->AddAmazonSESKey(AWSAccessKeyId, AWSSecretKey);
 					$mail->SMTPDebug = 0;
-					$mail->debug = 0;
+					$mail->debug =0;
 // "From" must be a verified address.
-					$mail->From = 'uktoyama@ukcarstokyo.com';
-					$mail->FromName = 'uktoyama';
+					$mail->From = EMAIL_FROM;
+					$mail->FromName = FromName;
 //$mail->AddAddress($toEmail);
 
 					$mail->AddAddress($emailArr);

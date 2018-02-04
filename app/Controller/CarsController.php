@@ -1,6 +1,6 @@
 <?php
 App::uses('AppController', 'Controller'); 
-require_once 'D:/xampp/htdocs/bizupon/app/webroot/phpmailer2/class.phpmailer.php'; //Not required with Composer
+require_once ROOT.'/app/webroot/phpmailer2/class.phpmailer.php'; //Not required with Composer
 //require_once 'e://xampp/htdocs/bizupon/app/webroot/phpmailer2/class.phpmailer.php'; //Not required with Composer
 #require_once '/var/www/html/website/app/webroot/phpmailer/PHPMailerAutoload.php'; //Not required with Composer
 
@@ -26,6 +26,8 @@ class CarsController extends AppController {
 	}
 
      public function admin_index(){
+		 $groupId = $this->Session->read('UserAuth.User.user_group_id');
+		 $userid = $this->Session->read('UserAuth.User.id');
 				/*
 				Author: Praveen
 				Company: Synthia Software Pvt Ltd
@@ -48,13 +50,21 @@ class CarsController extends AppController {
 			
 	        if($status == 'unpublish')
 	        {
-				$this->paginate=array('fields'=>$fields,'limit'=>10,'order'=>array('CarPayment.updated_on'=>'DESC'),'conditions'=>array('AND'=>array('Car.publish'=>0,'OR'=>array('CarPayment.sale_price !='=>null))));
+				if($groupId == 2) {
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('CarPayment.updated_on' => 'DESC'), 'conditions' => array('AND' => array('Car.publish' => 0, 'Car.created_by' => $userid, 'OR' => array('CarPayment.sale_price !=' => null))));
+				}else{
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('CarPayment.updated_on' => 'DESC'), 'conditions' => array('AND' => array('Car.publish' => 0, 'OR' => array('CarPayment.sale_price !=' => null))));
+				}
 				$carDetails= $this->Paginator->paginate('Car');
 				$this->set('count_type','Sold');
 	       }
 	       else
 			{
-				$this->paginate = array('fields'=>$fields,'limit'=>10, 'order'=>array('id'=>'desc'));	
+				if($groupId == 2) {
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('AND' => array('Car.created_by' => $userid)));
+				}else{
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'));
+				}
 				$carDetails= $this->Paginator->paginate('Car');				
 				$this->set('count_type','Publish');
 		   }
@@ -63,7 +73,11 @@ class CarsController extends AppController {
 		   {
 				$status = $this->params->query['new'];
 				$this->set('new',$this->params->query['new']);
-				$this->paginate=array('fields'=>$fields,'limit'=>10,'order'=>array('id'=>'DESC'),'conditions'=>array('Car.publish'=>1,'CarPayment.sale_price'=>null,'Car.new_arrival'=>1));	
+			   if($groupId == 2) {
+				   $this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'DESC'), 'conditions' => array('Car.publish' => 1, 'Car.created_by' => $userid, 'CarPayment.sale_price' => null, 'Car.new_arrival' => 1));
+			   }else{
+				   $this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'DESC'), 'conditions' => array('Car.publish' => 1, 'CarPayment.sale_price' => null, 'Car.new_arrival' => 1));
+			   }
 				$carDetails= $this->Paginator->paginate('Car'); 
 				$this->set('count_type','New Arrival');	
 			}
@@ -72,7 +86,11 @@ class CarsController extends AppController {
 			{
 				$status = $this->params->query['sold'];
 				$this->set('sold',$this->params->query['sold']);
-				$this->paginate=array('fields'=>$fields,'limit'=>10 ,'order'=>array('id'=>'desc'),'conditions'=>array('Car.publish'=>0,'CarPayment.sale_price'=>null));	
+				if($groupId == 2) {
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('Car.publish' => 0, 'Car.created_by' => $userid, 'CarPayment.sale_price' => null));
+				}else{
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('Car.publish' => 0, 'CarPayment.sale_price' => null));
+				}
 				$carDetails= $this->Paginator->paginate('Car'); 
 				$this->set('count_type','Hidden');	
 			 }
@@ -84,10 +102,8 @@ class CarsController extends AppController {
 	   
 	public function admin_addnew_car($id = null)
 	{
-		
-		
-		
-		
+		$groupId = $this->Session->read('UserAuth.User.user_group_id');
+		$userid = $this->Session->read('UserAuth.User.id');
 		if($this->request->is('post'))
 		{
 			$data=array();
@@ -120,9 +136,9 @@ class CarsController extends AppController {
 			
 			if ($this->Car->carValidate()) 
 			{
-				
-				$this->request->data['Car']['new_arrival_date']  = date('Y-m-d H:i:s',strtotime($this->data['Car']['new_arrival_date']));
 
+				$this->request->data['Car']['new_arrival_date']  = date('Y-m-d H:i:s',strtotime($this->data['Car']['new_arrival_date']));
+				$this->request->data['Car']['created_by'] = $userid;
 				$retData = $this->Car->save($this->request->data);				
 				if($retData['Car']['car_id'] == 0)
 				{
@@ -139,7 +155,8 @@ class CarsController extends AppController {
 				$data1['recycle_price'] = $retData['Car']['recycle_price'];
 				$data1['minimum_price_doller'] = $retData['Car']['minimum_price_doller'];
 				$data1['minimum_price_yen'] = $retData['Car']['minimum_price_yen'];
-				
+				$data1['created_by'] = $userid;
+
 				$retData1 = $this->CarPayment->save($data1);
 				$this->CarPayment->primaryKey = 'id';
 			
@@ -191,7 +208,12 @@ class CarsController extends AppController {
 				//exit;
 				if(!empty($result))
 				{
-					
+					$created_by =  $result['Car']['created_by'];
+					if( $groupId  == 2){
+						if($created_by != $userid){
+							die('you are not permitted to access it. Please go back.');
+						}
+					}
 					$ShipSchedule=$this->Shipschedule->find('first',array('conditions'=>array('chasis'=>$result['Car']['cnumber'])));
 					$this->set('ShipSchedule',$ShipSchedule['Shipschedule']);			
 					
@@ -202,6 +224,8 @@ class CarsController extends AppController {
 					$this->set('carDetails',$result);
 					$this->set('car_id',$result['Car']['id']);
 
+				}else{
+					die('you are not permitted to access it. Please go back.');
 				}
 
 			}
@@ -818,63 +842,74 @@ class CarsController extends AppController {
 		    	
 			}
 	/*search pagination here*/
-	public function admin_search() {
-		
-         $this->autoRender = false;
-    
-    // get the search term from URL
-  $term = $this->request->query['q'];
-   $this->Car->unbindModel(array('hasMany' => array('CarImage')));
- 
-   $status=$this->request->query['status'];
-				if($status=='unpublish')
-			   {
-			  	 $conditions = array('CarName.car_name LIKE' => '%'.$term.'%' ,'Car.publish'=>0,'Car.new_arrival'=>0,'CarPayment.user_id !='=>0);
-			   }else if($status=='not sold')
-			   {
-			   		$conditions=array('CarName.car_name LIKE' => '%'.$term.'%' ,'Car.publish'=>0,'CarPayment.user_id'=> 0);
+	public function admin_search()
+	{
+		$groupId = $this->Session->read('UserAuth.User.user_group_id');
+		$userid = $this->Session->read('UserAuth.User.id');
+		$this->autoRender = false;
 
-			   }else if($status=='new arrival')
-			   {
-			   		$conditions=array('CarName.car_name LIKE' => '%'.$term.'%' ,'Car.publish'=>1,'Car.new_arrival'=>1);
-			   }
-			   else
-			   {
+		// get the search term from URL
+		$term = $this->request->query['q'];
+		$this->Car->unbindModel(array('hasMany' => array('CarImage')));
 
-			   	    $conditions=array('CarName.car_name LIKE' => '%'.$term.'%' ,'Car.publish'=>1);
-				}
+		$status = $this->request->query['status'];
 
-	/*
-		array('CarName.car_name LIKE' => '%'.$term.'%' ,
-        )
-	*/
+		if($groupId == 2){
+			if ($status == 'unpublish') {
+				$conditions = array('Car.created_by' => $userid, 'CarName.car_name LIKE' => '%' . $term . '%', 'Car.publish' => 0, 'Car.new_arrival' => 0, 'CarPayment.user_id !=' => 0);
+			} else if ($status == 'not sold') {
+				$conditions = array('Car.created_by' => $userid, 'CarName.car_name LIKE' => '%' . $term . '%', 'Car.publish' => 0, 'CarPayment.user_id' => 0);
 
-    $cars = $this->Car->find('all',array(
-        'fields'=>array('CarName.car_name','id'=>'CarName.id'),
-        'conditions' => $conditions,
-        'group'=> 'CarName.car_name',
-   array(
-        "joins" => array(
-            array(
-                "table" => "car_names",               
-                "type" => "LEFT",
-                "conditions" => array(
-                "Car.car_name_id = car_names.id"
-                )
-            )
-        )
-    )));
+			} else if ($status == 'new arrival') {
+				$conditions = array('Car.created_by' => $userid, 'CarName.car_name LIKE' => '%' . $term . '%', 'Car.publish' => 1, 'Car.new_arrival' => 1);
+			} else {
 
+				$conditions = array('Car.created_by' => $userid, 'CarName.car_name LIKE' => '%' . $term . '%', 'Car.publish' => 1);
+			}
+		}else{
+			if ($status == 'unpublish') {
+				$conditions = array('CarName.car_name LIKE' => '%' . $term . '%', 'Car.publish' => 0, 'Car.new_arrival' => 0, 'CarPayment.user_id !=' => 0);
+			} else if ($status == 'not sold') {
+				$conditions = array('CarName.car_name LIKE' => '%' . $term . '%', 'Car.publish' => 0, 'CarPayment.user_id' => 0);
 
-    // Format the result for select1
-		$result = array();
-		foreach($cars as $key => $mycar) {
-		//	pr($mycar); die;
-			$result[] = array("id"=>$mycar['CarName']['id'],"text"=>$mycar['CarName']['car_name']);	
+			} else if ($status == 'new arrival') {
+				$conditions = array('CarName.car_name LIKE' => '%' . $term . '%', 'Car.publish' => 1, 'Car.new_arrival' => 1);
+			} else {
+
+				$conditions = array('CarName.car_name LIKE' => '%' . $term . '%', 'Car.publish' => 1);
+			}
 		}
- 
+
+		/*
+            array('CarName.car_name LIKE' => '%'.$term.'%' ,
+            )
+        */
+
+		$cars = $this->Car->find('all', array(
+			'fields' => array('CarName.car_name', 'id' => 'CarName.id'),
+			'conditions' => $conditions,
+			'group' => 'CarName.car_name',
+			array(
+				"joins" => array(
+					array(
+						"table" => "car_names",
+						"type" => "LEFT",
+						"conditions" => array(
+							"Car.car_name_id = car_names.id"
+						)
+					)
+				)
+			)));
+
+
+		// Format the result for select1
+		$result = array();
+		foreach ($cars as $key => $mycar) {
+			//	pr($mycar); die;
+			$result[] = array("id" => $mycar['CarName']['id'], "text" => $mycar['CarName']['car_name']);
+		}
+
 		echo json_encode($result);
-	
 	}
 		public function select2() {
 			$this->Car->recursive = 0;
@@ -928,32 +963,42 @@ class CarsController extends AppController {
 	//GRX133_000082
 	//GRX133_000077
 	public function admin_searchChassis() {
+		$groupId = $this->Session->read('UserAuth.User.user_group_id');
+		$userid = $this->Session->read('UserAuth.User.id');
          $this->autoRender = false;
     // get the search term from URL
    $term = $this->request->query['q'];
    $this->Car->unbindModel(array('hasMany' => array('CarImage')));
 
    $status=$this->request->query['status'];
-   if($status=='unpublish')
-   {
-  	 $conditions = array('Car.cnumber LIKE' => '%'.$term.'%' ,'Car.publish'=>0,'Car.new_arrival'=>0,'CarPayment.user_id !='=>0);
-   }else if($status=='not sold')
-   {
-   		$conditions=array('Car.cnumber LIKE' => '%'.$term.'%' ,'Car.publish'=>0,'CarPayment.user_id'=> 0);
 
-   }else if($status=='new arrival')
-   {
-   		$conditions=array('Car.cnumber LIKE' => '%'.$term.'%' ,'Car.publish'=>1,'Car.new_arrival'=>1);
-   }
-   else{
+		if($groupId == 2) {
+			if ($status == 'unpublish') {
+				$conditions = array('Car.created_by' =>  $userid , 'Car.cnumber LIKE' => '%' . $term . '%', 'Car.publish' => 0, 'Car.new_arrival' => 0, 'CarPayment.user_id !=' => 0);
+			} else if ($status == 'not sold') {
+				$conditions = array('Car.created_by' =>  $userid ,'Car.cnumber LIKE' => '%' . $term . '%', 'Car.publish' => 0, 'CarPayment.user_id' => 0);
 
-   	    $conditions=array('Car.cnumber LIKE' => '%'.$term.'%');
+			} else if ($status == 'new arrival') {
+				$conditions = array('Car.created_by' =>  $userid ,'Car.cnumber LIKE' => '%' . $term . '%', 'Car.publish' => 1, 'Car.new_arrival' => 1);
+			} else {
 
-   }
+				$conditions = array('Car.created_by' =>  $userid ,'Car.cnumber LIKE' => '%' . $term . '%');
+			}
+		}else {
+			if ($status == 'unpublish') {
+				$conditions = array('Car.cnumber LIKE' => '%' . $term . '%', 'Car.publish' => 0, 'Car.new_arrival' => 0, 'CarPayment.user_id !=' => 0);
+			} else if ($status == 'not sold') {
+				$conditions = array('Car.cnumber LIKE' => '%' . $term . '%', 'Car.publish' => 0, 'CarPayment.user_id' => 0);
 
+			} else if ($status == 'new arrival') {
+				$conditions = array('Car.cnumber LIKE' => '%' . $term . '%', 'Car.publish' => 1, 'Car.new_arrival' => 1);
+			} else {
 
-    $cars = $this->Car->find('all',array('conditions'=>$conditions, 'fields' =>array('Car.id','Car.cnumber'))
-       );
+				$conditions = array('Car.cnumber LIKE' => '%' . $term . '%');
+			}
+		}
+
+    		$cars = $this->Car->find('all',array('conditions'=>$conditions, 'fields' =>array('Car.id','Car.cnumber')));
    
     // Format the result for select1
 		$result = array();
@@ -1176,31 +1221,37 @@ class CarsController extends AppController {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$mail = new phpmailer;
-
-// Set mailer to use AmazonSES.
-$mail->IsAmazonSES();
-
-// Set AWSAccessKeyId and AWSSecretKey provided by amazon.
-$mail->AddAmazonSESKey("AKIAJ5M2NHGGTQAP5R7Q", "5RNS+jWRVb8IklsD1cDUf5jGK4ATfeDEigQz8IBK");
+$mail = new PHPMailer();
+$mail->IsSMTP();
+$mail->SMTPAuth   = true;
+$mail->SMTPSecure = "ssl";
 $mail->SMTPDebug = false;
-// "From" must be a verified address.
-$mail->From = 'uktoyama@ukcarstokyo.com';
-    $mail->FromName = 'uktoyama';
-//$mail->AddAddress($toEmail);
+$mail->Host       = EMAIL_HOST;
+$mail->Username   = EMAIL_ACCOUNT;
+$mail->Password   = EMAIL_PASSWORD;
+$mail->SetFrom(EMAIL_FROM, FromName); //from (verified email address)
+$mail->Subject = $c_name.'  pics';
+$mail->Port = 465;
+$mail->IsHTML(true);                                  // Set email format to HTML
 
-$mail->AddAddress($emailArr); 
+				$data = "<strong>Hello</strong>,<br>
+					<strong>We appreciate your trust in our company and promise to serve you better in future.<br>
+					For any further purchase please visit </strong> <a href='www.bizupon.com'> <strong>Bizupon</strong></a> ";
 
-if($emailArr2)
-$mail->AddAddress($emailArr2);  
-$mail->AddCC('uktoyama@ukcarstokyo.com','uktoyama');
+$mail->Body    = $data;
 foreach($img as $im){
 	$mail->Addattachment($im['file'],$im['name']);
 }
-$mail->IsHTML(true);                                  // Set email format to HTML
+				
+$mail->AddAddress($emailArr);
 
-$mail->Subject = $c_name.'  pics';
-$mail->Body    = 'PFA';
+//if($emailArr2) // uncomment after testing
+//$mail->AddAddress($emailArr2);
+$mail->AddCC(EMAIL_FROM, FromName);
+
+
+
+
 
 
 

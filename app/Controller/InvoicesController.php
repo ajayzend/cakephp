@@ -912,7 +912,7 @@ class InvoicesController extends AppController
 		//echo 'no access'; die;
 
 		if($this->request->is('post'))
-		{//echo 'no access'; die;			
+		{ //echo 'no access'; die;
 			$user_id = $this->data['userId'];
 
 			$userDetails = $this->User->find('first', array('fields'=>array('User.email','User.alternate_email'),'conditions' => array('User.user_group_id !=' => 1,'User.id'=>$user_id)));								
@@ -957,7 +957,9 @@ class InvoicesController extends AppController
           */
 
 
-			$data = "hello........";
+			$data = "<strong>Hello</strong>,<br>
+					<strong>We appreciate your trust in our company and promise to serve you better in future.<br>
+					For any further purchase please visit </strong> <a href='www.bizupon.com'> <strong>Bizupon</strong></a> ";
 			#$attachment = file_get_contents($file);
 			#$attachment_encoded = base64_encode($attachment);
 
@@ -967,25 +969,25 @@ class InvoicesController extends AppController
 			#$toEmail  = "jainmca4444@gmail.com";
 			$toName = "";
 			$fromName ="";
-
-
+			
 
 //SMTP Settings
 $mail = new PHPMailer();
 $mail->IsSMTP();
 $mail->SMTPAuth   = true;
-$mail->SMTPSecure = "tls";
+$mail->SMTPSecure = "ssl";
 $mail->SMTPDebug = false;
-$mail->Host       = "email-smtp.us-west-2.amazonaws.com";
-$mail->Username   = "AKIAIBXOFSO6ZQA3SCVQ";
-$mail->Password   = "AviXTW+/nrZWC2KHiqV28wWlVrnEboIbrAZNe7XkyccR";
-$mail->SetFrom('uktoyama@ukcarstokyo.com', 'uktoyama'); //from (verified email address)
+$mail->Host       = EMAIL_HOST;
+$mail->Username   = EMAIL_ACCOUNT;
+$mail->Password   = EMAIL_PASSWORD;
+$mail->SetFrom(EMAIL_FROM, FromName); //from (verified email address)
 $mail->Subject = 'INVOICE/'.$this->data['invoiceId'];
+$mail->Port = 465;
 
 $mail->MsgHTML($data);
 $mail->AddAttachment($file);
 
-$mail->AddAddress(EMAIL_ACCOUNT);
+//$mail->AddAddress(EMAIL_ACCOUNT);
 $mail->AddAddress($toEmail);
 
 $sendMail = $mail->Send();
@@ -997,7 +999,7 @@ if($sendMail)
   }
   else
   {
-    echo json_encode(array("status"=>"error","message"=>"Your detail something wrong!"));
+    echo json_encode(array("status"=>"error","message"=>"Your detail something wrong! $toEmail"));
   }
 
 /*
@@ -1094,7 +1096,7 @@ if($sendMail)
 			 
 			
 		}else{
-			echo json_encode(array("status"=>"error","message"=>"Your detail something wrong!"));
+			echo json_encode(array("status"=>"error","message"=>"Your detail something wrong111!"));
 		}
 		
 		

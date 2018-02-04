@@ -1,20 +1,20 @@
 <?php
 $Permission = json_decode($this->Session->read('PerMissioUser'));
 if($this->Session->read('UserAuth.User.id')!=""): ?>
-<div class="sidebar-menu"> 
+<div class="sidebar-menu">
 	<!-- <div class="nav_welcome">
 		<h1><?php echo __('Main'); ?></h1>
 		<div class="clearfix"></div>
 	</div> -->
-	<?php 
+	<?php
 	if($this->params['controller']=="cars" && $this->params['action'] == "admin_index"){
 		$active= "active";
-		
+
 		}
 		 else {
 			$active= "";
 		}?>
-	<div class="nav-collapse sidebar-nav"> 
+	<div class="nav-collapse sidebar-nav">
 		<nav>
 			<ul class="nav nav-tabs nav-stacked main-menu">
             	<?php
@@ -25,7 +25,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(2, $Permission))
 				{
@@ -34,7 +34,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(3, $Permission))
 				{
@@ -43,7 +43,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(4, $Permission))
 				{
@@ -52,7 +52,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
 				<?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(5, $Permission))
 				{
@@ -61,16 +61,16 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
 				<?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(6, $Permission))
 				{
 				?>
-				<li><a class="ajax-link" href="<?php echo $this->Html->url('/admin/ports/',true); ?>"><i class="fa fa-cogs  sidebar_ico_margin"></i><span class="hidden-tablet">Port Management</span></a></li>  
+				<li><a class="ajax-link" href="<?php echo $this->Html->url('/admin/ports/',true); ?>"><i class="fa fa-cogs  sidebar_ico_margin"></i><span class="hidden-tablet">Port Management</span></a></li>
 				<?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(7, $Permission))
 				{
@@ -79,25 +79,25 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(8, $Permission))
 				{
 				?>
-				<li class="shiping-icon"><a class="ajax-link" href="<?php echo $this->Html->url('/admin/shippings/add_shipping',true); ?>"><span class="hidden-tablet">Shipping Management</span></a></li>  
+				<li class="shiping-icon"><a class="ajax-link" href="<?php echo $this->Html->url('/admin/shippings/add_shipping',true); ?>"><span class="hidden-tablet">Shipping Management</span></a></li>
 				<?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(9, $Permission))
 				{
 				?>
-				<li class="car-icon"><a class="ajax-link" href="<?php echo $this->Html->url('/admin/CarNames/add_carname',true); ?>"><span class="hidden-tablet">Vehicle Name Management</span></a></li>  
+				<li class="car-icon"><a class="ajax-link" href="<?php echo $this->Html->url('/admin/CarNames/add_carname',true); ?>"><span class="hidden-tablet">Vehicle Name Management</span></a></li>
 				<?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(10, $Permission))
 				{
@@ -106,18 +106,18 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
 				<?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(11, $Permission))
 				{
 				?>
 				<li>
 				<a class="ajax-link" href="<?php echo $this->Html->url('/',true); ?>admin/reports"><i class="fa fa-list-alt  sidebar_ico_margin"></i><span class="hidden-tablet">Report Management</span></a>
-				</li> 
+				</li>
 				<?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(12, $Permission))
 				{
@@ -128,29 +128,29 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(13, $Permission))
 				{
 				?>
 				<li>
 				<a class="ajax-link" href="<?php echo $this->Html->url('/',true); ?>admin/Shipschedules"><i class="fa fa-clock-o sidebar_ico_margin"></i><span class="hidden-tablet">Ship Schedules Management</span></a>
-				</li> 
+				</li>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(14, $Permission))
 				{
-				?>    
+				?>
 				<li>
 				<a class="ajax-link" href="<?php echo $this->Html->url('/',true); ?>admin/Banks"><i class="fa fa-bank sidebar_ico_margin"></i><span class="hidden-tablet">Bank Management</span></a>
 				</li>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(15, $Permission))
 				{
@@ -159,7 +159,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(16, $Permission))
 				{
@@ -168,7 +168,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(17, $Permission))
 				{
@@ -177,7 +177,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(18, $Permission))
 				{
@@ -186,7 +186,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
 				<?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(19, $Permission))
 				{
@@ -195,7 +195,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
 				<?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(20, $Permission))
 				{
@@ -204,7 +204,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(21, $Permission))
 				{
@@ -213,7 +213,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(22, $Permission))
 				{
@@ -221,7 +221,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(23, $Permission))
 				{
@@ -230,7 +230,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(24, $Permission))
 				{
@@ -239,7 +239,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(25, $Permission))
 				{
@@ -248,7 +248,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(26, $Permission))
 				{
@@ -257,7 +257,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(27, $Permission))
 				{
@@ -266,7 +266,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(28, $Permission))
 				{
@@ -275,7 +275,7 @@ if($this->Session->read('UserAuth.User.id')!=""): ?>
                 <?php
 				}
 				?>
-                
+
                 <?php
 				if(in_array(29, $Permission))
 				{

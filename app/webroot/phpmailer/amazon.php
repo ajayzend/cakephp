@@ -12,12 +12,12 @@ $mail = new PHPMailer();
 $mail->IsSMTP();
 $mail->SMTPAuth   = true;
 $mail->SMTPSecure = "tls";
-$mail->Host       = "email-smtp.us-west-2.amazonaws.com";
-$mail->Username   = "AKIAIBXOFSO6ZQA3SCVQ";
-$mail->Password   = "AviXTW+/nrZWC2KHiqV28wWlVrnEboIbrAZNe7XkyccR";
+$mail->Host       = EMAIL_HOST;
+$mail->Username   = AWSAccessKeyId;
+$mail->Password   = AWSSecretKey;
 //
 
-$mail->SetFrom('uktoyama@ukcarstokyo.com', 'uktoyama'); //from (verified email address)
+$mail->SetFrom(EMAIL_FROM, FromName); //from (verified email address)
 $mail->Subject = "Email Subject"; //subject
 
 //message
@@ -28,7 +28,7 @@ $mail->MsgHTML($body);
 //
 
 //recipient
-$mail->AddAddress("jainmca4444@gmail.com", "Test Recipient");
+$mail->AddAddress("ajay.kumar.iimt@gmail.com", "Test Recipient");
 
 //Success
 print_r($mail->Send());
