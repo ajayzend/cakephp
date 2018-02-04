@@ -181,7 +181,7 @@ class UserAuthComponent extends Component {
 	 */
 	public function getClientAdminPagePermission()
 	{
-		return array(1, 10, 11);
+		return array(1);
 	}
 	
 	/**
