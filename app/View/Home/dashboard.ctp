@@ -294,10 +294,10 @@
                             <input type="text"class="datepicker form-control " placeholder="To Date" id="date02" name="todate" value="" />
                         </div>
                         <div class="col-lg-2">
-                            <div class="col-lg-3 NoPadding"><button type="button"  id="salebutton" class="ProductDetailBuyNowButton hvr-pulse-grow" style="margin-top:0px; width:100%;"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            <div class="col-lg-3 NoPadding"><button type="button"  id="buybutton" class="ProductDetailBuyNowButton hvr-pulse-grow" style="margin-top:0px; width:100%;"><i class="fa fa-search" aria-hidden="true"></i></button>
 </div>
-							<div id="showAllUsrSaleDivBtn" style="display:none;">
-                            <div class="col-lg-8 NoPadding pull-right"><button class="ProductDetailBuyNowButton hvr-pulse-grow" id="clearSaleSearchHistory" style="margin-top:0px; background: #798899; width:100%;">Clear Search</button>	</div>
+							<div id="showAllUsrBuyDivBtn" style="display:none;">
+                            <div class="col-lg-8 NoPadding pull-right"><button class="ProductDetailBuyNowButton hvr-pulse-grow" id="clearBuySearchHistory" style="margin-top:0px; background: #798899; width:100%;">Clear Search</button>	</div>
                             </div>
 
                         </div>
@@ -513,10 +513,10 @@
                             <input type="text"class="datepicker form-control " placeholder="To Date" id="date022" name="todate" value="" />
                         </div>
                         <div class="col-lg-2">
-                            <div class="col-lg-3 NoPadding"><button type="button"  id="salebutton2" class="ProductDetailBuyNowButton hvr-pulse-grow" style="margin-top:0px; width:100%;"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            <div class="col-lg-3 NoPadding"><button type="button"  id="salebutton" class="ProductDetailBuyNowButton hvr-pulse-grow" style="margin-top:0px; width:100%;"><i class="fa fa-search" aria-hidden="true"></i></button>
                             </div>
                             <div id="showAllUsrSaleDivBtn" style="display:none;">
-                                <div class="col-lg-8 NoPadding pull-right"><button class="ProductDetailBuyNowButton hvr-pulse-grow" id="clearSaleSearchHistory" style="margin-top:0px; background: #798899; width:100%;">Clear Search</button>	</div>
+                                <div class="col-lg-8 NoPadding pull-right"><button class="ProductDetailBuyNowButton hvr-pulse-grow" id="clearSellSearchHistory" style="margin-top:0px; background: #798899; width:100%;">Clear Search</button>	</div>
                             </div>
 
                         </div>
@@ -962,7 +962,8 @@ $(function() {
 		$( "#date04" ).datepicker({changeMonth: true,changeYear: true, dateFormat: "dd-mm-yy",yearRange: '-40:+20'});
 		$("#date01").datepicker({changeMonth: true,changeYear: true, dateFormat: "dd-mm-yy",yearRange: '-40:+20'});
 		$( "#date02" ).datepicker({changeMonth: true,changeYear: true, dateFormat: "dd-mm-yy",yearRange: '-40:+20'});
-
+        $("#date012").datepicker({changeMonth: true,changeYear: true, dateFormat: "dd-mm-yy",yearRange: '-40:+20'});
+        $( "#date022" ).datepicker({changeMonth: true,changeYear: true, dateFormat: "dd-mm-yy",yearRange: '-40:+20'});
 		});
 
 
@@ -998,10 +999,41 @@ $("#button").click(function()
 		});
 
 
+    $("#buybutton").click(function()
+    {
+        var fromDate  =$("#date01").val();
+        var toDate  =$("#date02").val();
+
+        var dataString = {'from':fromDate,'to':toDate};
+        $.ajax({
+            url:"<?php echo $this->Html->url('buy_detail_search',true);?>",
+            type:"POST",
+            data:dataString,
+            beforeSend: function() {
+                $(".myloader").show();
+            },
+            success:function(result)
+            {
+                $(".myloader").hide();
+                $("#download_sale").hide();
+                $('#cardetail').html(result);
+                var dwn_link = '<a id="download12" data-hint="Download" href="<?php echo $this->Html->url('export_sale_history_search_xls',true);?>?from_date='+fromDate+'&to_date='+toDate+'">Download<i class="fa fa-download"></i></a>';
+                $("#sale_search_div").html(dwn_link);
+                $('#sale_search_div').show();
+                $('#showAllUsrBuyDivBtn').show();
+
+            },
+            faliure:function(result)
+            {
+                alert("Network Error");
+            }
+        });
+    });
+
 	$("#salebutton").click(function()
 			{
-				var fromDate  =$("#date01").val();
-				var toDate  =$("#date02").val();
+				var fromDate  =$("#date012").val();
+				var toDate  =$("#date022").val();
 
 				var dataString = {'from':fromDate,'to':toDate};
 				$.ajax({
@@ -1015,7 +1047,7 @@ $("#button").click(function()
 					{
 						$(".myloader").hide();
 						$("#download_sale").hide();
-						$('#cardetail').html(result);
+						$('#cardetail2').html(result);
 						var dwn_link = '<a id="download12" data-hint="Download" href="<?php echo $this->Html->url('export_sale_history_search_xls',true);?>?from_date='+fromDate+'&to_date='+toDate+'">Download<i class="fa fa-download"></i></a>';
 						$("#sale_search_div").html(dwn_link);
 						$('#sale_search_div').show();
@@ -1033,44 +1065,79 @@ $("#button").click(function()
  $(function(){
 $('#hideDiv').delay(4000).fadeOut( "slow" );
 });
-    $(document).ready(function(){
-    $('#selectbox-o').select2({
+    $(document).ready(function() {
+        $('#selectbox-o').select2({
 
-    minimumInputLength: 2,
-    ajax: {
-    url: '<?php echo $this->Html->url('carsearch',true);?>',
-    dataType: 'json',
-    data: function (term, page) {
-    return {
-    q: term
-    };
-    },
-    results: function (data, page) {
+            minimumInputLength: 2,
+            ajax: {
+                url: '<?php echo $this->Html->url('carsearch', true);?>',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        q: term
+                    };
+                },
+                results: function (data, page) {
 
-    return { results: data };
-    }
-    }
-    });
-    });
+                    return {results: data};
+                }
+            }
+        });
 
-    $(document).ready(function(){
-    $('#selectbox').select2({
-    minimumInputLength: 2,
-    ajax: {
-    url: '<?php echo $this->Html->url('chassisSearch',true);?>',
-    dataType: 'json',
-    data: function (term, page) {
-    return {
-    q: term
-    };
-    },
-    results: function (data, page) {
-		//$('#userId').val(data.id);
 
-    return { results: data };
-    }
-    }
-    });
+        $('#selectbox-o2').select2({
+
+            minimumInputLength: 2,
+            ajax: {
+                url: '<?php echo $this->Html->url('carSellsearch', true);?>',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        q: term
+                    };
+                },
+                results: function (data, page) {
+
+                    return {results: data};
+                }
+            }
+        });
+
+        $('#selectbox').select2({
+            minimumInputLength: 2,
+            ajax: {
+                url: '<?php echo $this->Html->url('chassisSearch', true);?>',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        q: term
+                    };
+                },
+                results: function (data, page) {
+                    //$('#userId').val(data.id);
+
+                    return {results: data};
+                }
+            }
+        });
+
+        $('#selectbox2').select2({
+            minimumInputLength: 2,
+            ajax: {
+                url: '<?php echo $this->Html->url('chassissellSearch', true);?>',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        q: term
+                    };
+                },
+                results: function (data, page) {
+                    //$('#userId').val(data.id);
+
+                    return {results: data};
+                }
+            }
+        });
     });
     </script>
  <script>
@@ -1091,12 +1158,36 @@ $('#hideDiv').delay(4000).fadeOut( "slow" );
 					{
 						 $(".myloader").hide();
 						$('#cardetail').html(result);
-						$('#showAllUsrSaleDivBtn').show();
+						$('#showAllUsrBuyDivBtn').show();
 					}
 				});
 		});
 
 	});
+
+
+     $(function()
+     {
+         $("#selectbox-o2").change(function()
+         {
+             $.ajax({
+                 url:"<?php echo $this->Html->url('sell_car_detail_search',true);?>",
+                 type:"POST",
+                 data:{name:$("#s2id_selectbox-o2 .select2-choice span").html(),id:$("#selectbox-o2").val()},
+                 dataType:"html",
+                 beforeSend:function() {
+                     $(".myloader").show();
+                 },
+                 success:function(result)
+                 {
+                     $(".myloader").hide();
+                     $('#cardetail2').html(result);
+                     $('#showAllUsrSaleDivBtn').show();
+                 }
+             });
+         });
+
+     });
 
 	// for client
 
@@ -1116,7 +1207,7 @@ $('#hideDiv').delay(4000).fadeOut( "slow" );
 					{
 						 $(".myloader").hide();
 						$('#cardetail').html(result);
-						$('#showAllUsrSaleDivBtn').show();
+						$('#showAllUsrBuyDivBtn').show();
 
 
 					}
@@ -1124,6 +1215,32 @@ $('#hideDiv').delay(4000).fadeOut( "slow" );
 		});
 
 	});
+
+     $(function()
+     {
+         $("#selectbox2").change(function()
+         {
+             $.ajax({
+                 url:"<?php echo $this->Html->url('chassis_search_detail',true);?>",
+                 type:"POST",
+                 data:{name:$("#s2id_selectbox2 .select2-choice span").html(),id:$("#selectbox2").val()},
+                 dataType:"html",
+                 beforeSend:function() {
+                     $(".myloader").show();
+                 },
+                 success:function(result)
+                 {
+                     $(".myloader").hide();
+                     $('#cardetail2').html(result);
+                     $('#showAllUsrSaleDivBtn').show();
+
+
+                 }
+             });
+         });
+
+     });
+
 </script>
 <script>
 
@@ -1139,6 +1256,8 @@ $('#hideDiv').delay(4000).fadeOut( "slow" );
 				$('#selectbox-o').html('search......');
 				$('#s2id_selectbox-o').find('span').html('Enter car name for search');
 				$('#s2id_selectbox').find('span').html('Enter chassis no for search');
+                $('#s2id_selectbox-o2').find('span').html('Enter car name for search');
+                $('#s2id_selectbox2').find('span').html('Enter chassis no for search');
 				$('#showAllUsrDivBtn').hide();
 			}
 		});
@@ -1332,10 +1451,10 @@ $(function()
 
 $(function()
 		{
-			$("#clearSaleSearchHistory").click(function()
+			$("#clearBuySearchHistory").click(function()
 			{
 				$.ajax({
-					url:"<?php echo $this->Html->url('clear_all_sale_history_search_detail',true);?>",
+					url:"<?php echo $this->Html->url('clear_all_buy_history_search_detail',true);?>",
 					type:"POST",
 					data:{name:$("#s2id_selectbox-o").html(),id:$("#selectbox-o").val(),client_id:$("#client_id option:selected").val()},
 					dataType:"html",
@@ -1346,13 +1465,16 @@ $(function()
 					{
 						 $(".myloader").hide();
 						$('#cardetail').html(result);
+						//$('#cardetail2').html(result);
 						$("#s2id_selectbox-o span").html("Enter car name for search");
 						$("#s2id_selectbox span").html("Enter chechis no for search");
 						$('#date01').val('');
 						$('#date02').val('');
 						$('#date02').attr("placeholder", "To Date");
 						$('#date01').attr("placeholder", "From Date");
-						$('#showAllUsrSaleDivBtn').hide();
+                        $('#date022').attr("placeholder", "To Date");
+                        $('#date012').attr("placeholder", "From Date");
+						$('#showAllUsrBuyDivBtn').hide();
 						$("#download_sale").show();
 						$('#sale_search_div').hide();
 
@@ -1361,6 +1483,42 @@ $(function()
 		});
 
 	});
+
+
+    $(function()
+    {
+        $("#clearSellSearchHistory").click(function()
+        {
+            $.ajax({
+                url:"<?php echo $this->Html->url('clear_all_sell_history_search_detail',true);?>",
+                type:"POST",
+                data:{name:$("#s2id_selectbox-o2").html(),id:$("#selectbox-o2").val(),client_id:$("#client_id option:selected").val()},
+                dataType:"html",
+                beforeSend:function() {
+                    $(".myloader").show();
+                },
+                success:function(result)
+                {
+                    $(".myloader").hide();
+                    $('#cardetail2').html(result);
+                    //$('#cardetail2').html(result);
+                    $("#s2id_selectbox-o2 span").html("Enter car name for search");
+                    $("#s2id_selectbox2 span").html("Enter chechis no for search");
+                    $('#date01').val('');
+                    $('#date02').val('');
+                    $('#date02').attr("placeholder", "To Date");
+                    $('#date01').attr("placeholder", "From Date");
+                    $('#date022').attr("placeholder", "To Date");
+                    $('#date012').attr("placeholder", "From Date");
+                    $('#showAllUsrSaleDivBtn').hide();
+                    $("#download_sale").show();
+                    $('#sale_search_div').hide();
+
+                }
+            });
+        });
+
+    });
 
 
 </script>

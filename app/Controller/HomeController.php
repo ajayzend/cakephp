@@ -1338,7 +1338,7 @@ class HomeController extends AppController
 		$this->set('BuyDetails', $result);
 
 		// show all Sale Buy details .
-		$result_sale = $this->getInvoiceDetailsByUser($id, 'sale');
+		$result_sale = $this->getInvoiceDetailsByUser($id, 'sell');
 		$this->set('SaleDetails', $result_sale);
 
 		$payPrice = '';
@@ -1489,11 +1489,33 @@ class HomeController extends AppController
 		echo json_encode($result);
 	}
 
+	public function carSellsearch()
+	{
+
+		$this->autoRender = false;
+		$id = $this->Session->read('UserAuth.User.id');
+		$term = $this->request->query['q'];
+		$Cars = $this->getCarDetailsByUser($term, $id, 'sell');
+		$result = array();
+		foreach ($Cars as $val) {
+			$result[] = array("id" => $val['CarPayment']['car_id'], "text" => $val['CarName']['car_name']);
+		}
+		echo json_encode($result);
+	}
+
 	public function car_detail_search()
 	{
 		$carname = $this->data['name'];
 		$carId = $this->data['id'];
 		$result = $this->getAllCarDetailsByUser($carname, $carId);
+		$this->set('SaleDetails', $result);
+	}
+
+	public function sell_car_detail_search()
+	{
+		$carname = $this->data['name'];
+		$carId = $this->data['id'];
+		$result = $this->getAllCarDetailsByUser($carname, $carId, 'sell');
 		$this->set('SaleDetails', $result);
 	}
 
@@ -1504,6 +1526,20 @@ class HomeController extends AppController
 		$id = $this->Session->read('UserAuth.User.id');
 		$term = $this->request->query['q'];
 		$Cars = $this->getDetailsByCnumber($term, $id);
+		$result = array();
+		foreach ($Cars as $val) {
+			$result[] = array("id" => $val['CarPayment']['car_id'], "text" => $val['Car']['cnumber']);
+		}
+		echo json_encode($result);
+	}
+
+	public function chassissellSearch()
+	{
+
+		$this->autoRender = false;
+		$id = $this->Session->read('UserAuth.User.id');
+		$term = $this->request->query['q'];
+		$Cars = $this->getDetailsByCnumber($term, $id, 'sell');
 		$result = array();
 		foreach ($Cars as $val) {
 			$result[] = array("id" => $val['CarPayment']['car_id'], "text" => $val['Car']['cnumber']);
@@ -1534,7 +1570,7 @@ class HomeController extends AppController
 	public function getInvoiceDetailsByUser($userId, $sale_buy_flag = '')
 	{
 		$sub_query = " CarPayment.user_id = $userId ";
-		if($sale_buy_flag == 'sale')
+		if($sale_buy_flag == 'sell')
 			$sub_query = " Car.created_by = $userId ";
 
 		$query = "SELECT Logistic.remark,Car.id, Car.user_doc_updated,Logistic.ship_port,Logistic.destination_port,Logistic.departure_date,Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.currency,CarPayment.yen,CarPayment.currency,CarPayment.sale_price, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
@@ -1552,8 +1588,11 @@ class HomeController extends AppController
 		return $result;
 	}
 
-	public function getCarDetailsByUser($carName, $id)
+	public function getCarDetailsByUser($carName, $id, $sellbuy_flag = '')
 	{
+		$subquery = " AND CarPayment.user_id ='" . $id . "' ";
+		if($sellbuy_flag == 'sell')
+			$subquery = " AND Car.created_by ='" . $id . "' ";
 		$result = $this->User->query("SELECT DISTINCT CarPayment.car_id,CarPayment.id, Logistic.created,CarName.car_name
 					FROM  `car_payments` AS CarPayment
 					LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
@@ -1562,11 +1601,11 @@ class HomeController extends AppController
 					LEFT JOIN car_names AS CarName ON CarName.id = Car.car_name_id
 					LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
 					LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
-					WHERE CarName.car_name LIKE '%" . $carName . "%' AND CarPayment.user_id ='" . $id . "'  AND  CarPayment.deleted = 0 group by CarName.car_name");
+					WHERE CarName.car_name LIKE '%" . $carName . "%' $subquery  AND  CarPayment.deleted = 0 group by CarName.car_name");
 		return $result;
 	}
 
-	public function getAllCarDetailsByUser($carname, $carId)
+	public function getAllCarDetailsByUser($carname, $carId, $sellbuy_flag = '')
 	{
 		/*$result = $this->User->query("SELECT CarPayment.car_id,CarPayment.currency,CarPayment.id, Logistic.created,CarPayment.sale_price,CarPayment.yen, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id, Car.brand_id,Car.price_editable, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
 					FROM  `car_payments` AS CarPayment
@@ -1578,7 +1617,10 @@ class HomeController extends AppController
 					LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
 					WHERE CarName.car_name ='".$carname."' AND CarPayment.sale_price !=''  AND  CarPayment.deleted = 0 ");*/
 		$userId = $this->Session->read('UserAuth.User.id');
-		$result = $this->User->query("SELECT Logistic.remark,Car.user_doc_updated,Logistic.ship_port,Logistic.destination_port,Logistic.departure_date,Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.currency,CarPayment.yen,CarPayment.currency,CarPayment.sale_price, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
+		$subquery = " CarPayment.user_id = '$userId' ";
+		if($sellbuy_flag == 'sell')
+			$subquery = " Car.created_by = '$userId'";
+		$result = $this->User->query("SELECT Logistic.remark,Car.user_doc_updated,Car.id, Logistic.ship_port,Logistic.destination_port,Logistic.departure_date,Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.currency,CarPayment.yen,CarPayment.currency,CarPayment.sale_price, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
 					FROM  `car_payments` AS CarPayment
 					LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
 					LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
@@ -1587,15 +1629,19 @@ class HomeController extends AppController
 					LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
 					LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
 					LEFT JOIN ports AS Port ON Port.id = Logistic.port_id
-					WHERE CarPayment.user_id ='" . $userId . "' AND CarName.car_name ='" . $carname . "'  AND Car.deleted = 0 and  CarPayment.deleted = 0 group by Car.stock ORDER BY CarPayment.updated_on DESC");
+					WHERE $subquery AND CarName.car_name ='" . $carname . "'  AND Car.deleted = 0 and  CarPayment.deleted = 0 
+					group by Car.stock ORDER BY CarPayment.updated_on DESC");
 
 
 		return $result;
 	}
 
-	public function getDetailsByCnumber($cnumber, $id)
+	public function getDetailsByCnumber($cnumber, $id, $buysell_flag = '')
 	{
-		$result = $this->User->query("SELECT DISTINCT CarPayment.car_id,CarPayment.id,Logistic.created, CarPayment.sale_price,CarPayment.yen,CarPayment.currency, CarPayment.updated_on, Invoice.invoice_no, CarName.car_name, Car.cnumber,Car.price_editable, Car.country_id, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
+		$sub_query = "AND CarPayment.user_id ='" . $id . "'";
+		if($buysell_flag == 'sell')
+			$sub_query = "AND Car.created_by ='" . $id . "'";
+		$result = $this->User->query("SELECT DISTINCT CarPayment.car_id,CarPayment.id,Logistic.created,Car.id, CarPayment.sale_price,CarPayment.yen,CarPayment.currency, CarPayment.updated_on, Invoice.invoice_no, CarName.car_name, Car.cnumber,Car.price_editable, Car.country_id, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
 					FROM  `car_payments` AS CarPayment
 					LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
 					LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
@@ -1603,14 +1649,17 @@ class HomeController extends AppController
 					LEFT JOIN car_names AS CarName ON CarName.id = Car.car_name_id
 					LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
 					LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
-					WHERE  Car.cnumber  LIKE '%" . $cnumber . "%' AND CarPayment.user_id ='" . $id . "'  AND  CarPayment.deleted = 0 ");
+					WHERE  Car.cnumber  LIKE '%" . $cnumber . "%'  $sub_query  AND  CarPayment.deleted = 0 ");
 		return $result;
 	}
 
 
-	public function getInvoiceDetailsByUserWithDate($userId, $fromdate, $todate)
+	public function getInvoiceDetailsByUserWithDate($userId, $fromdate, $todate, $buysell_flag = '')
 	{
-		$result = $this->User->query('SELECT CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.sale_price,CarPayment.yen,CarPayment.currency, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
+		$sub_query = " CarPayment.user_id = ' $userId '";
+		if($buysell_flag == 'sell')
+			$sub_query = " Car.created_by = '$userId'";
+		$result = $this->User->query("SELECT Car.id, CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.sale_price,CarPayment.yen,CarPayment.currency, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
 					FROM  `car_payments` AS CarPayment
 					LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
 					LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
@@ -1618,7 +1667,7 @@ class HomeController extends AppController
 					LEFT JOIN car_names AS CarName ON CarName.id = Car.car_name_id
 					LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
 					LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
-					WHERE CarPayment.user_id =' . $userId . ' AND CarPayment.updated_on BETWEEN "' . $fromdate . '" AND "' . $todate . '"  AND  CarPayment.deleted = 0 order by CarPayment.updated_on DESC');
+					WHERE $sub_query AND CarPayment.updated_on BETWEEN '$fromdate' AND '$todate'  AND  CarPayment.deleted = 0 order by CarPayment.updated_on DESC");
 		return $result;
 	}
 
@@ -3239,7 +3288,7 @@ class HomeController extends AppController
 
 	}
 
-	function sale_detail_search()
+	function buy_detail_search()
 	{
 		$id = $this->Session->read('UserAuth.User.id');
 		$fromDate = $this->data['from'];
@@ -3249,6 +3298,20 @@ class HomeController extends AppController
 		$toDate = date("Y-m-d", strtotime($toDate));
 
 		$SaleDetails = $this->getInvoiceDetailsByUserWithDate($id, $fromDate, $toDate);
+		$this->set('SaleDetails', $SaleDetails);
+
+	}
+
+	function sale_detail_search()
+	{
+		$id = $this->Session->read('UserAuth.User.id');
+		$fromDate = $this->data['from'];
+		$fromDate = date("Y-m-d", strtotime($fromDate));
+
+		$toDate = $this->data['to'];
+		$toDate = date("Y-m-d", strtotime($toDate));
+
+		$SaleDetails = $this->getInvoiceDetailsByUserWithDate($id, $fromDate, $toDate, 'sell');
 		$this->set('SaleDetails', $SaleDetails);
 
 	}
@@ -3533,7 +3596,7 @@ class HomeController extends AppController
 
 	}
 
-	public function clear_all_sale_history_search_detail()
+	public function clear_all_buy_history_search_detail()
 	{
 		$id = $this->Session->read('UserAuth.User.id');
 		$car_id = $this->data['id'];
@@ -3543,6 +3606,19 @@ class HomeController extends AppController
 
 		$this->layout = null;
 		$this->render('car_detail_search');
+
+	}
+
+	public function clear_all_sell_history_search_detail()
+	{
+		$id = $this->Session->read('UserAuth.User.id');
+		$car_id = $this->data['id'];
+		//pr($this->data);die;
+		$result = $this->getInvoiceDetailsByUser($id, 'sell');
+		$this->set('SaleDetails', $result);
+
+		$this->layout = null;
+		$this->render('sell_car_detail_search');
 
 	}
 
@@ -3658,7 +3734,7 @@ class HomeController extends AppController
 	{
 
 		$id = $this->UserAuth->getUserId();
-		$SaleDetails = $this->getInvoiceDetailsByUser($id, 'sale');
+		$SaleDetails = $this->getInvoiceDetailsByUser($id, 'sell');
 		//pr($SaleDetails);die;
 		$this->set('SaleDetails', $SaleDetails);
 

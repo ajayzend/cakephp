@@ -1,6 +1,7 @@
 <?php echo $this->Html->css('uploadfile');?>
 <?php echo $this->Html->script('uploadfile');?>
 <?php @$SaleData=$this->params->query['data'];?>
+<?php $groupId = $this->Session->read('UserAuth.User.user_group_id');?>
 
 <?php echo $this->Html->css('/js/datetimepicker/jquery.datetimepicker');?>
 <?php echo $this->Html->script('/js/datetimepicker/jquery.datetimepicker');?>
@@ -32,28 +33,36 @@
 					 
 					<ul class="nav nav-tabs admin_tab" id="myTab" >
 						<li class="active" ><a href="#about_content" id="about" class="rounded_tab" data-toggle="tab" >Overview</a></li>
-						<?php 
+
+						<?php if($groupId == 2) {?>
+							<?php if(!empty($carDetails)) {?>
+								<li><a href="#image_upload" id="Image" class="rounded_tab" data-toggle="tab" >Upload Image</a></li>
+								<?php }?>
+						<?php } else { ?>
+
+						<?php
 						if(!empty($carDetails)){?>
 						<li><a href="#image_upload" id="Image" class="rounded_tab" data-toggle="tab" >Upload Image</a></li>
 						<li><a href="#about_bids" id="Bid" class="rounded_tab" data-toggle="tab" >Bids</a></li>
 						<?php if($carDetails['Car']['new_arrival'] == 0){?>
-						
+
 							<li><a href="#about_shipment" id="saleDetailId" class="rounded_tab " data-toggle="tab">Sales</a></li>
 							<li><a href="#products_content" id="products" class="rounded_tab" data-toggle="tab" >Logistics</a></li>
-                            
+
 						<?php }else{
 							echo '<li><a href="#about_bids" id="Bid" class="rounded_tab hide" data-toggle="tab" >Bids</a></li>';
 							echo '<li><a href="#about_shipment" id="saleDetailId" class="rounded_tab hide" data-toggle="tab">Sales</a></li>';
 							echo '<li><a href="#products_content" id="products" class="rounded_tab hide" data-toggle="tab" >Logistics</a></li>';
 							} ?>
-						
+
 						<?php }else{?>
 						<li><a href="#image_upload" id="Image" class="rounded_tab hide" data-toggle="tab" >Upload Image</a></li>
 						<li><a href="#about_bids" id="Bid" class="rounded_tab hide" data-toggle="tab" >Bids</a></li>
 						<li><a href="#about_shipment" id="saleDetailId" class="rounded_tab hide" data-toggle="tab">Sales</a></li>
 						<li><a href="#products_content" id="products" class="rounded_tab hide" data-toggle="tab" >Logistics</a></li>
 						<?php }?>
-				       </ul>						
+						<?php }?>
+				       </ul>
 				</div> 
 			 </div>
 			  
@@ -1362,6 +1371,7 @@ $('#select_auction').on('change', function(event) {
 					   success: function(data){
 						   $("#loading2").hide();
                        // console.log(data.status);
+
                         if(data.status =='success'){
 						$('#messageDivIdAdd').html(data.message);
 				         $("#messageDivIdAdd").css("color","green");
@@ -1371,6 +1381,9 @@ $('#select_auction').on('change', function(event) {
 				        //$("#Image").tab('show');
 				        $("#Image").removeClass('hide');
 				        $("#Bid").removeClass('hide');
+							var url = '/admin/cars/addnew_car/'+data.data.Car.car_id;
+							$(location).attr('href',url);
+
 				        if(data.data.Car.new_arrival != 1){
 							$("#saleDetailId").removeClass('hide');
 							$("#products").removeClass('hide');
@@ -1384,7 +1397,6 @@ $('#select_auction').on('change', function(event) {
 				        $("html, body").animate({ scrollTop: 150 }, "fast");
 						$('[data-id="car_id"]').val(data.data.Car.car_id);
 						//getPort(data.data.Car.auction_id,data.data.Car.country_id);
-					
 				       }else{ 
 
                         $('#errmessageDivIdAdd').show();

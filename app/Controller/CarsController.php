@@ -39,7 +39,8 @@ class CarsController extends AppController {
 
                         //$this->Car->unbindModel(array('hasMany' => array('CarImage','Bid'),'belongsTo' => array('Brand','CarType')), false);
 			
-			$fields = array('Car.uniqueid', 'Car.publish', 'Car.cnumber','Car.id','Car.stock','Car.doc_status','Car.user_doc_status','CarPayment.sale_price','CarName.car_name','Country.country_name');
+			$fields = array('Car.uniqueid', 'Car.publish', 'Car.cnumber','Car.id','Car.stock','Car.doc_status','Car.user_doc_status','CarPayment.sale_price','CarName.car_name',
+				'Country.country_name', 'User1.first_name', 'User1.last_name', 'User2.first_name', 'User2.last_name');
 			$this->paginate="";
 			if(isset($this->params->query['sort'])){
 				$status = $this->params->query['sort'];					
@@ -51,9 +52,37 @@ class CarsController extends AppController {
 	        if($status == 'unpublish')
 	        {
 				if($groupId == 2) {
-					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('CarPayment.updated_on' => 'DESC'), 'conditions' => array('AND' => array('Car.publish' => 0, 'Car.created_by' => $userid, 'OR' => array('CarPayment.sale_price !=' => null))));
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('CarPayment.updated_on' => 'DESC'), 'conditions' => array('AND' => array('Car.publish' => 0, 'Car.created_by' => $userid, 'OR' => array('CarPayment.sale_price !=' => null)))
+					, 'joins' => array(
+							array(
+								'alias' => 'User1',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User1`.`id` = `Car`.`created_by`'
+							),
+							array(
+								'alias' => 'User2',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+							)
+						));
 				}else{
-					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('CarPayment.updated_on' => 'DESC'), 'conditions' => array('AND' => array('Car.publish' => 0, 'OR' => array('CarPayment.sale_price !=' => null))));
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('CarPayment.updated_on' => 'DESC'), 'conditions' => array('AND' => array('Car.publish' => 0, 'OR' => array('CarPayment.sale_price !=' => null)))
+					, 'joins' => array(
+							array(
+								'alias' => 'User1',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User1`.`id` = `Car`.`created_by`'
+							),
+							array(
+								'alias' => 'User2',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+							)
+						));
 				}
 				$carDetails= $this->Paginator->paginate('Car');
 				$this->set('count_type','Sold');
@@ -61,9 +90,37 @@ class CarsController extends AppController {
 	       else
 			{
 				if($groupId == 2) {
-					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('AND' => array('Car.created_by' => $userid)));
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('AND' => array('Car.created_by' => $userid))
+					, 'joins' => array(
+							array(
+								'alias' => 'User1',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User1`.`id` = `Car`.`created_by`'
+							),
+							array(
+								'alias' => 'User2',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+							)
+						));
 				}else{
-					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'));
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc')
+					, 'joins' => array(
+							array(
+								'alias' => 'User1',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User1`.`id` = `Car`.`created_by`'
+							),
+							array(
+								'alias' => 'User2',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+							)
+						));
 				}
 				$carDetails= $this->Paginator->paginate('Car');				
 				$this->set('count_type','Publish');
@@ -74,9 +131,37 @@ class CarsController extends AppController {
 				$status = $this->params->query['new'];
 				$this->set('new',$this->params->query['new']);
 			   if($groupId == 2) {
-				   $this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'DESC'), 'conditions' => array('Car.publish' => 1, 'Car.created_by' => $userid, 'CarPayment.sale_price' => null, 'Car.new_arrival' => 1));
+				   $this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'DESC'), 'conditions' => array('Car.publish' => 1, 'Car.created_by' => $userid, 'CarPayment.sale_price' => null, 'Car.new_arrival' => 1)
+				   , 'joins' => array(
+						   array(
+							   'alias' => 'User1',
+							   'table' => 'users',
+							   'type' => 'inner',
+							   'conditions' => '`User1`.`id` = `Car`.`created_by`'
+						   ),
+						   array(
+							   'alias' => 'User2',
+							   'table' => 'users',
+							   'type' => 'inner',
+							   'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+						   )
+					   ));
 			   }else{
-				   $this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'DESC'), 'conditions' => array('Car.publish' => 1, 'CarPayment.sale_price' => null, 'Car.new_arrival' => 1));
+				   $this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'DESC'), 'conditions' => array('Car.publish' => 1, 'CarPayment.sale_price' => null, 'Car.new_arrival' => 1)
+				   , 'joins' => array(
+						   array(
+							   'alias' => 'User1',
+							   'table' => 'users',
+							   'type' => 'inner',
+							   'conditions' => '`User1`.`id` = `Car`.`created_by`'
+						   ),
+						   array(
+							   'alias' => 'User2',
+							   'table' => 'users',
+							   'type' => 'inner',
+							   'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+						   )
+					   ));
 			   }
 				$carDetails= $this->Paginator->paginate('Car'); 
 				$this->set('count_type','New Arrival');	
@@ -87,9 +172,37 @@ class CarsController extends AppController {
 				$status = $this->params->query['sold'];
 				$this->set('sold',$this->params->query['sold']);
 				if($groupId == 2) {
-					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('Car.publish' => 0, 'Car.created_by' => $userid, 'CarPayment.sale_price' => null));
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('Car.publish' => 0, 'Car.created_by' => $userid, 'CarPayment.sale_price' => null)
+					, 'joins' => array(
+							array(
+								'alias' => 'User1',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User1`.`id` = `Car`.`created_by`'
+							),
+							array(
+								'alias' => 'User2',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+							)
+						));
 				}else{
-					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('Car.publish' => 0, 'CarPayment.sale_price' => null));
+					$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('Car.publish' => 0, 'CarPayment.sale_price' => null)
+					, 'joins' => array(
+							array(
+								'alias' => 'User1',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User1`.`id` = `Car`.`created_by`'
+							),
+							array(
+								'alias' => 'User2',
+								'table' => 'users',
+								'type' => 'inner',
+								'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+							)
+						));
 				}
 				$carDetails= $this->Paginator->paginate('Car'); 
 				$this->set('count_type','Hidden');	
@@ -138,10 +251,14 @@ class CarsController extends AppController {
 			{
 
 				$this->request->data['Car']['new_arrival_date']  = date('Y-m-d H:i:s',strtotime($this->data['Car']['new_arrival_date']));
-				$this->request->data['Car']['created_by'] = $userid;
-				$retData = $this->Car->save($this->request->data);				
+
+				if(!$this->request->data['Car']['car_id'])
+					$this->request->data['Car']['created_by'] = $userid;
+				$this->request->data['Car']['modified_by'] = $userid;
+				$retData = $this->Car->save($this->request->data);
 				if($retData['Car']['car_id'] == 0)
 				{
+
 					$retData['Car']['car_id'] = $retData['Car']['id'];					
 				}
 
