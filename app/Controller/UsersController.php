@@ -750,7 +750,7 @@ class UsersController extends AppController {
 							//added by Ajay Date:22012018
 							$client_permission = json_encode($this->UserAuth->getClientAdminPagePermission());
 							$this->Session->write('PerMissioUser', $client_permission);
-							$this->redirect('/admin/DashboardUser/');
+							$this->redirect('/home/dashboard/');
 						}else
 						{
 							$this->redirect('/admin/DashboardUser/');
