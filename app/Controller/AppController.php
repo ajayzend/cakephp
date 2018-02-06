@@ -41,8 +41,8 @@ class AppController extends Controller {
 		function beforeFilter(){
 			$this->set('datasourceTest',$this->User->dbConfig);
 			$this->userAuth();
-			
-			
+			$this->checkNonAdminAccess();
+
 			if($this->Session->read('LANGUAGE') == "")
 			{
 				$this->Session->write('LANGUAGE', "1");
@@ -67,7 +67,7 @@ class AppController extends Controller {
 			$this->set('footer',$footer);
 		}
 		private function userAuth(){
-			
+
 			$users=$this->User->find('all', array('conditions' => array('User.id'=> $this->Session->read('UserAuth.User.id'),'User.user_group_id !=' => 1)));
 			if(!empty($users))
 			{
@@ -79,4 +79,24 @@ class AppController extends Controller {
 			
 			
 		}
+
+	function checkNonAdminAccess()
+	{
+		$groupId = $this->Session->read('UserAuth.User.user_group_id');
+		if($groupId == 2 && $this->params['prefix'] == 'admin'){
+			//echo "<pre>";print_r($this->params);die;
+			$ctrl = $this->params['controller'];
+			$action = $this->params['action'];
+			if($ctrl == 'cars' || $action == 'admin_logout'){
+				//die('okk');
+				/*echo $this->params['url'];
+				echo $this->params['action'];
+				die;
+				var_dump($this);*/
+			}else{
+				die('You are not permitted to acces this page.');
+			}
+
+		}
+	}
 }

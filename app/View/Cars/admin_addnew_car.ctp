@@ -195,13 +195,24 @@
                                     <?php echo $this->Form->input('cnumber',array('type'=>'text','class'=>'form-control ','value'=>@$carDetails['Car']['cnumber'],'label'=>false,'id'=>'chesis_id','required'=>true));?>
                                 </div>
                             </div>
-                            
-                            <div class="form-group col-md-3">
-                                <label for="inputChassis">Lot No</label>
-                                <div class="controls">
-                                    <?php echo $this->Form->input('lot_number',array('type'=>'text','class'=>'form-control ','value'=>@$carDetails['Car']['lot_number'],'label'=>false,'id'=>'lot_number_id','required'=>true));?>
-                            	</div>
-                            </div>
+
+							<?php if($groupId == 2){
+								$temp_lot_number = @$carDetails['Car']['lot_number'];
+								$temp_lot_number_val  = ($temp_lot_number) ? $temp_lot_number : 0;
+								?>
+								<div class="controls">
+									<?php echo $this->Form->input('lot_number',array('type'=>'hidden','class'=>'form-control ','value'=>$temp_lot_number_val,'label'=>false,'id'=>'lot_number_id','required'=>true));?>
+								</div>
+							<?php } else { ?>
+								<div class="form-group col-md-3">
+									<label for="inputChassis">Lot No</label>
+									<div class="controls">
+										<?php echo $this->Form->input('lot_number',array('type'=>'text','class'=>'form-control ','value'=>@$carDetails['Car']['lot_number'],'label'=>false,'id'=>'lot_number_id','required'=>true));?>
+									</div>
+								</div>
+
+								<?php } ?>
+
                             
                             <div class="form-group col-md-3">
                                 <label for="inputTransmission">Transmission</label>
@@ -353,62 +364,148 @@
 										<?php echo $this->Form->input('net_push',array('type'=>'text','class'=>'form-control ','label'=>false,'id'=>'net_push_id','onkeypress'=>"return allownumber(event)",'value'=>@$carDetails['CarPayment']['net_push'], 'onblur' => "calculateFinalPrice()"));?>
 									</div>
 								</div>
-                                <div class="control-group col-md-3"> 
-									<label class="control-label" for="inputbodystyle">Auction Fees </label>
+
+
+								<?php if($groupId == 2){
+									$temp_auction_fee = @$carDetails['CarPayment']['auction_fee'];
+									$temp_auction_fee_val  = ($temp_auction_fee) ? $temp_auction_fee : 0;
+									?>
 									<div class="controls">
-										<?php echo $this->Form->input('auction_fee',array('type'=>'text','value'=>@$carDetails['CarPayment']['auction_fee'],'label'=>false,'class'=>'form-control ','id'=>'main_select_fee','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+										<?php echo $this->Form->input('auction_fee',array('type'=>'hidden','value'=>$temp_auction_fee_val,'label'=>false,'class'=>'form-control ','id'=>'main_select_fee','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
 									</div>
-								</div>
+								<?php } else { ?>
+									<div class="control-group col-md-3">
+										<label class="control-label" for="inputbodystyle">Auction Fees </label>
+										<div class="controls">
+											<?php echo $this->Form->input('auction_fee',array('type'=>'text','value'=>@$carDetails['CarPayment']['auction_fee'],'label'=>false,'class'=>'form-control ','id'=>'main_select_fee','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+										</div>
+									</div>
+
+								<?php } ?>
+
 							</div>
                             
                             
 						  <div class="row">
-							<div class="control-group col-md-3">
-								<label class="control-label" for="inputbodystyle"> Rickshaw </label>
-								<div class="controls">
-									<?php echo $this->Form->input('rickshaw',array('type'=>'text','value'=>@$carDetails['CarPayment']['rickshaw'],'label'=>false,'class'=>"form-control",'id'=>'main_rickshaw_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?> 
-								</div>
-							</div>
-							<div class="control-group col-md-3">
-								<label class="control-label" for="inputbodystyle">Shipping</label>
-								<div class="controls">
-									<?php echo $this->Form->input('shiping_fee',array('type'=>'text','value'=>@$carDetails['CarPayment']['shiping_fee'],'class'=>'form-control ','label'=>false,'id'=>'main_shipping_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
-								</div>
-							</div>
-							<div class="control-group col-md-3">
-								<label class="control-label" for="inputbodystyle">Freight </label>
-								<div class="controls">
-									<?php echo $this->Form->input('freight',array('type'=>'text','value'=>@$carDetails['CarPayment']['freight'],'label'=>false,'class'=>'form-control ','id'=>'main_freight_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
-								</div>
-							</div>
-							<div class="control-group col-md-3">
-								<label class="control-label" for="inputbodystyle">Others</label>
-								<div class="controls">
-									<?php echo $this->Form->input('other',array('type'=>'text','value'=>@$carDetails['CarPayment']['other'],'class'=>'form-control ','label'=>false,'id'=>'mail_Others_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
-								</div>
-							</div>
+							  <?php if($groupId == 2){
+								  $temp_rickshaw = @$carDetails['CarPayment']['rickshaw'];
+								  $temp_rickshaw_val  = ($temp_rickshaw) ? $temp_rickshaw : 0;
+								  ?>
+								  <div class="controls">
+									  <?php echo $this->Form->input('rickshaw',array('type'=>'hidden','value'=>$temp_rickshaw_val,'label'=>false,'class'=>"form-control",'id'=>'main_rickshaw_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+								  </div>
+							  <?php } else { ?>
+								  <div class="control-group col-md-3">
+									  <label class="control-label" for="inputbodystyle"> Rickshaw </label>
+									  <div class="controls">
+										  <?php echo $this->Form->input('rickshaw',array('type'=>'text','value'=>@$carDetails['CarPayment']['rickshaw'],'label'=>false,'class'=>"form-control",'id'=>'main_rickshaw_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+									  </div>
+								  </div>
+							  <?php } ?>
+
+
+							  <?php if($groupId == 2){
+								  $temp_shiping_fee = @$carDetails['CarPayment']['shiping_fee'];
+								  $temp_shiping_fee_val  = ($temp_shiping_fee) ? $temp_shiping_fee : 0;
+								  ?>
+								  <div class="controls">
+									  <?php echo $this->Form->input('shiping_fee',array('type'=>'hidden','value'=>$temp_shiping_fee_val,'class'=>'form-control ','label'=>false,'id'=>'main_shipping_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+								  </div>
+							  <?php } else { ?>
+								  <div class="control-group col-md-3">
+									  <label class="control-label" for="inputbodystyle">Shipping</label>
+									  <div class="controls">
+										  <?php echo $this->Form->input('shiping_fee',array('type'=>'text','value'=>@$carDetails['CarPayment']['shiping_fee'],'class'=>'form-control ','label'=>false,'id'=>'main_shipping_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+									  </div>
+								  </div>
+							  <?php } ?>
+
+
+							  <?php if($groupId == 2){
+								  $temp_freight = @$carDetails['CarPayment']['freight'];
+								  $temp_freight_val  = ($temp_freight) ? $temp_freight : 0;
+								  ?>
+								  <div class="controls">
+									  <?php echo $this->Form->input('freight',array('type'=>'hidden','value'=>$temp_freight_val,'label'=>false,'class'=>'form-control ','id'=>'main_freight_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+								  </div>
+							  <?php } else { ?>
+								  <div class="control-group col-md-3">
+									  <label class="control-label" for="inputbodystyle">Freight </label>
+									  <div class="controls">
+										  <?php echo $this->Form->input('freight',array('type'=>'text','value'=>@$carDetails['CarPayment']['freight'],'label'=>false,'class'=>'form-control ','id'=>'main_freight_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+									  </div>
+								  </div>
+							  <?php } ?>
+
+
+							  <?php if($groupId == 2){
+								  $temp_other = @$carDetails['CarPayment']['other'];
+								  $temp_other_val  = ($temp_other) ? $temp_other : 0;
+								  ?>
+								  <div class="controls">
+									  <?php echo $this->Form->input('other',array('type'=>'hidden','value'=>$temp_other,'class'=>'form-control ','label'=>false,'id'=>'mail_Others_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+								  </div>
+							  <?php } else { ?>
+								  <div class="control-group col-md-3">
+									  <label class="control-label" for="inputbodystyle">Others</label>
+									  <div class="controls">
+										  <?php echo $this->Form->input('other',array('type'=>'text','value'=>@$carDetails['CarPayment']['other'],'class'=>'form-control ','label'=>false,'id'=>'mail_Others_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+									  </div>
+								  </div>
+							  <?php } ?>
+
                             
 							<div class="row">
-							<div class="control-group col-md-3">
-								<label class="control-label" for="inputbodystyle">RECYCLE</label>
-								<div class="controls">
-									<?php echo $this->Form->input('recycle_price',array('type'=>'text','value'=>@$carDetails['CarPayment']['recycle_price'],'class'=>'form-control ','label'=>false,'id'=>'recycle_price','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
-								</div>
-							</div>
+								<?php if($groupId == 2){
+									$temp_recycle_price = @$carDetails['CarPayment']['recycle_price'];
+									$temp_recycle_price_val  = ($temp_recycle_price) ? $temp_recycle_price : 0;
+									?>
+									<div class="controls">
+										<?php echo $this->Form->input('recycle_price',array('type'=>'hidden','value'=>$temp_recycle_price,'class'=>'form-control ','label'=>false,'id'=>'recycle_price','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
+									</div>
+								<?php } else { ?>
+									<div class="control-group col-md-3">
+										<label class="control-label" for="inputbodystyle">RECYCLE</label>
+										<div class="controls">
+											<?php echo $this->Form->input('recycle_price',array('type'=>'text','value'=>@$carDetails['CarPayment']['recycle_price'],'class'=>'form-control ','label'=>false,'id'=>'recycle_price','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
+										</div>
+									</div>
+								<?php } ?>
 
-								<div class="control-group col-md-3 testing_text1">
-									<label class="control-label" for="inputbodystyle">Set Minimum Price</label>
+								<?php if($groupId == 2){
+									$temp_minimum_price_doller = @$carDetails['CarPayment']['minimum_price_doller'];
+									$temp_minimum_price_doller_val  = ($temp_minimum_price_doller) ? $temp_minimum_price_doller : 0;
+									?>
 									<div class="controls">
-										
-										<?php echo $this->Form->input('minimum_price_doller',array('type'=>'text','value'=>@$carDetails['CarPayment']['minimum_price_doller'],'class'=>'form-control ','label'=>false,'id'=>'minimum_price_doller','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
+										<?php echo $this->Form->input('minimum_price_doller',array('type'=>'hidden','value'=>$temp_minimum_price_doller_val,'class'=>'form-control ','label'=>false,'id'=>'minimum_price_doller','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
 									</div>
-								</div>
-								<div class="control-group col-md-3 testing_text2">
-									<label class="control-label" for="inputbodystyle">&nbsp;</label>	
+								<?php } else { ?>
+									<div class="control-group col-md-3 testing_text1">
+										<label class="control-label" for="inputbodystyle">Set Minimum Price</label>
+										<div class="controls">
+
+											<?php echo $this->Form->input('minimum_price_doller',array('type'=>'text','value'=>@$carDetails['CarPayment']['minimum_price_doller'],'class'=>'form-control ','label'=>false,'id'=>'minimum_price_doller','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
+										</div>
+									</div>
+								<?php } ?>
+
+
+								<?php if($groupId == 2){
+									$temp_minimum_price_yen = @$carDetails['CarPayment']['minimum_price_yen'];
+									$temp_minimum_price_yen_val  = ($temp_minimum_price_yen) ? $temp_minimum_price_yen : 0;
+									?>
 									<div class="controls">
-										<?php echo $this->Form->input('minimum_price_yen',array('type'=>'text','value'=>@$carDetails['CarPayment']['minimum_price_yen'],'class'=>'form-control ','label'=>false,'id'=>'minimum_price_yen','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
+										<?php echo $this->Form->input('minimum_price_yen',array('type'=>'hidden','value'=>$temp_minimum_price_yen_val,'class'=>'form-control ','label'=>false,'id'=>'minimum_price_yen','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
 									</div>
-								</div>
+								<?php } else { ?>
+									<div class="control-group col-md-3 testing_text2">
+										<label class="control-label" for="inputbodystyle">&nbsp;</label>
+										<div class="controls">
+											<?php echo $this->Form->input('minimum_price_yen',array('type'=>'text','value'=>@$carDetails['CarPayment']['minimum_price_yen'],'class'=>'form-control ','label'=>false,'id'=>'minimum_price_yen','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
+										</div>
+									</div>
+								<?php } ?>
+
 							</div>
 							
 						 </div>
