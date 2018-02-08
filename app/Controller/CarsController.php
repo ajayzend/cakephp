@@ -207,7 +207,7 @@ class CarsController extends AppController {
 				$carDetails= $this->Paginator->paginate('Car'); 
 				$this->set('count_type','Hidden');	
 			 }
-			 
+
 	     $this->set('carDetail',$carDetails);
 		 }
 		 

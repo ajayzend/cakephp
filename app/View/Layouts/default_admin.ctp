@@ -17,7 +17,7 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 $groupId = $this->Session->read('UserAuth.User.user_group_id');
-$cakeDescription = __d('cake_dev', 'Bizupon'); 
+$cakeDescription = __d('cake_dev', 'Bizupon');
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,7 +30,7 @@ $cakeDescription = __d('cake_dev', 'Bizupon');
 	<link rel="shortcut icon" href="<?=$this->webroot?>img/favicon.png">
 	<?php
 		echo $this->Html->meta('icon');
-		
+
 		echo $this->Html->css('bootstrap');
 		echo $this->Html->css('bootstrap-cerulean');
 		echo $this->Html->css('bootstrap-responsive');
@@ -40,17 +40,17 @@ $cakeDescription = __d('cake_dev', 'Bizupon');
 		echo $this->Html->css('uniform.default');
 		echo $this->Html->css('jquery.iphone.toggle');
 		echo $this->Html->css('font-awesome');
-		
+
 		//echo $this->Html->css('select2');
-		
+
 		echo $this->Html->script('jquery-1.7.2.min');
-		
+
 		echo $this->Html->script('jquery.bxslider');
 		echo $this->Html->script('jquery-ui-1.8.21.custom.min');
 		echo $this->Html->script('jquery-form');
 		echo $this->fetch('meta');
-		
-		
+
+
 	?>
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
@@ -65,18 +65,18 @@ $cakeDescription = __d('cake_dev', 'Bizupon');
 <body>
 	<!--    div for model popup-->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	
+
 	</div>
 <?php echo $this->element('admin_header'); //header ?>
 
-  
+
 <div class="page-container">
 		<?php if($groupId == 2)
 			echo $this->element('admin_client_sidebar');
 		else
 			echo $this->element('admin_sidebar');
 		//left menu ?>
-		<?php echo $this->fetch('content'); ?>		
+		<?php echo $this->fetch('content'); ?>
 		<?php echo $this->element('admin_footer'); ?>
 </div><!--/.row-fluid-->
 
@@ -84,7 +84,7 @@ $cakeDescription = __d('cake_dev', 'Bizupon');
 
 <?php //echo $this->element('sql_dump'); ?>
 <?php
-	
+
 	echo $this->Html->script('bootstrap-transition');
 	echo $this->Html->script('bootstrap-modal');
 	echo $this->Html->script('bootstrap-dropdown');
