@@ -134,7 +134,7 @@
 				if($val['Invoice']['invoice_no'] == '' && $val['CarPayment']['sale_price'] == '') {
 					$carid = $val['Car']['id'];
 					?>
-					<a href="<?php echo $this->Html->url('/',true); ?>admin/cars/addnew_car/<?php echo $carid;?>" target="_blank">
+					<a href="<?php echo $this->Html->url('/',true); ?>admin/cars/addnew_car/<?php echo $carid;?>">
 						<span>&nbsp; &nbsp; &nbsp; &nbsp;Edit</span>
 					</a>
 				<?php }

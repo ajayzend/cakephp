@@ -274,7 +274,7 @@
         <div class="tab-pane" id="buy" role="tabpanel">
         	<div class="col-md-12 col-lg-12">
                 <div class="box-header well" data-original-title>
-                    <h1 class="PageTitle">Sale <span>History</span></h1>
+                    <h1 class="PageTitle">Buy <span>History</span></h1>
                     <div class="clearfix"></div>
                 </div>
                 <div class="box-content">
@@ -699,7 +699,7 @@
                                 if($val['Invoice']['invoice_no'] == '' && $val['CarPayment']['sale_price'] == '') {
                                     $carid = $val['Car']['id'];
                                ?>
-                                    <a href="<?php echo $this->Html->url('/',true); ?>admin/cars/addnew_car/<?php echo $carid;?>" target="_blank">
+                                    <a href="<?php echo $this->Html->url('/',true); ?>admin/cars/addnew_car/<?php echo $carid;?>">
                                         <span>&nbsp; &nbsp; &nbsp; &nbsp;Edit</span>
                                     </a>
                                <?php }

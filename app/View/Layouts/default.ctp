@@ -420,7 +420,7 @@ s0.parentNode.insertBefore(s1,s0);
             {
                 ?>
                 <div class="pull-xs-left TopBarProfileDetail btn-group">
-                    <a class="dropdown-item" href="<?php echo $this->Html->url('/',true); ?>admin/cars/addnew_car/" target="_blank">
+                    <a class="dropdown-item" href="<?php echo $this->Html->url('/',true); ?>admin/cars/addnew_car/">
                         <span style="color:#55b640">ADD CARS</span> &nbsp; &nbsp;
                     </a>
                 </div>
