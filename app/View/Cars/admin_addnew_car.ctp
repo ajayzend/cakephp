@@ -1041,14 +1041,14 @@
 						<div class="form-group col-md-3">
 							<label for="inputChassis">ALLOY WHEEL</label>
 							<div class="controls">
-								<?php echo $this->Form->input('alloy_wheel',array('type'=>'select','options'=>array('1'=>'COMPANY FIT','2'=>'NOT COMPANY'),'id'=>'alloy_wheelId','empty'=>'Select ALLOY WHEEL','selected'=>@$carDetails['Car']['alloy_wheel'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+								<?php echo $this->Form->input('alloy_wheel',array('type'=>'select','options'=>array('COMPANY FIT'=>'COMPANY FIT','NOT COMPANY'=>'NOT COMPANY'),'id'=>'alloy_wheelId','empty'=>'Select ALLOY WHEEL','selected'=>@$carDetails['Car']['alloy_wheel'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
 							</div>
 						</div>
 
 						<div class="form-group col-md-3">
 							<label for="inputChassis">INTERIOR COLOR</label>
 							<div class="controls">
-								<?php echo $this->Form->input('interior_color',array('type'=>'select','options'=>array('1'=>'DARK','2'=>'LIGHT'),'id'=>'interior_colorId','empty'=>'Select INTERIOR COLOR','selected'=>@$carDetails['Car']['interior_color'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+								<?php echo $this->Form->input('interior_color',array('type'=>'select','options'=>array('DARK'=>'DARK','LIGHT'=>'LIGHT'),'id'=>'interior_colorId','empty'=>'Select INTERIOR COLOR','selected'=>@$carDetails['Car']['interior_color'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
 							</div>
 						</div>
 
@@ -1262,7 +1262,7 @@
 						<div class="form-group col-md-3">
 							<label for="inputChassis">LIGHT</label>
 							<div class="controls">
-								<?php echo $this->Form->input('light',array('type'=>'select','options'=>array('1'=>'HID','2'=>'XYNON'),'id'=>'lightId','empty'=>'Select an Option','selected'=>@$carDetails['Car']['light'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+								<?php echo $this->Form->input('light',array('type'=>'select','options'=>array('HID'=>'HID','XYNON'=>'XYNON'),'id'=>'lightId','empty'=>'Select an Option','selected'=>@$carDetails['Car']['light'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
 							</div>
 						</div>
 
@@ -2246,3 +2246,4 @@
 
 
 </script>
+
