@@ -419,16 +419,32 @@ s0.parentNode.insertBefore(s1,s0);
             else if($this->UserAuth->isLogged() && $this->UserAuth->isClientAdmin())
             {
                 ?>
-                <div class="pull-xs-left TopBarProfileDetail btn-group">
-                    <a class="dropdown-item" href="<?php echo $this->Html->url('/',true); ?>admin/cars/addnew_car/">
-                        <span style="color:#55b640">ADD CARS</span> &nbsp; &nbsp;
+
+
+                <div class="pull-xs-left btn-group">
+                    <a aria-haspopup="true" aria-expanded="false" href="<?php echo $this->Html->url('/',true); ?>admin/cars/addnew_car/">
+                        <div class="HeaderTabs">
+                        ADD CARS&nbsp; &nbsp;
+                        </div>
                     </a>
                 </div>
 
                 <div class="pull-xs-right TopBarProfileDetail btn-group">
-                    <a class="dropdown-item" href="<?php echo $this->Html->url('/',true); ?>home/dashboard">
+                    <a class="dropdown-item" href="<?php echo $this->Html->url('/',true); ?>home/dashboard" title="<?php echo $this->Session->read('defaultUserName');?>">
                         <i class="fa fa-user-circle-o" aria-hidden="true" style="color:#55b640"></i> &nbsp;&nbsp;
-                        Hi <span style="color:#55b640"><?php echo  $this->Session->read('defaultUserName'); ?></span> &nbsp; &nbsp;
+                        Hi <span style="color:#55b640">
+                            <?php
+                            $fullname = $this->Session->read('defaultUserName');
+                            $length = 10;
+                            if(strlen($fullname)<= $length)
+                                echo $fullname;
+                            else{
+                                $fullname = substr($fullname,0,$length) . '...';
+                                echo $fullname;
+                            }
+                            ?>
+                        </span> &nbsp; &nbsp;
+
                     </a>
                 </div>
                 <?php
