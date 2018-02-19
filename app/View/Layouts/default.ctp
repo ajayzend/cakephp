@@ -424,7 +424,7 @@ s0.parentNode.insertBefore(s1,s0);
                 <div class="pull-xs-left btn-group">
                     <a aria-haspopup="true" aria-expanded="false" href="<?php echo $this->Html->url('/',true); ?>admin/cars/addnew_car/">
                         <div class="HeaderTabs">
-                        ADD CARS&nbsp; &nbsp;
+                            <i class="fa fa-automobile" aria-hidden="true" style="color:#55b640"></i>  &nbsp;&nbsp; Add Cars&nbsp; &nbsp;
                         </div>
                     </a>
                 </div>
@@ -507,7 +507,7 @@ s0.parentNode.insertBefore(s1,s0);
 <div class="clearfix"></div>
 
 <div class="footer_bottom text-xs-center">
-    &copy; Bizupon - <?=date("Y")?> All right Reserved | Powered by Pixpal
+    &copy; Bizupon - <?=date("Y")?> All right Reserved <!--| Powered by Pixpal-->
     <div class="clearfix"></div>
 </div>
 

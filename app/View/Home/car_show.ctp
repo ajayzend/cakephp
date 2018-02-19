@@ -2,7 +2,7 @@
 ?>
 <script src="<?php echo $this->webroot;?>js/zoom.js"></script>
 <style>
-    .black_overlay{
+   .black_overlay{
         display: none;
         position: absolute;
         top: 0%;
@@ -33,131 +33,132 @@
 </style>
 <?php $height = "style=\"height:20px; overflow:hidden;\""; ?>
 <?php $height_td = "style=\"height:20px; overflow:hidden;color:green\""; ?>
+<?php $label_color = "style=\"background-color: #d5d5d5\""; ?>
 <div id="fade" class="black_overlay"></div>
 <div id="light" class="white_content">
     <div align="right">
     <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a>
     </div>
-<table class="table table-striped table-bordered bootstrap-datatable datatable custom_table">
+<table class="table <!--table-striped--> table-bordered bootstrap-datatable datatable custom_table">
     <tr>
-        <td><div <?php echo $height;?>>POWER STEERING</div></td>
-        <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['power_steering'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['power_steering'] == '2'){echo 'No';};?></div></td>
-        <td><div <?php echo $height;?>>AIR CONDITION</div></td>
-        <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['air_condition'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['air_condition'] == '2'){ echo 'N0'; } ;?></div></td>
-        <td><div <?php echo $height;?>>ALLOY WHEEL</div></td>
-        <td><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['alloy_wheel'];?></div></td>
-        <td><div <?php echo $height;?>>INTERIOR COLOR</div></td>
-        <td><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['interior_color'];?></div></td>
+        <td <?php echo $label_color;?> ><div <?php echo $height;?>>POWER STEERING</div></td>
+        <td style="width: 100px;"><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['power_steering'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['power_steering'] == '2'){echo 'No';};?></div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>AIR CONDITION</div></td>
+        <td style="width: 100px;"><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['air_condition'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['air_condition'] == '2'){ echo 'N0'; } ;?></div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>ALLOY WHEEL</div></td>
+        <td style="width: 100px;"><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['alloy_wheel'];?></div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>INTERIOR COLOR</div></td>
+        <td style="width: 100px;"><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['interior_color'];?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>TV</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>TV</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['tv'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['tv'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>KEYLESS ENTRY</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>KEYLESS ENTRY</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['keyless_entry'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['keyless_entry'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>AERO KIT</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>AERO KIT</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['aero_kit'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['aero_kit'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>REAR PARKING CAMERA</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>REAR PARKING CAMERA</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['rear_parking_camera'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['rear_parking_camera'] == '2'){echo 'No';} ?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>POWER DOOR</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>POWER DOOR</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['power_door'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['power_door'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>SEAT HEATER</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>SEAT HEATER</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['seat_heater'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['seat_heater'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>SPARE KEY</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>SPARE KEY</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['spare_key'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['spare_key'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>ROOF RAILS</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>ROOF RAILS</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['roof_rails'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['roof_rails'] == '2'){echo 'No';} ?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>PARKING SENSOR</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>PARKING SENSOR</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['parking_sensor'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['parking_sensor'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>POWER WINDOW</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>POWER WINDOW</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['power_window'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['power_window'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>POWER SEATS</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>POWER SEATS</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['power_seats'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['power_seats'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>MAINTENANCE RECORD</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>MAINTENANCE RECORD</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['maintenance_record'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['maintenance_record'] == '2'){echo 'No';} ?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>ABS(ANTI BREAK SYSTEM)</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>ABS(ANTI BREAK SYSTEM)</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['anti_break_system'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['anti_break_system'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>AIRBAGS</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>AIRBAGS</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['airbags'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['airbags'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>NAVIGATION</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>NAVIGATION</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['navigation'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['navigation'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>CD PLAYER</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>CD PLAYER</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['cd_player'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['cd_player'] == '2'){echo 'No';} ?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>SLIDING DOOR</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>SLIDING DOOR</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['sliding_door'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['sliding_door'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>SMART KEY SYSTEM</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>SMART KEY SYSTEM</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['smart_key_system'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['smart_key_system'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>AUTOMATIC DOOR</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>AUTOMATIC DOOR</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['automatic_door'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['automatic_door'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>LOW DOWN</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>LOW DOWN</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['low_down'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['low_down'] == '2'){echo 'No';} ?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>BODY KIT</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>BODY KIT</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['body_kit'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['body_kit'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>REAR SPOILER</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>REAR SPOILER</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['rear_spoiler'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['rear_spoiler'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>WIND BREAKER</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>WIND BREAKER</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['wind_breaker'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['wind_breaker'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>NO SMOKING</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>NO SMOKING</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['no_smoking'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['no_smoking'] == '2'){echo 'No';} ?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>ONE OWNER</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>ONE OWNER</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['one_owner'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['one_owner'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>ATS(ANTI THEFT SYSTEM)</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>ATS(ANTI THEFT SYSTEM)</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['anti_theft_system'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['anti_theft_system'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>LEATHER SEATS</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>LEATHER SEATS</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['leather_seats'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['leather_seats'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>LIGHT</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>LIGHT</div></td>
         <td><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['light'];?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>MD/MD CHANGER</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>MD/MD CHANGER</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['md_changer'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['md_changer'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>BENCH SEATS</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>BENCH SEATS</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['bench_seats'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['bench_seats'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>DOUBLE AIR CONDITION</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>DOUBLE AIR CONDITION</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['double_air_condition'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['double_air_condition'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>SUNROOF</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>SUNROOF</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['sunroof'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['sunroof'] == '2'){echo 'No';} ?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>ESC(ELECTRONIC STABILITY CONTROL)</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>ESC(ELECTRONIC STABILITY CONTROL)</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['electronic_stability_control'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['electronic_stability_control'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>SPARE TYRE</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>SPARE TYRE</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['spare_tyre'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['spare_tyre'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>FOG LAMP</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>FOG LAMP</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['fog_lamp'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['fog_lamp'] == '2'){echo 'No';} ?></div></td>
-        <td><div <?php echo $height;?>>MUD FLAP</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>MUD FLAP</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['mud_flap'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['mud_flap'] == '2'){echo 'No';} ?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>EXTERIOR COLOR</div></td>
-        <td><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['exterior_color'];?></div></td>
-        <td><div <?php echo $height;?>>SEATING CAPACITY</div></td>
-        <td><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['seating_capacity'];?></div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>EXTERIOR COLOR</div></td>
+        <td colspan="3"><div <?php echo $height_td;?> ><?php echo $showAllArrival[0]['Car']['exterior_color'];?></div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>SEATING CAPACITY</div></td>
+        <td colspan="3"><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['seating_capacity'];?></div></td>
     </tr>
 
     <tr>
-        <td><div <?php echo $height;?>>REMARK</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>REMARK</div></td>
         <td colspan="7"><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['remarks'];?></div></td>
     </tr>
 </table>
@@ -266,19 +267,11 @@
 	}
 	?>
     <div class="col-lg-12">
-        <div class="col-lg-7 DivPadding5PX" data-toggle="modal" >
         <h1 class="ProductDetailProductName"><?php echo $showAllArrival[0]['CarName']['car_name']?></h1>
-            </div>
         <!--<div align="right">
             <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">
                 <button style="background: #55b640;margin-top:7px;">More Detail</button></a>
         </div>-->
-        <div class="col-lg-5 DivPadding5PX" data-toggle="modal" >
-            <div class="hvr-pulse-grow ProductDetailBuyNowButton" style="background: #55b640;margin-top:7px;">
-                <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">
-                   More Detail</a>
-            </div>
-        </div>
 
     </div>
     <?php  
@@ -470,7 +463,13 @@
     </div>
 
     <?php } ?>
-    
+
+    <div class="col-lg-11 DivPadding5PX" data-toggle="modal" >
+        <div class="hvr-pulse-grow ProductDetailBuyNowButton" style="background: #55b640;margin-top:7px;">
+            <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">
+                More Detail</a>
+        </div>
+    </div>
 
     <?php if($this->UserAuth->isLogged() && !$this->UserAuth->isAdmin()){ ?>
 	
@@ -487,7 +486,7 @@
 	        <?php if(!$this->UserAuth->isAdmin() && $showAllArrival[0]['Car']['publish']==1){ ?>
 
     <div class="col-lg-4 DivPadding5PX" data-toggle="modal" data-target="#CifModal"><div class="hvr-pulse-grow ProductDetailBuyNowButton" style="background:#FFA500; margin-top:7px;">Ask Price</div></div>
-	
+
     <div class="col-lg-12 DivPadding5PX PrductDetailAcceptTerms">Don't forget to check the Bizupon <a href="<?php echo $this->base;?>/pages/terms_condition/" target="_blank">Terms & Conditions</a> & Bizupon <a href="<?php echo $this->base;?>/pages/policy/" target="_blank">Payment Policy</a></div>
 	
 		<?php } ?>
