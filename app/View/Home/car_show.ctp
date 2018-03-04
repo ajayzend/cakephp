@@ -21,7 +21,7 @@
         top: 17%;
         left: 7%;
         width: 87%;
-        height: 50%;
+        height: 53%;
         padding: 1px;
         border: 1px solid green;
         background-color: white;
@@ -149,6 +149,19 @@
         <td <?php echo $label_color;?>><div <?php echo $height;?>>MUD FLAP</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['mud_flap'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['mud_flap'] == '2'){echo 'No';} ?></div></td>
     </tr>
+
+
+    <tr>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>ENGINE CONDITION</div></td>
+        <td><div <?php echo $height_td;?> ><?php echo $showAllArrival[0]['Car']['engine_condition'];?></div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>AUTOMATIC CONDITION</div></td>
+        <td><div <?php echo $height_td;?> ><?php echo $showAllArrival[0]['Car']['automatic_condition'];?></div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>RUST(BODY)</div></td>
+        <td><div <?php echo $height_td;?> ><?php echo $showAllArrival[0]['Car']['rust_body'];?></div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>RUST(ENGINE)</div></td>
+        <td><div <?php echo $height_td;?> ><?php echo $showAllArrival[0]['Car']['rust_engine'];?></div></td>
+    </tr>
+
 
     <tr>
         <td <?php echo $label_color;?>><div <?php echo $height;?>>EXTERIOR COLOR</div></td>

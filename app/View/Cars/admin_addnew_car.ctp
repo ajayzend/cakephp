@@ -1344,6 +1344,36 @@
 							</div>
 						</div>
 
+
+						<!--New four fields-->
+						<div class="form-group col-md-3">
+							<label for="inputChassis">ENGINE CONDITION</label>
+							<div class="controls">
+								<?php echo $this->Form->input('engine_condition',array('type'=>'select','options'=>array('Good'=>'Good','Ok'=>'Ok'),'id'=>'engine_condition','empty'=>'Select an Option','selected'=>@$carDetails['Car']['engine_condition'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+							</div>
+						</div>
+
+						<div class="form-group col-md-3">
+							<label for="inputChassis">AUTOMATIC CONDITION</label>
+							<div class="controls">
+								<?php echo $this->Form->input('automatic_condition',array('type'=>'select','options'=>array('Good'=>'Good','Ok'=>'Ok'),'id'=>'automatic_condition','empty'=>'Select an Option','selected'=>@$carDetails['Car']['automatic_condition'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+							</div>
+						</div>
+
+						<div class="form-group col-md-3">
+							<label for="inputChassis">RUST(BODY)</label>
+							<div class="controls">
+								<?php echo $this->Form->input('rust_body',array('type'=>'select','options'=>array('High'=>'High','Moderate'=>'Moderate','Low'=>'Low','No'=>'No'),'id'=>'rust_body','empty'=>'Select an Option','selected'=>@$carDetails['Car']['rust_body'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+							</div>
+						</div>
+
+						<div class="form-group col-md-3">
+							<label for="inputChassis">RUST(ENGINE)</label>
+							<div class="controls">
+								<?php echo $this->Form->input('rust_engine',array('type'=>'select','options'=>array('High'=>'High','Moderate'=>'Moderate','Low'=>'Low','No'=>'No'),'id'=>'rust_engine','empty'=>'Select an Option','selected'=>@$carDetails['Car']['rust_engine'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+							</div>
+						</div>
+
 						<div class="form-group col-md-3">
 							<label class="control-label" for="inputbodystyle">EXTERIOR COLOR</label>
 							<?php echo $this->Form->input('exterior_color',array('type'=>'text','id'=>'exterior_color','value'=>@$carDetails['Car']['exterior_color'],'div'=>false,'label'=>false,'class'=> 'form-control'));?>

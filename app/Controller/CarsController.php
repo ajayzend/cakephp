@@ -1660,6 +1660,10 @@ class CarsController extends AppController {
 				$data['fog_lamp'] = $this->data['Car']['fog_lamp'];
 				$data['mud_flap'] = $this->data['Car']['mud_flap'];
 				$data['remarks'] = $this->data['Car']['remarks'];
+				$data['engine_condition'] = $this->data['Car']['engine_condition'];
+				$data['automatic_condition'] = $this->data['Car']['automatic_condition'];
+				$data['rust_body'] = $this->data['Car']['rust_body'];
+				$data['rust_engine'] = $this->data['Car']['rust_engine'];
 
 				//pr($data); die;
 				$returnData = $this->Car->save($data);
