@@ -380,9 +380,31 @@
 							<hr>
 
 							<div class="dollar_exchange">
+								<?php if($groupId == 2){
+									$push_price = "Selling Price";
+									$net_push_price = "Net Selling Price";
+									$rikshaw = "Car Carrier";
+									$shipping = "Miscellaneous";
+									$default_rikshaw = 20000;
+									$default_shipping = 10000;
+									$default_recycle = 20000;
+								} else {
+									$push_price = "Push Price";
+									$net_push_price = "Net Push Price";
+									$rikshaw = "Rickshaw";
+									$shipping = "Shipping";
+									$default_rikshaw = 0;
+									$default_shipping = 0;
+									$default_recycle = 0;
+								 }?>
+
+								<div class="controls">
+									<?php echo $this->Form->input('Created_User_GroupID',array('type'=>'hidden','value'=>@$Created_User_GroupID,'label'=>false,'class'=>'form-control ','id'=>'Created_User_GroupID','required'=>false));?>
+								</div>
+
 								<div class="row">
 									<div class="control-group col-md-3">
-										<label class="control-label" for="inputbodystyle">Push Price</label>
+										<label class="control-label" for="inputbodystyle"><?php echo $push_price;?></label>
 										<div class="controls">
 											<?php echo $this->Form->input('push_price',array('type'=>'text','value'=>@$carDetails['CarPayment']['push_price'],'class'=>'form-control ','label'=>false,'id'=>'push_id','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
 										</div>
@@ -394,7 +416,7 @@
 										</div>
 									</div>
 									<div class="control-group col-md-3">
-										<label class="control-label" for="inputbodystyle">Net Push Price </label>
+										<label class="control-label" for="inputbodystyle"><?php echo $net_push_price;?></label>
 										<div class="controls">
 											<?php echo $this->Form->input('net_push',array('type'=>'text','class'=>'form-control ','label'=>false,'id'=>'net_push_id','onkeypress'=>"return allownumber(event)",'value'=>@$carDetails['CarPayment']['net_push'], 'onblur' => "calculateFinalPrice()"));?>
 										</div>
@@ -422,38 +444,28 @@
 
 
 								<div class="row">
-									<?php if($groupId == 2){
+									<?php
 										$temp_rickshaw = @$carDetails['CarPayment']['rickshaw'];
-										$temp_rickshaw_val  = ($temp_rickshaw) ? $temp_rickshaw : 0;
+										$temp_rickshaw_val  = ($temp_rickshaw) ? $temp_rickshaw :$default_rikshaw;
 										?>
-										<div class="controls">
-											<?php echo $this->Form->input('rickshaw',array('type'=>'hidden','value'=>$temp_rickshaw_val,'label'=>false,'class'=>"form-control",'id'=>'main_rickshaw_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
-										</div>
-									<?php } else { ?>
 										<div class="control-group col-md-3">
-											<label class="control-label" for="inputbodystyle"> Rickshaw </label>
+											<label class="control-label" for="inputbodystyle"> <?php echo $rikshaw;?> </label>
 											<div class="controls">
-												<?php echo $this->Form->input('rickshaw',array('type'=>'text','value'=>@$carDetails['CarPayment']['rickshaw'],'label'=>false,'class'=>"form-control",'id'=>'main_rickshaw_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+												<?php echo $this->Form->input('rickshaw',array('type'=>'text','value'=>@$temp_rickshaw_val,'label'=>false,'class'=>"form-control",'id'=>'main_rickshaw_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
 											</div>
 										</div>
-									<?php } ?>
 
 
-									<?php if($groupId == 2){
+									<?php
 										$temp_shiping_fee = @$carDetails['CarPayment']['shiping_fee'];
-										$temp_shiping_fee_val  = ($temp_shiping_fee) ? $temp_shiping_fee : 0;
+										$temp_shiping_fee_val  = ($temp_shiping_fee) ? $temp_shiping_fee : $default_shipping;
 										?>
-										<div class="controls">
-											<?php echo $this->Form->input('shiping_fee',array('type'=>'hidden','value'=>$temp_shiping_fee_val,'class'=>'form-control ','label'=>false,'id'=>'main_shipping_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
-										</div>
-									<?php } else { ?>
 										<div class="control-group col-md-3">
-											<label class="control-label" for="inputbodystyle">Shipping</label>
+											<label class="control-label" for="inputbodystyle"><?php echo $shipping;?></label>
 											<div class="controls">
-												<?php echo $this->Form->input('shiping_fee',array('type'=>'text','value'=>@$carDetails['CarPayment']['shiping_fee'],'class'=>'form-control ','label'=>false,'id'=>'main_shipping_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+												<?php echo $this->Form->input('shiping_fee',array('type'=>'text','value'=>@$temp_shiping_fee_val,'class'=>'form-control ','label'=>false,'id'=>'main_shipping_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
 											</div>
 										</div>
-									<?php } ?>
 
 
 									<?php if($groupId == 2){
@@ -491,21 +503,16 @@
 
 
 									<div class="row">
-										<?php if($groupId == 2){
-											$temp_recycle_price = @$carDetails['CarPayment']['recycle_price'];
-											$temp_recycle_price_val  = ($temp_recycle_price) ? $temp_recycle_price : 0;
-											?>
+										<?php
+										$temp_recycle_price = @$carDetails['CarPayment']['recycle_price'];
+										$temp_recycle_price_val  = ($temp_recycle_price) ? $temp_recycle_price : $default_recycle;
+										?>
+										<div class="control-group col-md-3">
+											<label class="control-label" for="inputbodystyle">RECYCLE</label>
 											<div class="controls">
-												<?php echo $this->Form->input('recycle_price',array('type'=>'hidden','value'=>$temp_recycle_price,'class'=>'form-control ','label'=>false,'id'=>'recycle_price','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
+												<?php echo $this->Form->input('recycle_price',array('type'=>'text','value'=>@$temp_recycle_price_val,'class'=>'form-control ','label'=>false,'id'=>'recycle_price','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
 											</div>
-										<?php } else { ?>
-											<div class="control-group col-md-3">
-												<label class="control-label" for="inputbodystyle">RECYCLE</label>
-												<div class="controls">
-													<?php echo $this->Form->input('recycle_price',array('type'=>'text','value'=>@$carDetails['CarPayment']['recycle_price'],'class'=>'form-control ','label'=>false,'id'=>'recycle_price','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
-												</div>
-											</div>
-										<?php } ?>
+										</div>
 
 										<?php if($groupId == 2){
 											$temp_minimum_price_doller = @$carDetails['CarPayment']['minimum_price_doller'];
@@ -2080,10 +2087,13 @@
 
 
 	function calculateprice() {
-		//alert(Number($("#recycle_price").val()));
-		//alert(Number($("#main_rickshaw_id").val()) + Number($("#main_shipping_id").val()) + Number($("#main_freight_id").val()) + Number($("#mail_Others_id").val()) + Number($("#main_select_fee").val()) + Number($("#net_push_id").val()));
 		return Number($("#main_rickshaw_id").val()) + Number($("#main_shipping_id").val()) + Number($("#main_freight_id").val()) + Number($("#mail_Others_id").val()) + Number($("#main_select_fee").val()) + Number($("#net_push_id").val()) + Number($("#recycle_price").val());
 	}
+
+	function calculateUserprice() {
+		return Number($("#main_rickshaw_id").val()) + Number($("#main_shipping_id").val()) + Number($("#main_freight_id").val()) + Number($("#mail_Others_id").val()) + Number($("#main_select_fee").val()) + Number($("#net_push_id").val());
+	}
+
 </script>
 <script>
 	/*	  function for  calculate Car price  here */
@@ -2095,32 +2105,60 @@
 	function updatepushprice(price, tax) {
 		return roundNumber(Number(price) + Number(price * (tax / 100)), 2);
 	}
+
+	function updatepushrecycleprice(price, recycle, tax) {
+		var price_val = roundNumber(Number(price) + Number(price * (tax / 100)), 2);
+		var recycle_val = roundNumber(Number(recycle) + Number(recycle * (tax / 100)), 2);
+		return roundNumber(Number(price_val) + Number(recycle_val), 2);
+	}
+
 	function roundNumber(num, dec) {
 		var result = Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
 		return result;
 	}
+
 	$("#tax_id").keyup(function () {
 		if ($("#push_id").val() != "" && $("#tax_id").val() != "") {
 			$("#net_push_id").val(updatepushprice($("#push_id").val(), $("#tax_id").val()));
 		}
 	});
+
 	$("#push_id").keyup(function () {
-
-		if ($("#push_id").val() != " " && $("#tax_id").val() != " ") {
-
-
-			$("#net_push_id").val(updatepushprice($("#push_id").val(), $("#tax_id").val()));
-		}
+		calculateNetPushRecyclePrice();
 	});
+
+	$("#recycle_price").keyup(function () {
+		calculateNetPushRecyclePrice();
+	});
+
+	function calculateNetPushRecyclePrice(){
+		if($("#Created_User_GroupID").val() == 2) {
+			if ($("#push_id").val() != " " && $("#tax_id").val() != " ") {
+				$("#net_push_id").val(updatepushrecycleprice($("#push_id").val(), $("#recycle_price").val(), $("#tax_id").val()));
+			}
+		}else{
+			if ($("#push_id").val() != " " && $("#tax_id").val() != " ") {
+				$("#net_push_id").val(updatepushprice($("#push_id").val(), $("#tax_id").val()));
+			}
+		}
+	}
+
 
 	$("#btn_calc").click(function () {
 		calculateFinalPrice();
 	});
 
+
 	function calculateFinalPrice(){
-		$("#car_price_id").val("");
-		$("#main_yenamount_id").val(calculateprice);
-		$("#car_price_id").val(calculateexchange($("#main_yenamount_id").val(), $("#main_exchange_id").val()));
+		if($("#Created_User_GroupID").val() == 2) {
+			$("#car_price_id").val("");
+			$("#main_yenamount_id").val(calculateUserprice);
+			$("#car_price_id").val(calculateexchange($("#main_yenamount_id").val(), $("#main_exchange_id").val()));
+		}else{
+			$("#car_price_id").val("");
+			$("#main_yenamount_id").val(calculateprice);
+			$("#car_price_id").val(calculateexchange($("#main_yenamount_id").val(), $("#main_exchange_id").val()));
+		}
 	}
 
 	$('#Country_id').on('change', function(event) {

@@ -217,6 +217,7 @@ class CarsController extends AppController {
 	{
 		$groupId = $this->Session->read('UserAuth.User.user_group_id');
 		$userid = $this->Session->read('UserAuth.User.id');
+		$created_user_groupID = ($groupId == 2) ? $groupId : 0;
 		if($this->request->is('post'))
 		{
 			$data=array();
@@ -252,8 +253,10 @@ class CarsController extends AppController {
 
 				$this->request->data['Car']['new_arrival_date']  = date('Y-m-d H:i:s',strtotime($this->data['Car']['new_arrival_date']));
 
-				if(!$this->request->data['Car']['car_id'])
+				if(!$this->request->data['Car']['car_id']) {
 					$this->request->data['Car']['created_by'] = $userid;
+					$this->request->data['Car']['groupid'] = $groupId;
+				}
 				$this->request->data['Car']['modified_by'] = $userid;
 				$retData = $this->Car->save($this->request->data);
 				if($retData['Car']['car_id'] == 0)
@@ -324,7 +327,6 @@ class CarsController extends AppController {
 		{
 
 			$this->Session->delete('tempFiles');
-
 			//for edit part 
 			if(isset($id))
 			{
@@ -333,6 +335,9 @@ class CarsController extends AppController {
 				if(!empty($result))
 				{
 					$created_by =  $result['Car']['created_by'];
+					$created_user_group = $this->User->find('list',array('fields'=>array('user_group_id'),'conditions'=>array('id'=>$created_by)));
+					$created_user_groupID = $created_user_group[$created_by];
+
 					if( $groupId  == 2){
 						if($created_by != $userid){
 							die('you are not permitted to access it. Please go back.');
@@ -363,6 +368,7 @@ class CarsController extends AppController {
 		$user_list = Set::combine($users, '{n}.User.id', array('{0} {1}', '{n}.User.first_name', '{n}.User.last_name'));
 
 		$this->set('user',$user_list);
+		$this->set('Created_User_GroupID',$created_user_groupID);
 
 		/* find shipping country name*/
 		$ShippedData=$this->Shipping->find('list',array('fields'=>array('Shipping.id','Shipping.company_name')));

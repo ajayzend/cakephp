@@ -31,6 +31,20 @@
 
 
 </style>
+
+<?php
+$groupID_Saved = $showAllArrival[0]['Car']['groupid'];
+
+if($groupID_Saved == 2){
+    $ADDITIONAL_PRICE_Val = 0;
+    $ADDITIONAL_YEN_PRICE_Val = 0;
+}else{
+    $ADDITIONAL_PRICE_Val = ADDITIONAL_PRICE;
+    $ADDITIONAL_YEN_PRICE_Val = ADDITIONAL_YEN_PRICE;
+}
+
+?>
+
 <?php $height = "style=\"height:20px; overflow:hidden;\""; ?>
 <?php $height_td = "style=\"height:20px; overflow:hidden;color:green\""; ?>
 <?php $label_color = "style=\"background-color: #d5d5d5\""; ?>
@@ -299,11 +313,11 @@
 	<?php
     if($this->Session->read('LANGUAGE') == 2)
 	{
-		echo "$ ". $this->Round->round_number(($showAllArrival[0]['CarPayment'][0]['asking_price']+ADDITIONAL_PRICE));
+		echo "$ ". $this->Round->round_number(($showAllArrival[0]['CarPayment'][0]['asking_price']+$ADDITIONAL_PRICE_Val));
 	}
 	else
 	{
-		echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(($showAllArrival[0]['CarPayment'][0]['yen']+ADDITIONAL_YEN_PRICE));
+		echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(($showAllArrival[0]['CarPayment'][0]['yen']+$ADDITIONAL_YEN_PRICE_Val));
 	}
 	?>
     </div>
@@ -436,7 +450,7 @@
     <div class="col-lg-11">
         <div class="ProductDetailSpecification">
             <div class="pull-xs-left ProductDetailSpectfTitle">Price($)</div>
-            <div class="pull-xs-right ProductDetailSpectfValue"><?php echo $this->Round->round_number(ceil($showAllArrival[0]['CarPayment']['asking_price'] + ADDITIONAL_PRICE));?></div>
+            <div class="pull-xs-right ProductDetailSpectfValue"><?php echo $this->Round->round_number(ceil($showAllArrival[0]['CarPayment']['asking_price'] + $ADDITIONAL_PRICE_Val));?></div>
             <div class="clearfix"></div>
         </div>
     </div>
@@ -445,7 +459,7 @@
     <div class="col-lg-11">
         <div class="ProductDetailSpecification">
             <div class="pull-xs-left ProductDetailSpectfTitle">Price(&yen;)</div>
-            <div class="pull-xs-right ProductDetailSpectfValue"><?php echo $this->Round->round_number_yen(ceil($showAllArrival[0]['CarPayment']['yen'] + ADDITIONAL_YEN_PRICE));?></div>
+            <div class="pull-xs-right ProductDetailSpectfValue"><?php echo $this->Round->round_number_yen(ceil($showAllArrival[0]['CarPayment']['yen'] + $ADDITIONAL_YEN_PRICE_Val));?></div>
             <div class="clearfix"></div>
         </div>
     </div>
@@ -543,11 +557,11 @@
            <?php
 			if($this->Session->read('LANGUAGE') == 2 )
 			{
-				echo "$ ". $this->Round->round_number(ceil($rldprc['CarPayment'][0]['asking_price'] + ADDITIONAL_PRICE));
+				echo "$ ". $this->Round->round_number(ceil($rldprc['CarPayment'][0]['asking_price'] + $ADDITIONAL_PRICE_Val));
 			}
 			else
 			{
-				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(ceil($rldprc['CarPayment'][0]['yen'] + ADDITIONAL_YEN_PRICE));
+				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(ceil($rldprc['CarPayment'][0]['yen'] + $ADDITIONAL_YEN_PRICE_Val));
 			}
 			?>
 			<?php } ?>
@@ -590,11 +604,11 @@
            <?php
 			if($this->Session->read('LANGUAGE') == 2 )
 			{
-				echo "$ ". $this->Round->round_number(ceil($rldprc['CarPayment'][0]['asking_price'] + ADDITIONAL_PRICE));
+				echo "$ ". $this->Round->round_number(ceil($rldprc['CarPayment'][0]['asking_price'] + $ADDITIONAL_PRICE_Val));
 			}
 			else
 			{
-				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(ceil($rldprc['CarPayment'][0]['yen'] + ADDITIONAL_YEN_PRICE));
+				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(ceil($rldprc['CarPayment'][0]['yen'] + $ADDITIONAL_YEN_PRICE_Val));
 			}
 			?>
 			<?php } ?>
@@ -636,11 +650,11 @@
            <?php
 			if($this->Session->read('LANGUAGE') == 2 )
 			{
-				echo "$ ". $this->Round->round_number(ceil($rldprc['CarPayment'][0]['asking_price'] + ADDITIONAL_PRICE));
+				echo "$ ". $this->Round->round_number(ceil($rldprc['CarPayment'][0]['asking_price'] + $ADDITIONAL_PRICE_Val));
 			}
 			else
 			{
-				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(ceil($rldprc['CarPayment'][0]['yen'] + ADDITIONAL_YEN_PRICE));
+				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(ceil($rldprc['CarPayment'][0]['yen'] + $ADDITIONAL_YEN_PRICE_Val));
 			}
 			?>
 			<?php } ?>
@@ -761,11 +775,11 @@
             <?php
 			if($this->Session->read('LANGUAGE') == 2)
 			{
-				echo "$ ". $this->Round->round_number(($showAllArrival[0]['CarPayment'][0]['asking_price']+ADDITIONAL_PRICE));
+				echo "$ ". $this->Round->round_number(($showAllArrival[0]['CarPayment'][0]['asking_price']+$ADDITIONAL_PRICE_Val));
 			}
 			else
 			{
-				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(($showAllArrival[0]['CarPayment'][0]['yen']+ADDITIONAL_YEN_PRICE));
+				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(($showAllArrival[0]['CarPayment'][0]['yen']+$ADDITIONAL_YEN_PRICE_Val));
 			}
 			?>
             </div>
