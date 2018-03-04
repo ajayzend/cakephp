@@ -140,7 +140,7 @@
     </tr>
 
     <tr>
-        <td <?php echo $label_color;?>><div <?php echo $height;?>>ESC(ELECTRONIC STABILITY CONTROL)</div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>>ESC</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['electronic_stability_control'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['electronic_stability_control'] == '2'){echo 'No';} ?></div></td>
         <td <?php echo $label_color;?>><div <?php echo $height;?>>SPARE TYRE</div></td>
         <td><div <?php echo $height_td;?>><?php if($showAllArrival[0]['Car']['spare_tyre'] == '1'){echo 'Yes';}if($showAllArrival[0]['Car']['spare_tyre'] == '2'){echo 'No';} ?></div></td>
@@ -152,9 +152,13 @@
 
     <tr>
         <td <?php echo $label_color;?>><div <?php echo $height;?>>EXTERIOR COLOR</div></td>
-        <td colspan="3"><div <?php echo $height_td;?> ><?php echo $showAllArrival[0]['Car']['exterior_color'];?></div></td>
+        <td><div <?php echo $height_td;?> ><?php echo $showAllArrival[0]['Car']['exterior_color'];?></div></td>
         <td <?php echo $label_color;?>><div <?php echo $height;?>>SEATING CAPACITY</div></td>
-        <td colspan="3"><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['seating_capacity'];?></div></td>
+        <td><div <?php echo $height_td;?>><?php echo $showAllArrival[0]['Car']['seating_capacity'];?></div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>></div></td>
+        <td><div <?php echo $height;?>></div></td>
+        <td <?php echo $label_color;?>><div <?php echo $height;?>></div></td>
+        <td><div <?php echo $height;?>></div></td>
     </tr>
 
     <tr>

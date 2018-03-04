@@ -292,8 +292,15 @@ class CarsController extends AppController {
 				$price =  @$Cardata['CarPayment']['push_price']/10000;
 				$auc= explode('-',@$Cardata['CarPayment']['auction_name']);
 				$date= explode('-',date('d-m-Y',strtotime(@$Cardata['Car']['pdate'])));
+				if($groupId == 2){
+					$fullname = $this->Session->read('defaultUserName');
+					$fullname = preg_replace('/\s+/', '', $fullname);
+					$uid = uniqid();
+					$myUnique= @$fullname.'-'.@$uid.'-'.@$price.'-'.@$date[0].'-'.@$date[1];
+				}else{
+					$myUnique=substr(@$Cardata['Country']['country_name'],0,1).'-'.@$price.'-'.@$auc[0].'-'.@$date[0].'-'.@$date[1].'-'.@$auc[1]."-".@$Cardata['Car']['lot_number'];
+				}
 
-				$myUnique=substr(@$Cardata['Country']['country_name'],0,1).'-'.@$price.'-'.@$auc[0].'-'.@$date[0].'-'.@$date[1].'-'.@$auc[1]."-".@$Cardata['Car']['lot_number'];
 
 				$data['id']=$retData['Car']['car_id'];
 

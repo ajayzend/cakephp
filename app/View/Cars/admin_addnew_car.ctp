@@ -190,12 +190,20 @@
 									<?php echo $this->Form->input('car_name_id',array('type'=>'select','options'=>$Car,'class'=>'form-control','label'=>false,'empty'=>'Select Car','data-rel'=>'chosen','id'=>'Car_name_id','value'=>@$carDetails['Car']['car_name_id'])); ?>
 								</div>
 
-								<div class="form-group col-md-3">
-									<label for="inputDrive">UniqueId</label>
-									<div class="controls">
-										<input type="text" value="<?php echo (isset($carDetails['Car']['uniqueid'])? $carDetails['Car']['uniqueid']:'');?>" id="inputDrive" data-toggle="tooltip" title="<?php echo (isset($carDetails['Car']['uniqueid'])? $carDetails['Car']['uniqueid']:'');?>"  name="uniqueid" class="form-control" readonly='true' required="true">
+								<?php if($groupId == 2) {?>
+										<!--<label for="inputDrive">UniqueId</label>-->
+										<div class="controls">
+											<input type="hidden" value="<?php echo (isset($carDetails['Car']['uniqueid'])? $carDetails['Car']['uniqueid']:'');?>" id="inputDrive" data-toggle="tooltip" title="<?php echo (isset($carDetails['Car']['uniqueid'])? $carDetails['Car']['uniqueid']:'');?>"  name="uniqueid" class="form-control" readonly='true' required="true">
+										</div>
+								<?php } else { ?>
+									<div class="form-group col-md-3">
+										<label for="inputDrive">UniqueId</label>
+										<div class="controls">
+											<input type="text" value="<?php echo (isset($carDetails['Car']['uniqueid'])? $carDetails['Car']['uniqueid']:'');?>" id="inputDrive" data-toggle="tooltip" title="<?php echo (isset($carDetails['Car']['uniqueid'])? $carDetails['Car']['uniqueid']:'');?>"  name="uniqueid" class="form-control" readonly='true' required="true">
+										</div>
 									</div>
-								</div>
+								<?php } ?>
+
 							</div>
 
 
@@ -261,20 +269,34 @@
 									</div>
 								</div>
 
-								<div class="form-group col-md-3">
-									<label for="inputChassis">Purchase Date</label>
-									<div class="controls">
-										<?php
-										if(isset($carDetails['Car']['pdate']))
-										{
-											$date = date('d-m-Y',strtotime(@$carDetails['Car']['pdate']));
+								<?php if($groupId == 2){ ?>
+										<div class="controls">
+											<?php
+											if(isset($carDetails['Car']['pdate']))
+											{
+												$date = date('d-m-Y',strtotime(@$carDetails['Car']['pdate']));
 
-										}else{
-											$date = date('d-m-Y');
-										}
-										echo $this->Form->input('pdate',array('type'=>'text','class'=>'form-control ','value'=>$date,'label'=>false,'id'=>'datepicker','required'=>true ,'placeholder'=>"DD-MM-YYYY"));?>
+											}else{
+												$date = date('d-m-Y');
+											}
+											echo $this->Form->input('pdate',array('type'=>'hidden','class'=>'form-control ','value'=>$date,'label'=>false,'id'=>'datepicker','required'=>false ,'placeholder'=>"DD-MM-YYYY"));?>
+										</div>
+								<?php } else{ ?>
+									<div class="form-group col-md-3">
+										<label for="inputChassis">Purchase Date</label>
+										<div class="controls">
+											<?php
+											if(isset($carDetails['Car']['pdate']))
+											{
+												$date = date('d-m-Y',strtotime(@$carDetails['Car']['pdate']));
+
+											}else{
+												$date = date('d-m-Y');
+											}
+											echo $this->Form->input('pdate',array('type'=>'text','class'=>'form-control ','value'=>$date,'label'=>false,'id'=>'datepicker','required'=>true ,'placeholder'=>"DD-MM-YYYY"));?>
+										</div>
 									</div>
-								</div>
+								<?php }  ?>
 
 								<div class="form-group col-md-3">
 									<label for="inputAllStock">CC</label>

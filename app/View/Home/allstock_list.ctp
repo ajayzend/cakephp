@@ -313,8 +313,8 @@
 
     ?>
     <a href="<?php echo $this->base;?>/home/car_show/<?=$SAC['Car']['id']?>" class="box">
-    <?php print $sales; ?>
     <div class="col-lg-3 NoPaddingLeft">
+        <?php print $sales; ?>
         <div class="HomePagrCarListingDiv">
             <div class="CarListingStockPageImage text-xs-center"><img src="<?php echo $this->webroot.$SAC['CarImage'][0]['image_source'];?>" alt="<?php echo $this->webroot.$SAC['CarName']['car_name']?>" title="<?php echo $this->webroot.$SAC['CarName']['car_name']?>" style="width:100%"></div>
 
