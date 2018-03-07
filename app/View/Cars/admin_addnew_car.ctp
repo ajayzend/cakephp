@@ -383,18 +383,10 @@
 								<?php if($groupId == 2){
 									$push_price = "Selling Price";
 									$net_push_price = "Net Selling Price";
-									$rikshaw = "Car Carrier";
-									$shipping = "Miscellaneous";
-									$default_rikshaw = 20000;
-									$default_shipping = 10000;
 									$default_recycle = 20000;
 								} else {
 									$push_price = "Push Price";
 									$net_push_price = "Net Push Price";
-									$rikshaw = "Rickshaw";
-									$shipping = "Shipping";
-									$default_rikshaw = 0;
-									$default_shipping = 0;
 									$default_recycle = 0;
 								 }?>
 
@@ -409,6 +401,19 @@
 											<?php echo $this->Form->input('push_price',array('type'=>'text','value'=>@$carDetails['CarPayment']['push_price'],'class'=>'form-control ','label'=>false,'id'=>'push_id','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
 										</div>
 									</div>
+
+									<?php if($groupId == 2){
+										$temp_recycle_price = @$carDetails['CarPayment']['recycle_price'];
+										$temp_recycle_price_val  = ($temp_recycle_price) ? $temp_recycle_price : 20000;
+										?>
+										<div class="control-group col-md-3">
+											<label class="control-label" for="inputbodystyle">Recycle</label>
+											<div class="controls">
+												<?php echo $this->Form->input('recycle_price',array('type'=>'text','value'=>@$temp_recycle_price_val,'class'=>'form-control ','label'=>false,'id'=>'recycle_price','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
+											</div>
+										</div>
+									<?php } ?>
+
 									<div class="control-group col-md-3">
 										<label class="control-label" for="inputbodystyle">Tax (%)</label>
 										<div class="controls">
@@ -444,28 +449,39 @@
 
 
 								<div class="row">
-									<?php
+
+									<?php if($groupId == 2){
 										$temp_rickshaw = @$carDetails['CarPayment']['rickshaw'];
-										$temp_rickshaw_val  = ($temp_rickshaw) ? $temp_rickshaw :$default_rikshaw;
+										$temp_rickshaw_val  = ($temp_rickshaw) ? $temp_rickshaw : 0;
 										?>
+										<div class="controls">
+											<?php echo $this->Form->input('rickshaw',array('type'=>'hidden','value'=>$temp_rickshaw_val,'label'=>false,'class'=>'form-control ','id'=>'main_rickshaw_id','onkeypress'=>"return allownumber(event)",'required'=>false, 'onblur' => "calculateFinalPrice()"));?>
+										</div>
+									<?php } else { ?>
 										<div class="control-group col-md-3">
-											<label class="control-label" for="inputbodystyle"> <?php echo $rikshaw;?> </label>
+											<label class="control-label" for="inputbodystyle"> Rickshaw </label>
 											<div class="controls">
-												<?php echo $this->Form->input('rickshaw',array('type'=>'text','value'=>@$temp_rickshaw_val,'label'=>false,'class'=>"form-control",'id'=>'main_rickshaw_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+												<?php echo $this->Form->input('rickshaw',array('type'=>'text','value'=>@$carDetails['CarPayment']['rickshaw'],'label'=>false,'class'=>"form-control",'id'=>'main_rickshaw_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
 											</div>
 										</div>
+									<?php } ?>
 
 
-									<?php
+									<?php if($groupId == 2){
 										$temp_shiping_fee = @$carDetails['CarPayment']['shiping_fee'];
-										$temp_shiping_fee_val  = ($temp_shiping_fee) ? $temp_shiping_fee : $default_shipping;
+										$temp_shiping_fee_val  = ($temp_shiping_fee) ? $temp_shiping_fee : 0;
 										?>
+										<div class="controls">
+											<?php echo $this->Form->input('shiping_fee',array('type'=>'hidden','value'=>$temp_shiping_fee_val,'label'=>false,'class'=>'form-control ','id'=>'main_shipping_id','onkeypress'=>"return allownumber(event)",'required'=>false, 'onblur' => "calculateFinalPrice()"));?>
+										</div>
+									<?php } else { ?>
 										<div class="control-group col-md-3">
-											<label class="control-label" for="inputbodystyle"><?php echo $shipping;?></label>
+											<label class="control-label" for="inputbodystyle">Shipping</label>
 											<div class="controls">
-												<?php echo $this->Form->input('shiping_fee',array('type'=>'text','value'=>@$temp_shiping_fee_val,'class'=>'form-control ','label'=>false,'id'=>'main_shipping_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+												<?php echo $this->Form->input('shiping_fee',array('type'=>'text','value'=>@$carDetails['CarPayment']['shiping_fee'],'class'=>'form-control ','label'=>false,'id'=>'main_shipping_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
 											</div>
 										</div>
+									<?php } ?>
 
 
 									<?php if($groupId == 2){
@@ -473,7 +489,7 @@
 										$temp_freight_val  = ($temp_freight) ? $temp_freight : 0;
 										?>
 										<div class="controls">
-											<?php echo $this->Form->input('freight',array('type'=>'hidden','value'=>$temp_freight_val,'label'=>false,'class'=>'form-control ','id'=>'main_freight_id','onkeypress'=>"return allownumber(event)",'required'=>true, 'onblur' => "calculateFinalPrice()"));?>
+											<?php echo $this->Form->input('freight',array('type'=>'hidden','value'=>$temp_freight_val,'label'=>false,'class'=>'form-control ','id'=>'main_freight_id','onkeypress'=>"return allownumber(event)",'required'=>false, 'onblur' => "calculateFinalPrice()"));?>
 										</div>
 									<?php } else { ?>
 										<div class="control-group col-md-3">
@@ -503,16 +519,15 @@
 
 
 									<div class="row">
-										<?php
-										$temp_recycle_price = @$carDetails['CarPayment']['recycle_price'];
-										$temp_recycle_price_val  = ($temp_recycle_price) ? $temp_recycle_price : $default_recycle;
-										?>
+										<?php if($groupId != 2){?>
 										<div class="control-group col-md-3">
 											<label class="control-label" for="inputbodystyle">RECYCLE</label>
 											<div class="controls">
-												<?php echo $this->Form->input('recycle_price',array('type'=>'text','value'=>@$temp_recycle_price_val,'class'=>'form-control ','label'=>false,'id'=>'recycle_price','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
+												<?php echo $this->Form->input('recycle_price',array('type'=>'text','value'=>@$carDetails['CarPayment']['recycle_price'],'class'=>'form-control ','label'=>false,'id'=>'recycle_price','onkeypress'=>"return allownumber(event)", 'onblur' => "calculateFinalPrice()"));?>
 											</div>
 										</div>
+										<?php } ?>
+
 
 										<?php if($groupId == 2){
 											$temp_minimum_price_doller = @$carDetails['CarPayment']['minimum_price_doller'];
@@ -1356,28 +1371,28 @@
 						<div class="form-group col-md-3">
 							<label for="inputChassis">ENGINE CONDITION</label>
 							<div class="controls">
-								<?php echo $this->Form->input('engine_condition',array('type'=>'select','options'=>array('Good'=>'Good','Ok'=>'Ok'),'id'=>'engine_condition','empty'=>'Select an Option','selected'=>@$carDetails['Car']['engine_condition'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+								<?php echo $this->Form->input('engine_condition',array('type'=>'select','options'=>array('Good'=>'Good','Ok'=>'Ok','Poor'=>'Poor'),'id'=>'engine_condition','empty'=>'Select an Option','selected'=>@$carDetails['Car']['engine_condition'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
 							</div>
 						</div>
 
 						<div class="form-group col-md-3">
 							<label for="inputChassis">AUTOMATIC CONDITION</label>
 							<div class="controls">
-								<?php echo $this->Form->input('automatic_condition',array('type'=>'select','options'=>array('Good'=>'Good','Ok'=>'Ok'),'id'=>'automatic_condition','empty'=>'Select an Option','selected'=>@$carDetails['Car']['automatic_condition'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+								<?php echo $this->Form->input('automatic_condition',array('type'=>'select','options'=>array('Good'=>'Good','Ok'=>'Ok','Poor'=>'Poor'),'id'=>'automatic_condition','empty'=>'Select an Option','selected'=>@$carDetails['Car']['automatic_condition'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
 							</div>
 						</div>
 
 						<div class="form-group col-md-3">
 							<label for="inputChassis">RUST(BODY)</label>
 							<div class="controls">
-								<?php echo $this->Form->input('rust_body',array('type'=>'select','options'=>array('High'=>'High','Moderate'=>'Moderate','Low'=>'Low','No'=>'No'),'id'=>'rust_body','empty'=>'Select an Option','selected'=>@$carDetails['Car']['rust_body'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+								<?php echo $this->Form->input('rust_body',array('type'=>'select','options'=>array('No'=>'No', 'Low'=>'Low', 'High'=>'High'),'id'=>'rust_body','empty'=>'Select an Option','selected'=>@$carDetails['Car']['rust_body'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
 							</div>
 						</div>
 
 						<div class="form-group col-md-3">
 							<label for="inputChassis">RUST(ENGINE)</label>
 							<div class="controls">
-								<?php echo $this->Form->input('rust_engine',array('type'=>'select','options'=>array('High'=>'High','Moderate'=>'Moderate','Low'=>'Low','No'=>'No'),'id'=>'rust_engine','empty'=>'Select an Option','selected'=>@$carDetails['Car']['rust_engine'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
+								<?php echo $this->Form->input('rust_engine',array('type'=>'select','options'=>array('No'=>'No', 'Low'=>'Low', 'High'=>'High'),'id'=>'rust_engine','empty'=>'Select an Option','selected'=>@$carDetails['Car']['rust_engine'],'data-rel'=>'chosen','label'=>false,'required'=>false));?>
 							</div>
 						</div>
 

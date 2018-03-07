@@ -212,6 +212,15 @@ function showCarName(){
     <?php
 	foreach($showAllCar as $SAC)
 	{
+	$groupID_Saved = $SAC['Car']['groupid'];
+
+	if($groupID_Saved == 2){
+		$ADDITIONAL_PRICE_Val = 0;
+		$ADDITIONAL_YEN_PRICE_Val = 0;
+	}else{
+		$ADDITIONAL_PRICE_Val = ADDITIONAL_PRICE;
+		$ADDITIONAL_YEN_PRICE_Val = ADDITIONAL_YEN_PRICE;
+	}
 	?>
 	    <a href="<?php echo $this->base;?>/home/car_show/<?=$SAC['Car']['id']?>">
         <div class="col-lg-2 HoveTile" style="margin-bottom:15px; height:250px;">
@@ -230,11 +239,11 @@ function showCarName(){
            <?php
 			if($this->Session->read('LANGUAGE') == 2 )
 			{
-				echo "$ ". $this->Round->round_number(ceil($SAC['CarPayment'][0]['asking_price'] + ADDITIONAL_PRICE));
+				echo "$ ". $this->Round->round_number(ceil($SAC['CarPayment'][0]['asking_price'] + $ADDITIONAL_PRICE_Val));
 			}
 			else
 			{
-				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(ceil($SAC['CarPayment'][0]['yen'] + ADDITIONAL_YEN_PRICE));
+				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(ceil($SAC['CarPayment'][0]['yen'] + $ADDITIONAL_YEN_PRICE_Val));
 			}
 			?>
 			<?php } ?>

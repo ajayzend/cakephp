@@ -71,6 +71,15 @@
 		$this->Home = ClassRegistry::init('Home');
 		if(!empty($showAllCar)){
 		foreach($showAllCar as $key=>$value) {
+			$groupID_Saved = $value['Car']['groupid'];
+
+			if($groupID_Saved == 2){
+				$ADDITIONAL_PRICE_Val = 0;
+				$ADDITIONAL_YEN_PRICE_Val = 0;
+			}else{
+				$ADDITIONAL_PRICE_Val = ADDITIONAL_PRICE;
+				$ADDITIONAL_YEN_PRICE_Val = ADDITIONAL_YEN_PRICE;
+			}
 			$soldCar = (isset($value['CarPayment'][0]['user_id']) && $value['CarPayment'][0]['user_id'] == 0) ? "" : "sold";
 
 			$Un_Id = $this->Home->removePushPrice($value['Car']['uniqueid']);
@@ -197,11 +206,11 @@
 						{?>
 						<tr>
 							<td>Price($)</td>
-							<td><?php echo $this->Round->round_number(ceil($value['CarPayment'][0]['asking_price'] + ADDITIONAL_PRICE));?></td>
+							<td><?php echo $this->Round->round_number(ceil($value['CarPayment'][0]['asking_price'] + $ADDITIONAL_PRICE_Val));?></td>
 						</tr>
 						<tr>
 							<td>Price(￥)</td>
-							<td><?php echo $this->Round->round_number_yen(ceil($value['CarPayment'][0]['yen'] + ADDITIONAL_YEN_PRICE));?></td>
+							<td><?php echo $this->Round->round_number_yen(ceil($value['CarPayment'][0]['yen'] + $ADDITIONAL_YEN_PRICE_Val));?></td>
 						</tr>
 						<?php if($this->Session->read('UserAuth.User.id') == FIXED_USER) {?>
 						<tr>
