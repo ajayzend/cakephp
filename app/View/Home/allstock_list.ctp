@@ -318,7 +318,9 @@
 
       if($SAC['Car']['publish']!=1)
          $sales = '<div class="ribbon"><span>Sold</span></div>';
-      else
+      else if($SAC['Car']['groupid'] == 2)
+          $sales = '<div class="ribbon"><span>ONE PRICE</span></div>';
+        else
          $sales = '';
 
     ?>

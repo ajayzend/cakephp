@@ -221,11 +221,23 @@ function showCarName(){
 		$ADDITIONAL_PRICE_Val = ADDITIONAL_PRICE;
 		$ADDITIONAL_YEN_PRICE_Val = ADDITIONAL_YEN_PRICE;
 	}
+
+	if($SAC['Car']['groupid'] == 2)
+		$sales = '<div class="ribbon"><span>ONE PRICE</span></div>';
+	else
+		$sales = '';
 	?>
-	    <a href="<?php echo $this->base;?>/home/car_show/<?=$SAC['Car']['id']?>">
+	<a href="<?php echo $this->base;?>/home/car_show/<?=$SAC['Car']['id']?>">
         <div class="col-lg-2 HoveTile" style="margin-bottom:15px; height:250px;">
-        	<div class="HomePageCarImageDiv" "><img src="<?php echo $this->webroot.$SAC['CarImage'][0]['image_source'];?>" alt="<?php echo $this->webroot.$SAC['CarName']['car_name']?>" title="<?php echo $this->webroot.$SAC['CarName']['car_name']?>" style="height:150px; width:100%;"></div>
-            <div class="HomePageCarNameDiv" style="min-height:40px;font-size:14px; overflow:hidden"><?php echo $SAC['CarName']['car_name'] . ":" . $SAC['Car']['package'];?></div>
+			<?php print $sales; ?>
+        	<div class="HomePageCarImageDiv" ">
+				<img src="<?php echo $this->webroot.$SAC['CarImage'][0]['image_source'];?>"
+				alt="<?php echo $this->webroot.$SAC['CarName']['car_name']?>"
+				title="<?php echo $this->webroot.$SAC['CarName']['car_name']?>" style="height:150px; width:100%;">
+			</div>
+            <div class="HomePageCarNameDiv" style="min-height:40px;font-size:14px; overflow:hidden">
+				<?php echo $SAC['CarName']['car_name'] . ":" . $SAC['Car']['package'];?>
+			</div>
 
 			  <div class="HomePageCarNameDiv" style="overflow:hidden"><?php
 
@@ -234,25 +246,23 @@ function showCarName(){
 					?>
 
 					<span class="HomePageCarPriceDiv" style="padding-left:10px;font-size:15px;">
-<?php
-			if($this->UserAuth->isLogged()){ ?>
-           <?php
-			if($this->Session->read('LANGUAGE') == 2 )
-			{
-				echo "$ ". $this->Round->round_number(ceil($SAC['CarPayment'][0]['asking_price'] + $ADDITIONAL_PRICE_Val));
-			}
-			else
-			{
-				echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(ceil($SAC['CarPayment'][0]['yen'] + $ADDITIONAL_YEN_PRICE_Val));
-			}
-			?>
-			<?php } ?>
+						<?php
+						if($this->UserAuth->isLogged()){ ?>
+					   <?php
+						if($this->Session->read('LANGUAGE') == 2 )
+						{
+							echo "$ ". $this->Round->round_number(ceil($SAC['CarPayment'][0]['asking_price'] + $ADDITIONAL_PRICE_Val));
+						}
+						else
+						{
+							echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(ceil($SAC['CarPayment'][0]['yen'] + $ADDITIONAL_YEN_PRICE_Val));
+						}
+						?>
+						<?php } ?>
 					</span>
-				</div>
-
-
+			  </div>
         </div>
-        </a>
+	</a>
     <?php
 	}
 	?>
