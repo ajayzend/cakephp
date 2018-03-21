@@ -48,12 +48,12 @@
 								<?php
 								if(!empty($carDetails)){?>
 									<li><a href="#image_upload" id="Image" class="rounded_tab" data-toggle="tab" >Upload Image</a></li>
+									<li><a href="#additional_detail" id="additional" class="rounded_tab" data-toggle="tab" >Additional</a></li>
 									<li><a href="#about_bids" id="Bid" class="rounded_tab" data-toggle="tab" >Bids</a></li>
 									<?php if($carDetails['Car']['new_arrival'] == 0){?>
 
 										<li><a href="#about_shipment" id="saleDetailId" class="rounded_tab " data-toggle="tab">Sales</a></li>
 										<li><a href="#products_content" id="products" class="rounded_tab" data-toggle="tab" >Logistics</a></li>
-										<li><a href="#additional_detail" id="additional" class="rounded_tab" data-toggle="tab" >Additional</a></li>
 
 									<?php }else{
 										echo '<li><a href="#about_bids" id="Bid" class="rounded_tab hide" data-toggle="tab" >Bids</a></li>';
