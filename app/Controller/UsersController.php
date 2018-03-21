@@ -212,12 +212,17 @@ class UsersController extends AppController {
 				$this->set('PaymentDetails',$PaymentDetails);
 				
 				$pastDate = "2013-01-01";
-				$curDate = date("Y-m-d");     
-				 
+				$curDate = date("Y-m-d");
+
+				//Buy history
+				$BuyDetails = $this->getInvoiceDetailsByUser($id,$pastDate,$curDate);
+				$this->set('BuyInvDetails',$BuyDetails);
+
 				//sale history
-				$SaleDetais = $this->getInvoiceDetailsByUser($id,$pastDate,$curDate);
-				$this->set('SaleDetais',$SaleDetais);
-				
+				$SaleDetails = $this->getSaleInvoiceDetailsByUser($id,$pastDate,$curDate);
+				$this->set('SaleInvDetails',$SaleDetails);
+
+
 				
 				//all history
 				$SaleDetails = $this->User->getAllHistoryByUserId($id);
@@ -1531,6 +1536,24 @@ class UsersController extends AppController {
 		LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
 		WHERE CarPayment.user_id ="'.$userId.'" AND Car.deleted =0 AND CarPayment.deleted =0  AND CarPayment.updated_on BETWEEN "'.$fromdate.'" AND "'.$todate.'" order by CarPayment.updated_on DESC');
 		return $result; 
+	}
+
+	public function getSaleInvoiceDetailsByUser($userId,$fromdate,$todate) {
+		/*
+		LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
+		LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
+		*/
+
+		$result = $this->User->query('SELECT CarPayment.yen,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.sale_price,CarPayment.currency, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock,Logistic.destination_port, Logistic.status, Logistic.remark, Shipping.company_name
+		FROM  `car_payments` AS CarPayment
+		LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
+		LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
+		LEFT JOIN shippings AS Shipping ON Logistic.shipping_id = Shipping.id
+		LEFT JOIN car_names AS CarName ON CarName.id = Car.car_name_id
+		LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
+		LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
+		WHERE CarPayment.user_id ="'.$userId.'" AND Car.deleted =0 AND CarPayment.deleted =0 AND Car.groupid = 2 AND CarPayment.updated_on BETWEEN "'.$fromdate.'" AND "'.$todate.'" order by CarPayment.updated_on DESC');
+		return $result;
 	}
 	
 	public function getInvoiceDetailsSearchByUser($userId,$fromdate,$todate) {

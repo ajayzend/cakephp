@@ -205,6 +205,7 @@ $(function()
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="active"><a href="#bal-overview" role="tab" data-toggle="tab">Balance Overview</a></li>
 					<li><a href="#pay-his" role="tab" data-toggle="tab">Payment History</a></li>
+					<li><a href="#buy-his" role="tab" data-toggle="tab">Buy History</a></li>
 					<li><a href="#sale-his" role="tab" data-toggle="tab">Sale History</a></li>
 					<li><a href="#all-his" role="tab" data-toggle="tab">All History</a></li>
 				</ul>
@@ -330,9 +331,9 @@ $(function()
 				  </div><!--Payment History-->
 				  
 				  
-				  <div class="tab-pane fade" id="sale-his"><!--Sale History-->
+					<div class="tab-pane fade" id="buy-his"><!--Sale History-->
 						<div class="box-header payment_header well">
-							<h4 style="margin-bottom:10px;">Sale History</h4>
+							<h4 style="margin-bottom:10px;">Buy History</h4>
 							
 							<div class="col-md-4">
 							<?php // echo __('From Date');?><input type="text"  placeholder="From Date" class="input-xlarge datepicker  form-control" id="date05" name="fromdate" value="" >
@@ -374,9 +375,9 @@ $(function()
 								  
 							<?php
 							$count = 1;  	
-							if($SaleDetais)
+							if($BuyInvDetails)
 							{									
-							foreach($SaleDetais as $val)
+							foreach($BuyInvDetails as $val)
 							{
 								
 							?>
@@ -473,12 +474,160 @@ $(function()
 									</tr>
 							<?php $count++;   }}else {?>	                         
 								  </tbody>
-								  <tr><td colspan="10" style="text-align:center">Sales History not found</td></tr>
+								  <tr><td colspan="10" style="text-align:center">Buy History not found</td></tr>
 								<?php }?>										  
 							 </table>  
 						</div>
-				  </div><!--Sale History-->
-				  <div class="tab-pane fade" id="all-his"><!--All History-->
+				  </div><!--Buy History-->
+					<div class="tab-pane fade" id="sale-his"><!--Sale History-->
+						<div class="box-header payment_header well">
+							<h4 style="margin-bottom:10px;">Sale History</h4>
+
+							<div class="col-md-4">
+								<?php // echo __('From Date');?><input type="text"  placeholder="From Date" class="input-xlarge datepicker  form-control" id="saledate05" name="fromdate" value="" >
+							</div>
+
+							<div class="col-md-4">
+
+								<?php // echo __('To Date');?> <input type="text" class="input-xlarge datepicker  form-control" id="saledate06" name="todate"  placeholder="To Date" value=""  <?php //echo date("j-m-Y");?> >
+							</div>
+
+							<div class="col-md-4">
+
+
+								<input type="button" id="sale2Button" value="Search" class="btn btn-primary payment" >
+
+								<input type="button" style="display:none" class="btn btn-primary payment" value="Clear Search" style="" id="saleclearButton">
+							</div>
+
+							<div class="clearfix"></div>
+							<div class="box-icon">
+								<!--<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>-->
+							</div>
+						</div>
+						<div class="box-content" style="max-height:450px; overflow:auto;">
+							<table class="table table-striped table-bordered bootstrap-datatable datatable custom_table">
+								<thead>
+								<tr>
+									<th><?php echo __('S.No.');?></th>
+									<th><?php echo __('Sold Date');?></th>
+									<th><?php echo __('Car Name');?></th>
+									<th><?php echo __('Chassis');?></th>
+									<th><?php echo __('Sale price')."($)";?></th>
+									<th><?php echo __('Sale price')."(￥)";?></th>
+									<th><?php echo __('Invoice No.');?></th>
+									<th><?php echo __('Action');?></th>
+								</tr>
+								</thead>
+								<tbody id="sale2Details">
+
+								<?php
+								$count = 1;
+								if($SaleInvDetails)
+								{
+									foreach($SaleInvDetails as $val)
+									{
+
+										?>
+										<tr>
+											<td class="center"><?php  echo $count; //$rows['CarPayment']['id'] ; ?></td>
+											<td class="center"><?php
+												$originalDate = $val['CarPayment']['updated_on'] ;
+												$newDate = date("d-m-Y", strtotime($originalDate));
+												echo $newDate ;
+												?></td>
+											<td class="center"><?php  echo @$val['CarName']['car_name']; ?></td>
+											<td class="center"><?php  echo @$val['Car']['cnumber'] ; ?></td>
+											<td class="center">
+												<?php
+												if($val['CarPayment']['currency']=='$')
+												{
+													echo $val['CarPayment']['sale_price'];
+												}
+												else if($val['CarPayment']['currency'] == '')
+												{
+													echo $val['CarPayment']['sale_price'];
+												}else
+												{
+													echo '-';
+												}
+
+
+
+
+												/*if($val['CarPayment']['currency'] =='$')
+												{
+													 echo @$val['CarPayment']['sale_price'] ;
+												}else
+												{
+													echo '-';
+												}*/
+												?>
+											</td>
+											<td class="center">
+
+												<?php
+
+												/*if($val['CarPayment']['currency'] =='￥')
+                                                {
+                                                     echo @$val['CarPayment']['sale_price'] ;
+                                                }else
+                                                {
+                                                    echo '-';
+                                                }*/
+
+
+
+												if($val['CarPayment']['currency']=='￥')
+												{
+													echo $val['CarPayment']['sale_price'];
+												}
+												else if($val['CarPayment']['currency'] == '')
+												{
+													echo '-';
+												}else
+												{
+													echo '-';
+												}
+
+												?>
+
+											</td>
+											<td class="center"><?php  echo @$val['Invoice']['invoice_no'] ; ?></td>
+											<td class="center">
+												<?php
+												if(!empty($val['Invoice']['invoice_no']))
+												{
+													$st = explode("/",$val['Invoice']['invoice_no']);
+
+													echo $this->Html->link(
+														'<i class="fa fa-download"></i>',
+														array(
+															'controller'=>'invoices',
+															'action' => 'export_xls',$st[1]
+														),
+														array(
+
+															'data-hint'=>'Download',
+															'class'=>'btn btn-success hint--right',
+															'escape'=>false
+														)
+													);
+												}else
+												{
+													echo "";
+												}
+												?>
+											</td>
+										</tr>
+										<?php $count++;   }}else {?>
+								</tbody>
+								<tr><td colspan="10" style="text-align:center">Sales History not found</td></tr>
+								<?php }?>
+							</table>
+						</div>
+					</div><!--Sale History-->
+					<div class="tab-pane fade" id="all-his"><!--All History-->
 				  <div style="margin-bottom:10px;">
 					  <div class="col-md-5">	
 						<strong>Search Engine </strong> &nbsp;&nbsp;&nbsp;<input class="input-xlarge" id="selectbox-a" name="optionvalue" data-placeholder="Enter chechis no for search">
