@@ -1,0 +1,1 @@
+UPDATE cars SET groupid = 1 WHERE groupid <> 2 OR groupid IS NULL

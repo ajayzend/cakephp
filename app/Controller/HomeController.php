@@ -67,14 +67,21 @@ class HomeController extends AppController
 
 		$this->Car->unbindModelAll();
 		$this->Car->bindModel(array('belongsTo' => array('CarName' => array('fields' => 'car_name,id')), 'hasMany' => array('CarPayment' => array('fields' => 'sale_price,id,yen,user_id,asking_price,push_price'), 'CarImage' => array('fields' => 'car_id,image_source,image_name', 'order' => array('image_name' => 'ASC')))));
-		$showAllCar = $this->Car->find('all', array('conditions' => array('Car.publish' => 1, 'Car.isrecent' => 0), 'recursive' => 2, 'limit' => 12, 'order' => array('Car.id' => "DESC")));
+		if($this->getGuestPermission())
+			$condition = array('Car.publish' => 1, 'Car.isrecent' => 0, 'Car.groupid' => $this->getGuestPermissionAccess());
+		else
+			$condition = array('Car.publish' => 1, 'Car.isrecent' => 0);
+		$showAllCar = $this->Car->find('all', array('conditions' => $condition, 'recursive' => 2, 'limit' => 12, 'order' => array('Car.id' => "DESC")));
 		$this->set('showAllCar', $showAllCar);
 
 
 		/* Count Car in Body Types */
 
 		$this->Car->unbindModelAll();
-		$condition = array('Car.publish' => 1);
+		if($this->getGuestPermission())
+			$condition = array('Car.publish' => 1, 'Car.groupid' => $this->getGuestPermissionAccess());
+		else
+			$condition = array('Car.publish' => 1);
 		$fields = array('COUNT(Car.vehicle_type_id) as TotalCar', 'vehicle_type_id');
 		$group = array('Car.vehicle_type_id');
 		$CBrand = $this->Car->find('all', array('fields' => $fields, 'group' => $group, 'conditions' => $condition));
@@ -93,8 +100,12 @@ class HomeController extends AppController
 		$this->Car->unbindModelAll();
 
 		$this->Car->bindModel(array('belongsTo' => array('Brand' => array('order' => array('Brand.priority ASC')))));
+		if($this->getGuestPermission())
+			$condition = array('Car.country_id' => $this->data['countryId'], 'Car.car_type_id' => 1, 'Car.publish' => 1, 'Car.new_arrival != ' => 1, 'Car.groupid' => $this->getGuestPermissionAccess());
+		else
+			$condition = array('Car.country_id' => $this->data['countryId'], 'Car.car_type_id' => 1, 'Car.publish' => 1, 'Car.new_arrival != ' => 1);
 
-		$condition = array('Car.country_id' => $this->data['countryId'], 'Car.car_type_id' => 1, 'Car.publish' => 1, 'Car.new_arrival != ' => 1);
+
 		$fields = array('COUNT(Car.brand_id) as TotalCar', 'Brand.id', 'Brand.brand_name', 'Brand.brand_image', 'Car.car_type_id');
 		$group = array('Car.brand_id');
 
@@ -116,7 +127,12 @@ class HomeController extends AppController
 		$brandData = $this->Car->find('all', array('fields' => array('Car.brand_id', 'Car.id'), 'conditions' => array('Car.country_id' => @$this->passedArgs['country']), 'group' => array('Car.brand_id'), 'order' => array('Brand.priority ASC')));
 		$this->set('brandCount', count($brandData));
 
-		$carRelatedtoCountry = $this->Car->find('all', array('conditions' => array('Car.country_id' => @$this->passedArgs['country'], 'Car.publish' => 1, 'Car.new_arrival' => 0)));
+		if($this->getGuestPermission())
+			$condition = array('Car.country_id' => @$this->passedArgs['country'], 'Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.groupid' => $this->getGuestPermissionAccess());
+		else
+			$condition = array('Car.country_id' => @$this->passedArgs['country'], 'Car.publish' => 1, 'Car.new_arrival' => 0);
+
+		$carRelatedtoCountry = $this->Car->find('all', array('conditions' => $condition));
 		$this->set('carCount', count($carRelatedtoCountry));
 
 
@@ -170,8 +186,12 @@ class HomeController extends AppController
 			$this->Car->unbindModelAll();
 			$this->Car->bindModel(array('belongsTo' => array('Brand' => array('fields' => 'brand_image,brand_name,id'))));
 
+			if($this->getGuestPermission())
+				$condition = array('Car.country_id' => $countryId, 'Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.car_type_id' => $carType, 'Car.groupid' => $this->getGuestPermissionAccess());
+			else
+				$condition = array('Car.country_id' => $countryId, 'Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.car_type_id' => $carType);
 
-			$condition = array('Car.country_id' => $countryId, 'Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.car_type_id' => $carType);
+
 			$fields = array('COUNT(Car.brand_id) as TotalCar', 'Brand.id', 'Car.car_type_id', 'Brand.brand_name', 'Brand.brand_image', 'Car.car_type_id');
 			$group = array('Car.brand_id');
 			$order = array('Brand.priority ASC');
@@ -1200,7 +1220,9 @@ class HomeController extends AppController
 
 		$GerViewCounter = $this->Car->query("select * from cars where id = '" . $carId . "'");
 		//ChromePhp::log(print_r($GerViewCounter));
-
+		$groupid = $GerViewCounter[0]['cars']['groupid'];
+		if($groupid == 2 && $this->getGuestPermission())
+			die('Permission denied. Please go back.');
 		$Viewed = $GerViewCounter[0]['cars']['most_view'] + 1;
 		$this->Car->query("update cars set most_view = '" . $Viewed . "' where id = '" . $carId . "'");
 
@@ -2228,7 +2250,7 @@ class HomeController extends AppController
 
 		if (@$_POST['data']['Home']['stock'] || @$_POST['data']['Home']['cnumber']) {
 			if ($userflag == 1) { // Not loggedin
-				$this->paginate = array('limit' => 12, 'conditions' => array('OR' => array(array('Car.publish' => 1, 'Car.deleted' => 0, $Condition))),
+				$this->paginate = array('limit' => 12, 'conditions' => array('OR' => array(array('Car.publish' => 1 , 'Car.groupid' => $this->getGuestPermissionAccess() , 'Car.deleted' => 0, $Condition))),
 					'order' => 'Car.id DESC', 'joins' => array(
 						array(
 							'alias' => 'CarPaymentAls',
@@ -2257,7 +2279,7 @@ class HomeController extends AppController
 
 		} else {
 			if ($userflag == 1) {// Not logged in
-				$this->paginate = array('limit' => 12, 'conditions' => array('Car.publish' => array(1), 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $globalCondition)),
+				$this->paginate = array('limit' => 12, 'conditions' => array('Car.publish' => array(1), 'Car.groupid' => $this->getGuestPermissionAccess(), 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $globalCondition)),
 					'order' => 'Car.id DESC', 'joins' => array(
 						array(
 							'alias' => 'CarPaymentAls',
@@ -2581,7 +2603,7 @@ class HomeController extends AppController
 			$end = date('Y-m-d', strtotime('-6 month'));
 			$cond = array('Car.publish' => array(1, $userflag), 'Car.deleted' => 0, 'CarPaymentAls.created_on <=' => $start, 'CarPaymentAls.created_on >=' => $end);
 		} else {
-			$cond = array();
+			$cond = array('Car.groupid' => $this->getGuestPermissionAccess());
 		}
 
 		if (@$_POST['data']['Home']['stock'] || @$_POST['data']['Home']['cnumber']) {
@@ -2598,8 +2620,14 @@ class HomeController extends AppController
 				));
 
 		} else {
+
+			if($this->getGuestPermission())
+				$condition2 = array('Car.publish' => 1, 'Car.deleted' => 0 , 'Car.groupid' => $this->getGuestPermissionAccess() , $Condition, 'AND' => array('OR' => $GlobalCondition));
+			else
+				$condition2 = array('Car.publish' => 1, 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $GlobalCondition));
+
 				$this->paginate = array('limit' => 12, 'fields' => array("CarPaymentAls.*", "CarName.*", 'Car.*'),
-					'conditions' => array('Car.publish' => 1, 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $GlobalCondition)),
+					'conditions' => $condition2,
 					'page' => $_POST['CurrentPage'], 'order' => $order, 'joins' => array(
 						array(
 							'alias' => 'CarPaymentAls',
@@ -3832,9 +3860,13 @@ class HomeController extends AppController
 		$conditions[] = array('UPPER(brandsAls.brand_name) LIKE' => '%' . strtoupper($term) . '%');
 		$conditions[] = array('UPPER(car_typesAls.type) LIKE' => '%' . strtoupper($term) . '%');
 		$conditions[] = array('UPPER(vehicle_typesAls.type) LIKE' => '%' . strtoupper($term) . '%');
+
+		if($this->getGuestPermission())
+			$condition2 = array('Car.publish' => 1, 'Car.deleted' => 0, 'Car.groupid' => $this->getGuestPermissionAccess(), 'AND' => array('OR' => $conditions));
+		else
+			$condition2 = array('Car.publish' => 1, 'Car.deleted' => 0, 'AND' => array('OR' => $conditions));
 		$this->Car->bindModel(array('belongsTo' => array('CarName' => array('fields' => 'car_name,id'))));
-			$carNames = $this->Car->find('all', array('conditions' => array('Car.publish' => 1, 'Car.deleted' => 0,
-					'AND' => array('OR' => $conditions)), 'recursive' => 2, 'limit' => 10,
+			$carNames = $this->Car->find('all', array('conditions' => $condition2, 'recursive' => 2, 'limit' => 10,
 					'joins' => array(
 						array(
 							'alias' => 'brandsAls',

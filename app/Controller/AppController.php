@@ -99,4 +99,17 @@ class AppController extends Controller {
 
 		}
 	}
+
+	function getGuestPermission(){
+		$guest_u_permission = false;
+		if(!$this->Session->read('UserAuth.User.id')){
+			$guest_u_permission = true;
+		}
+		return $guest_u_permission;
+	}
+
+	function getGuestPermissionAccess(){
+		$guest_u_permission_access = array(1, 4);
+		return $guest_u_permission_access;
+	}
 }
