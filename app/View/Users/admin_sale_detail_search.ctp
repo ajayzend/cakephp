@@ -1,8 +1,8 @@
 <?php
 $count = 1;  	
-if($SaleDetails)
+if($SaleInvDetails)
 {									
-foreach($SaleDetails as $val)
+foreach($SaleInvDetails as $val)
 {
 ?>
 		<tr>

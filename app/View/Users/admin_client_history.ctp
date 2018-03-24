@@ -331,7 +331,7 @@ $(function()
 				  </div><!--Payment History-->
 				  
 				  
-					<div class="tab-pane fade" id="buy-his"><!--Sale History-->
+					<div class="tab-pane fade" id="buy-his"><!--Buy History-->
 						<div class="box-header payment_header well">
 							<h4 style="margin-bottom:10px;">Buy History</h4>
 							
@@ -371,7 +371,7 @@ $(function()
 										  <th><?php echo __('Action');?></th> 	 												  
 									  </tr>
 								  </thead>   
-								  <tbody id="saleDetails">
+								  <tbody id="buyDetails">
 								  
 							<?php
 							$count = 1;  	
@@ -519,7 +519,7 @@ $(function()
 									<th><?php echo __('Action');?></th>
 								</tr>
 								</thead>
-								<tbody id="sale2Details">
+								<tbody id="saleDetails">
 
 								<?php
 								$count = 1;
@@ -1016,6 +1016,7 @@ $(function()
 				});
 		});
 
+	/*For Buy Action*/
 	$("#saleButton").click(function()
 			{	
 				var Uid = $('#client_id').val();
@@ -1023,7 +1024,7 @@ $(function()
 				var fromDate  =$("#date06").val();
 				var dataString = {'id':Uid,'from':fromDate,'to':toDate};			
 				$.ajax({
-					url:"<?php echo $this->Html->url('/admin/users/sale_detail_search',true);?>",
+					url:"<?php echo $this->Html->url('/admin/users/buy_detail_search',true);?>",
 					type:"POST",
 					data:dataString,
 					dataType:"html",
@@ -1033,7 +1034,7 @@ $(function()
 					success:function(result)
 					{
 						$("#myloader").hide();
-						$('#saleDetails').html(result);
+						$('#buyDetails').html(result);
 						$('#clearButton').show();	
 					},
 					faliure:function(result)
@@ -1051,7 +1052,7 @@ $(function()
 				var fromDate  =$("#date06").val();
 				var dataString = {'id':Uid,'from':fromDate,'to':toDate};			
 				$.ajax({
-					url:"<?php echo $this->Html->url('/admin/users/clear_sale_detail_search',true);?>",
+					url:"<?php echo $this->Html->url('/admin/users/clear_buy_detail_search',true);?>",
 					type:"POST",
 					data:dataString,
 					dataType:"html",
@@ -1061,7 +1062,7 @@ $(function()
 					success:function(result)
 					{
 						$("#myloader").hide();
-						$('#saleDetails').html(result);
+						$('#buyDetails').html(result);
 						$('#clearButton').hide();	
 					},
 					faliure:function(result)
@@ -1070,6 +1071,63 @@ $(function()
 					}
 				});
 		});
+
+	/*For Sale Action*/
+
+	$("#sale2Button").click(function()
+	{
+		var Uid = $('#client_id').val();
+		var toDate  =$("#saledate05").val();
+		var fromDate  =$("#saledate06").val();
+		var dataString = {'id':Uid,'from':fromDate,'to':toDate};
+		$.ajax({
+			url:"<?php echo $this->Html->url('/admin/users/sale_detail_search',true);?>",
+			type:"POST",
+			data:dataString,
+			dataType:"html",
+			beforeSend: function() {
+				$("#myloader").show();
+			},
+			success:function(result)
+			{
+				$("#myloader").hide();
+				$('#saleDetails').html(result);
+				$('#saleclearButton').show();
+			},
+			faliure:function(result)
+			{
+				alert("Network Error");
+			}
+		});
+	});
+
+
+	$("#saleclearButton").click(function()
+	{
+		var Uid = $('#client_id').val();
+		var toDate  =$("#saledate05").val();
+		var fromDate  =$("#saledate06").val();
+		var dataString = {'id':Uid,'from':fromDate,'to':toDate};
+		$.ajax({
+			url:"<?php echo $this->Html->url('/admin/users/clear_sale_detail_search',true);?>",
+			type:"POST",
+			data:dataString,
+			dataType:"html",
+			beforeSend: function() {
+				$("#myloader").show();
+			},
+			success:function(result)
+			{
+				$("#myloader").hide();
+				$('#saleDetails').html(result);
+				$('#saleclearButton').hide();
+			},
+			faliure:function(result)
+			{
+				alert("Network Error");
+			}
+		});
+	});
 		
 $(function(){
 

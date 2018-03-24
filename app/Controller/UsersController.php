@@ -1552,7 +1552,8 @@ class UsersController extends AppController {
 		LEFT JOIN car_names AS CarName ON CarName.id = Car.car_name_id
 		LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
 		LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
-		WHERE CarPayment.user_id ="'.$userId.'" AND Car.deleted =0 AND CarPayment.deleted =0 AND Car.groupid = 2 AND CarPayment.updated_on BETWEEN "'.$fromdate.'" AND "'.$todate.'" order by CarPayment.updated_on DESC');
+		WHERE CarPayment.created_by ="'.$userId.'" AND Car.deleted =0 AND CarPayment.deleted =0 AND Car.groupid = 2 
+		AND CarPayment.updated_on BETWEEN "'.$fromdate.'" AND "'.$todate.'" order by CarPayment.updated_on DESC');
 		return $result;
 	}
 	
@@ -1569,8 +1570,20 @@ class UsersController extends AppController {
 		WHERE CarPayment.user_id ="'.$userId.'" AND Car.deleted =0 AND CarPayment.updated_on BETWEEN "'.$todate.'" AND "'.$fromdate.'" order by CarPayment.updated_on DESC ');
 		return $result;
 	}
-	
-	 
+
+	public function getSaleInvoiceDetailsSearchByUser($userId,$fromdate,$todate) {
+
+		$result = $this->User->query('SELECT CarPayment.yen,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.sale_price,CarPayment.currency, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock,Logistic.destination_port, Logistic.status, Logistic.remark, Shipping.company_name
+		FROM  `car_payments` AS CarPayment
+		LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
+		LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
+		LEFT JOIN shippings AS Shipping ON Logistic.shipping_id = Shipping.id
+		LEFT JOIN car_names AS CarName ON CarName.id = Car.car_name_id
+		LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
+		LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
+		WHERE CarPayment.created_by ="'.$userId.'" AND Car.deleted =0 AND Car.groupid = 2 AND CarPayment.updated_on BETWEEN "'.$todate.'" AND "'.$fromdate.'" order by CarPayment.updated_on DESC ');
+		return $result;
+	}
 	
 	 // number of results per page.
 		function getPagination($count){
@@ -1600,7 +1613,7 @@ class UsersController extends AppController {
 		
    }
    
-   function admin_sale_detail_search()
+   function admin_buy_detail_search()
    {				
 		$id=$this->data['id'];
 		$fromDate = $this->data['from'];
@@ -1618,9 +1631,59 @@ class UsersController extends AppController {
 			$toDate= date("Y-m-d");
 		}
 		$SaleDetails = $this->getInvoiceDetailsSearchByUser($id,$fromDate,$toDate);
-		$this->set('SaleDetails',$SaleDetails);
+		$this->set('BuyInvDetails',$SaleDetails);
 					
    }
+
+	public function  admin_clear_buy_detail_search()
+	{
+
+		$id = $this->data['id'];
+		$pastDate = "2013-01-01";
+		$curDate = date("Y-m-d");
+
+		//Buy history
+		$BuyDetais = $this->getInvoiceDetailsByUser($id,$pastDate,$curDate);
+		$this->set('BuyInvDetails',$BuyDetais);
+		$this->layout = null;
+		$this ->render('admin_buy_detail_search');
+	}
+
+	function admin_sale_detail_search()
+	{
+		$id=$this->data['id'];
+		$fromDate = $this->data['from'];
+		$fromDate = date("Y-m-d", strtotime($fromDate));
+
+		$toDate = $this->data['to'];
+		$toDate = date("Y-m-d", strtotime($toDate));
+
+		if($fromDate =='')
+		{
+			$fromDate='2013-01-01';
+		}
+		if($toDate =='')
+		{
+			$toDate= date("Y-m-d");
+		}
+		$SaleDetails = $this->getSaleInvoiceDetailsSearchByUser($id,$fromDate,$toDate);
+		$this->set('SaleInvDetails',$SaleDetails);
+
+	}
+
+	public function  admin_clear_sale_detail_search()
+	{
+
+		$id = $this->data['id'];
+		$pastDate = "2013-01-01";
+		$curDate = date("Y-m-d");
+
+		//sale history
+		$SaleDetais = $this->getSaleInvoiceDetailsByUser($id,$pastDate,$curDate);
+		$this->set('SaleInvDetails',$SaleDetais);
+		$this->layout = null;
+		$this ->render('admin_sale_detail_search');
+	}
    
    public function admin_docStatus() {
 		
@@ -1780,20 +1843,6 @@ class UsersController extends AppController {
 					LEFT JOIN ports AS Port ON Port.id = Logistic.port_id
 					WHERE CarPayment.car_id ='.$car_id.'  AND  CarPayment.deleted = 0  group by Car.stock order by CarPayment.created_on DESC' ); 
 		return $result;
-	}
-	
-	public function  admin_clear_sale_detail_search()
-	{
-		    
-		$id = $this->data['id']; 
-		$pastDate = "2013-01-01";
-		$curDate = date("Y-m-d");     
-				 
-		//sale history
-		$SaleDetais = $this->getInvoiceDetailsByUser($id,$pastDate,$curDate);
-		$this->set('SaleDetails',$SaleDetais);
-		$this->layout = null;
-		$this ->render('admin_sale_detail_search');
 	}
 	
 	public function getInvoiceDetailsByUserData($userId) {
