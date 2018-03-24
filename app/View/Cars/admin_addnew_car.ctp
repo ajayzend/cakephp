@@ -858,13 +858,22 @@
 								?>
 							</div>
 
-							<div class="control-group col-md-6">
+							<div class="control-group col-md-3">
 								<label class="control-label" for="inputbodystyle">Sale Price</label>
 								<div class="controls  ">
 									<?php echo $this->Form->input('sale_price',array('type'=>'text','id'=>'psale_price_id','value'=>@$carDetails['CarPayment']['sale_price'],'label'=>false,'div'=>false,'required'=>true,'class'=>'form-control'));?>
 									<span id='yenmsg'></span>
 								</div>
 							</div>
+
+							<div class="control-group col-md-3">
+								<label class="control-label" for="inputbodystyle">Freight</label>
+								<div class="controls  ">
+									<?php echo $this->Form->input('psale_freight',array('type'=>'text','id'=>'psale_freight_id','value'=>@$carDetails['CarPayment']['psale_freight'],'label'=>false,'div'=>false,'required'=>true,'class'=>'form-control'));?>
+									<span id='yenmsg'></span>
+								</div>
+							</div>
+
 							<div class="col-md-12">
 								<div class="pull-left col-md-5 arrivals_new">
 									<label class="pull-left">Check to Enable sale price edit for User</label>
@@ -1031,8 +1040,13 @@
 								<label class="control-label" for="inputbodystyle">Port Remark</label>
 								<?php echo $this->Form->input('port_remark',array('type'=>'text','id'=>'port_remark','value'=>@$carDetails['Logistic']['port_remark'] ,'div'=>false,'label'=>false,'class'=> 'form-control'));?>
 							</div>
-						</div>
 
+							<div class="form-group col-md-6">
+								<label class="control-label" for="inputbodystyle">B/L No</label>
+								<?php echo $this->Form->input('bl_no',array('type'=>'text','id'=>'bl_no','value'=>@$carDetails['Logistic']['bl_no'] ,'div'=>false,'label'=>false,'class'=> 'form-control'));?>
+							</div>
+						</div>
+						
 
 						<!--   end new div   -->
 						<div class="col-md-12">

@@ -20,6 +20,9 @@
 										<th>Lot No.</th>
 										<th>Car Name</th>
 										<th>Chassis No.</th>
+										<th>Freight</th>
+										<th>B/L No</th>
+										<th>Consignee</th>
 										<th>Port Name</th>
 										<th>Port Remark</th>
 										<th>Yard No.</th>
@@ -77,6 +80,9 @@
 										<td><?php echo @$result['Car']['lot_number'] ; ?></td>
 										<td><?php echo @$result['Car']['CarName']['car_name'] ; ?></td>
 										<td><?php echo @$result['Car']['cnumber'] ; ?></td>
+										<td><?php echo @$result['CarPayment']['psale_freight'] ; ?></td>
+										<td><?php echo @$result['Car']['Logistic']['bl_no'] ; ?></td>
+										<td><?php echo @$result['Car']['consignee'] ; ?></td>
 										<td><?php echo @$result['Car']['Logistic']['Port']['port_name'] ; ?></td>
 										<td><?php echo @$result['Car']['Logistic']['port_remark'] ; ?></td>
 										<td><?php echo @$result['Car']['Logistic']['yard_name']; ?></td>

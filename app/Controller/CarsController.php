@@ -1464,6 +1464,7 @@ class CarsController extends AppController {
 				$data['currency']='';
 				$data['user_id'] = 0;
 				$data['sale_price']='';
+				$data['psale_freight']='';
 				$data['updated_on']=date("Y-m-d");
 
 				$retSaleData = $this->CarPayment->save($data);
@@ -1498,6 +1499,7 @@ class CarsController extends AppController {
 					$data['currency'] = $this->data['Car']['moneyType'];
 					$data['user_id'] = $this->data['Car']['user_id'];
 					$data['sale_price']=$this->data['Car']['sale_price'];
+					$data['psale_freight']=$this->data['Car']['psale_freight'];
 
 					$exiest_data_record = $this->CarPayment->find('all',array('fields'=>array('user_id','updated_on'),'conditions'=>array('car_id'=>$this->data['Car']['car_id'])));
 
@@ -1576,6 +1578,8 @@ class CarsController extends AppController {
 				$data['arrival_date']=$this->data['Car']['arrival_date'];
 				$data['departure_date']=$this->data['Car']['departure_date'];
 				$data['port_remark']=$this->data['Car']['port_remark'];
+				$data['bl_no']=$this->data['Car']['bl_no'];
+
 				//pr($data); die;
 				$returnData = $this->Logistic->save($data);
 
