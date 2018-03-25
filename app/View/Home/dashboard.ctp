@@ -53,6 +53,9 @@
                                 <th>Car Name</th>
                                 <th>Chassis Number</th>
                                 <th>Month/Year of Manufacture</th>
+                                <th>B/L No</th>
+                                <th>Consignee</th>
+                                <th>Freight</th>
                                 <th>Price</th>
                                 <th>Sold Date</th>
                                 <th>Receipt of Money</th>
@@ -109,6 +112,10 @@
                                         </td>
                                         <td><?php $mYear = explode(" ",$val['Car']['manufacture_year']); echo $mYear[0]."/".@$mYear[1]; ?>
                                         </td>
+                                      <td class="center"><?php echo $val['Logistic']['bl_no'] ; ?>
+                                      <td class="center"><?php echo $val['Car']['consignee'] ; ?>
+                                      <td class="center"><?php echo $val['CarPayment']['psale_freight'] ; ?>
+
                                         <td class="center"><span class="text">
                                         <?php  /*if($val['CarPayment']['currency']=='$')
                                                         {
@@ -330,6 +337,7 @@
                                           <th>Sold Date</th>
                                           <th>Car Name</th>
                                           <th>Chassis Number</th>
+                                          <th>Freight</th>
                                           <th>Sale Price($)</th>
                                           <th>Sale Price(￥)</th>
                                           <!--<th>Shipping Company</th>
@@ -361,6 +369,7 @@
 
                                         //echo @$val['Car']['CarName']['car_name'] ; ?></td>
                                         <td class="center"><?php echo $val['Car']['cnumber'] ; ?></td>
+                                        <td class="center"><?php echo $val['CarPayment']['psale_freight'] ; ?></td>
 
                                         <td class="center">
                                             <span id="first_<?php echo $val['CarPayment']['id']; ?>" class="text">

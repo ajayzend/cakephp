@@ -431,7 +431,10 @@ EMAIL_FROM_NAME;
 	}
 	
 	public function getAllHistoryByUserId($userId) {
-		$result = $this->query('SELECT Car.stock,Car.cnumber, Logistic.ship_port,Logistic.car_in,Logistic.car_out ,Logistic.destination_port,Logistic.departure_date,Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,CarPayment.currency,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.sale_price, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.country_id,Car.price_editable, Car.brand_id, Logistic.status, Logistic.remark, Shipping.company_name
+		$result = $this->query('SELECT Car.stock,Car.cnumber, Logistic.ship_port,Logistic.car_in,Logistic.car_out ,Logistic.destination_port,Logistic.departure_date,
+Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,CarPayment.currency,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,
+CarPayment.id,Logistic.created,CarPayment.sale_price, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.country_id,Car.price_editable, 
+Car.brand_id, Logistic.status, Logistic.remark, Shipping.company_name, Car.consignee, Logistic.bl_no, CarPayment.psale_freight
 					FROM  `car_payments` AS CarPayment
 					LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
 					LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id

@@ -93,7 +93,10 @@ class AppController extends Controller {
 				echo $this->params['action'];
 				die;
 				var_dump($this);*/
-			}else{
+			}
+			else if($ctrl == 'invoices' || $action == 'admin_generate'){
+			}
+			else{
 				die('You are not permitted to acces this page.');
 			}
 

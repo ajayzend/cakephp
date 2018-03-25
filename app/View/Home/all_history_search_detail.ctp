@@ -41,6 +41,9 @@
 											</td>
 											<td><?php $mYear = explode(" ",$val['Car']['manufacture_year']); echo $mYear[0]."/".@$mYear[1]; ?>
 											</td>
+											<td class="center"><?php echo $val['Logistic']['bl_no'] ; ?>
+											<td class="center"><?php echo $val['Car']['consignee'] ; ?>
+											<td class="center"><?php echo $val['CarPayment']['psale_freight'] ; ?>
 											<td class="center"><span class="text">
 											<?php if($val['CarPayment']['currency']=='$')
 															{		

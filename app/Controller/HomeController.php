@@ -1595,7 +1595,10 @@ class HomeController extends AppController
 		if($sale_buy_flag == 'sell')
 			$sub_query = " Car.created_by = $userId ";
 
-		$query = "SELECT Logistic.remark,Car.id, Car.user_doc_updated,Logistic.ship_port,Logistic.destination_port,Logistic.departure_date,Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.currency,CarPayment.yen,CarPayment.currency,CarPayment.sale_price, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
+		$query = "SELECT Logistic.remark,Car.id, Car.user_doc_updated,Logistic.ship_port,Logistic.destination_port,Logistic.departure_date,Logistic.arrival_date,Logistic.port_remark,
+Port.port_name,CarPayment.updated_on,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.currency,CarPayment.yen,
+CarPayment.currency,CarPayment.sale_price, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, 
+Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name, CarPayment.psale_freight, Logistic.bl_no, Car.consignee
 					FROM  cars AS Car					
 					LEFT JOIN `car_payments` AS CarPayment ON Car.id = CarPayment.car_id
 					LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
@@ -1695,7 +1698,9 @@ class HomeController extends AppController
 
 	public function getAllDetailsByCnumber($id)
 	{
-		$result = $this->User->query("SELECT DISTINCT CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.sale_price,CarPayment.currency,CarPayment.yen, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber,Car.price_editable, Car.country_id, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
+		$result = $this->User->query("SELECT DISTINCT CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.sale_price,CarPayment.currency,CarPayment.yen, 
+CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber,Car.price_editable, Car.country_id, Car.brand_id, Car.stock, Logistic.status, 
+Logistic.remark, Shipping.company_name, CarPayment.psale_freight
 					FROM  `car_payments` AS CarPayment
 					LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
 					LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
@@ -3653,7 +3658,10 @@ class HomeController extends AppController
 
 	public function getInvoiceDetailsByCarId($car_id)
 	{
-		$result = $this->User->query('SELECT Logistic.remark,Car.user_doc_updated,Logistic.ship_port,Logistic.departure_date,Logistic.destination_port,Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,CarPayment.currency,Logistic.created,CarPayment.yen,CarPayment.sale_price, CarPayment.updated_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name
+		$result = $this->User->query('SELECT Logistic.remark,Car.user_doc_updated,Logistic.ship_port,Logistic.departure_date,Logistic.destination_port,Logistic.arrival_date,
+Logistic.port_remark,Port.port_name,CarPayment.updated_on,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,CarPayment.currency,
+Logistic.created,CarPayment.yen,CarPayment.sale_price, CarPayment.updated_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable,
+ Car.brand_id, Car.stock, Logistic.status, Logistic.remark, Shipping.company_name, CarPayment.psale_freight, Logistic.bl_no, Car.consignee
 					FROM  `car_payments` AS CarPayment
 					LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
 					LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id

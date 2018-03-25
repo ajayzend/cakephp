@@ -266,28 +266,45 @@ class InvoicesController extends AppController
 					$objPHPExcel->getActiveSheet()->getStyle('B16')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 					$objPHPExcel->getActiveSheet()->getStyle('C16')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 					$objPHPExcel->getActiveSheet()->getStyle('D16')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-					foreach($invoDetails[0]['InvoiceDetail'] as $InvoVal)
-					{
 
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$cell1, $c);
-						$objPHPExcel->getActiveSheet()->getStyle('A'.$cell1, $c)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$cell1, strtoupper($InvoVal['Car']['CarName']['car_name']));
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$cell1, strtoupper($InvoVal['Car']['cnumber']));
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$cell1, $InvoVal['Car']['CarPayment']['currency'].''.$InvoVal['Car']['CarPayment']['sale_price']);
-						$objPHPExcel->getActiveSheet()->getStyle('D'.$cell1, $InvoVal['Car']['CarPayment']['currency'].''.$InvoVal['Car']['CarPayment']['sale_price'])->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-						
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$cell2, "");
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$cell2, "TOTAL(".$totalCount.")");
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$cell2, "PRICE");
-					
-						$price += $InvoVal['Car']['CarPayment']['sale_price'];
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$cell2, $InvoVal['Car']['CarPayment']['currency'].''.$price);
-						$objPHPExcel->getActiveSheet()->getStyle('D'.$cell2, $InvoVal['Car']['CarPayment']['currency'].''.$price)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+		$counter = 0;
+					foreach($invoDetails[0]['InvoiceDetail'] as $InvoVal) {
+						$freight_price = $InvoVal['Car']['CarPayment']['psale_freight'];
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A' . $cell1, $c);
+						$objPHPExcel->getActiveSheet()->getStyle('A' . $cell1, $c)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $cell1, strtoupper($InvoVal['Car']['CarName']['car_name']));
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C' . $cell1, strtoupper($InvoVal['Car']['cnumber']));
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $cell1, $InvoVal['Car']['CarPayment']['currency'] . '' . $InvoVal['Car']['CarPayment']['sale_price']);
+						$objPHPExcel->getActiveSheet()->getStyle('D' . $cell1, $InvoVal['Car']['CarPayment']['currency'] . '' . $InvoVal['Car']['CarPayment']['sale_price'])->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+
+						if ($counter == 0) { // Added by Ajay Date:25032018
+							$cell1++;
+							$cell1++;
+							$counter++;
+
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A' . $cell1, '');
+							$objPHPExcel->getActiveSheet()->getStyle('A' . $cell1, '')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $cell1, '');
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C' . $cell1, 'Freight Amount');
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $cell1, $InvoVal['Car']['CarPayment']['currency'] . '' . $freight_price);
+							$objPHPExcel->getActiveSheet()->getStyle('D' . $cell1, $InvoVal['Car']['CarPayment']['currency'] . '' . $freight_price)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+						}
+
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A' . $cell2, "");
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $cell2, "TOTAL(" . $totalCount . ")");
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C' . $cell2, "PRICE");
+
+						$price += $InvoVal['Car']['CarPayment']['sale_price'] + $freight_price;
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $cell2, $InvoVal['Car']['CarPayment']['currency'] . '' . $price);
+						$objPHPExcel->getActiveSheet()->getStyle('D' . $cell2, $InvoVal['Car']['CarPayment']['currency'] . '' . $price)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 						$c++;
 						$cell++;
 						$cell1++;
 					}
-		
+
+
+
+
 					
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$logoCell, 'BANK NAME'.' - '.strtoupper($invoDetails[0]['Bank']['bank_name']));
 					$branchNameCell = $logoCell+1;

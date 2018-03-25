@@ -17,6 +17,7 @@
 											
 											//echo @$val['Car']['CarName']['car_name'] ; ?></td>
 											<td class="center"><?php echo $val['Car']['cnumber'] ; ?></td>
+											<td class="center"><?php echo $val['CarPayment']['psale_freight'] ; ?></td>
 											
 											<td class="center">
 												<span id="first_<?php echo $val['CarPayment']['id']; ?>" class="text">
