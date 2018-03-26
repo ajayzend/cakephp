@@ -4059,6 +4059,30 @@ Logistic.created,CarPayment.yen,CarPayment.sale_price, CarPayment.updated_on, In
 
 		}
 	}
-
+	public function setCarConsignee()
+	{
+		//pr($this->data);die;
+		$status = false;
+		if($this->request->is('post'))
+		{
+			$date = date('Y-m-d H:i:s');
+			$userid = $this->Session->read('UserAuth.User.id');
+			$carid =  $this->data['carid'];
+			$consignee =  $this->data['consignee'];
+			$data['id'] = $carid;
+			$data['consignee'] = $consignee;
+			$data['modified_by'] = $userid;
+			$data['modified'] = $date;
+			$resultUpdate = $this->Car->save($data);
+			//$resultUpdate =  $this->Car->update(array('Car.consignee'=>$consignee, 'modified_by' => $userid, 'modified' => $date), array('Car.id'=>$carid));
+			if($resultUpdate){
+				$status = true;
+			}
+			//$InvoiceName=$this->CarPayment->find('all',array('conditions'=>array('CarPayment.user_id'=>$this->data['userId'])));
+			//$result = $this->Tax->save($this->data);
+			//echo json_encode(array('done'=>'success',"message"=>"Port detail is successfully edited!",'port_name'=>$result['Tax']['port_name'],'amount'=>$result['Tax']['amount'],'p_id'=>$result['Tax']['id']));
+		}
+		echo $status;die;
+	}
 
 }

@@ -2,6 +2,66 @@
 <?php echo $this->Html->css('select2');?>
 <?php echo $this->Html->script('select2.min'); ?>
 
+<!--consignee popup code for save it-->
+
+<style>
+    .black_overlay{
+        display: none;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index:1001;
+        -moz-opacity: 0.8;
+        opacity:.80;
+        filter: alpha(opacity=80);
+    }
+    .white_content {
+        display: none;
+        position: absolute;
+        top: 26%;
+        left: 29%;
+        width: 41%;
+        height: 19%;
+        padding: 1px;
+        border: 1px solid green;
+        background-color: white;
+        z-index:1002;
+        overflow: auto;
+    }
+
+
+</style>
+
+<?php $height = "style=\"height:20px; overflow:hidden;\""; ?>
+<?php $height_td = "style=\"height:20px; overflow:hidden;color:green\""; ?>
+<?php $label_color = "style=\"background-color: #d5d5d5\""; ?>
+<div id="fade" class="black_overlay"></div>
+<div id="light" class="white_content">
+    <div align="right">
+        <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a>
+    </div>
+    <table class="table <!--table-striped--> table-bordered bootstrap-datatable datatable custom_table">
+        <tr>
+            <input type="hidden" name="his_carid" id="his_carid" value="">
+            <th colspan="2"><div <?php echo $height;?>>Consignee Update Process for Chassis Number : <span id="chasis_vale_id"></span></div> </th>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="center"><input style="width: 254px;" type="text" name="consignee" id="consignee" value="" placeholder="Consignee"> </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="center"><button type="submit" class="btn btn-primary" id="consigneebutton" onclick="setCarConsignee()">Save</button>
+               &nbsp; &nbsp;&nbsp; <a class="btn btn-danger" href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Cancel</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<!--consignee popup code for save it-->
+
 <div class="ProductDetailLeftPanel">
     <div class="DashboardStatics">
         Customer Code: <b><?php echo $userDetails['User']['uniqueid'] ?></b> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -82,6 +142,8 @@
                             <?php if($SaleDetais){
                                   foreach($SaleDetais as $val)
                                   {
+                                      $chasis_no = $val['Car']['cnumber'];
+                                      $consignee = $val['Car']['consignee'];
                                   ?>
                                   <tr>
                                         <td class="center"><?php echo $val['Car']['stock'] ; ?>
@@ -108,8 +170,15 @@
 
                                         </td>
 
-                                        <td class="center"><?php echo $val['Car']['cnumber'] ; ?>
-                                        </td>
+                                        <!--<td class="center"><?php /*echo $val['Car']['cnumber'] ; */?>
+                                        </td>-->
+
+                                      <td class="center"><a title="Click to update Consignee." href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';
+                                      document.getElementById('fade').style.display='block'; document.getElementById('his_carid').value = <?php echo $carId?>;
+                                            document.getElementById('chasis_vale_id').innerHTML =  <?php echo "'$chasis_no'"?>;
+                                              document.getElementById('consignee').value =  <?php echo "'$consignee'" ; ?>;">
+                                              <?php echo $chasis_no ; ?></a></td>
+
                                         <td><?php $mYear = explode(" ",$val['Car']['manufacture_year']); echo $mYear[0]."/".@$mYear[1]; ?>
                                         </td>
                                       <td class="center"><?php echo $val['Logistic']['bl_no'] ; ?>
@@ -1529,5 +1598,25 @@ $(function()
 
     });
 
+    function setCarConsignee()
+    {
+        var consignee = $("#consignee").val();
+        var his_carid = $("#his_carid").val();
+
+        $.ajax({
+            type: "POST",
+            url:"<?php echo $this->Html->url('setCarConsignee',true);?>",
+            data:{carid:his_carid, consignee: consignee},
+            dataType:'html',
+            success:function(data){
+                if(data == true) {
+                    alert("Successfully Saved.");
+                    location.reload();
+                }
+                else
+                    alert('There is some technical issue.');
+            }
+        });
+    }
 
 </script>

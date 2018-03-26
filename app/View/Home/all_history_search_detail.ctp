@@ -1,6 +1,8 @@
 <?php  if($SaleDetails){ 
 									  foreach($SaleDetails as $val)
-									  {   
+									  {
+										  $chasis_no = $val['Car']['cnumber'];
+										  $consignee = $val['Car']['consignee'];
 										 if($val['Car']['user_doc_status'] ==1)
 										{
 											$color = '#ffffd0';#5f8295 d9534f  #1fbba6
@@ -36,9 +38,13 @@
 												 
 											
 											</td>
-											
-											<td class="center"><?php echo $val['Car']['cnumber'] ; ?>
-											</td>
+
+											<td class="center"><a title="Click to update Consignee." href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';
+													document.getElementById('fade').style.display='block'; document.getElementById('his_carid').value = <?php echo $carId?>;
+													document.getElementById('chasis_vale_id').innerHTML =  <?php echo "'$chasis_no'"?>;
+													document.getElementById('consignee').value =  <?php echo "'$consignee'" ; ?>;">
+													<?php echo $chasis_no ; ?></a></td>
+
 											<td><?php $mYear = explode(" ",$val['Car']['manufacture_year']); echo $mYear[0]."/".@$mYear[1]; ?>
 											</td>
 											<td class="center"><?php echo $val['Logistic']['bl_no'] ; ?>
