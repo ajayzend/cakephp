@@ -4,3 +4,4 @@ ALTER TABLE car_payments ADD COLUMN `psale_freight` FLOAT(11,2) NULL AFTER `sale
 ALTER TABLE `logistics` ADD COLUMN `bl_no` VARCHAR(50) NULL AFTER `destination_port`;
 ALTER TABLE `cars` ADD COLUMN `consignee` VARCHAR(100) NULL AFTER `recommended`;
 ALTER TABLE `car_payments` CHANGE `psale_freight` `psale_freight` FLOAT(11,2) DEFAULT 0.00 NULL;
+UPDATE car_payments SET psale_freight = 0.00;
