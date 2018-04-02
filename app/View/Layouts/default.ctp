@@ -192,7 +192,8 @@ s0.parentNode.insertBefore(s1,s0);
 
     <div class="pull-xs-right">
     	<div class="pull-xs-left HeaderTopLink btn-group">
-        	<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-shopping-cart" aria-hidden="true"></i> &nbsp; How to Buy</a>
+        	<a data-toggle="dropdown-item" aria-haspopup="true" aria-expanded="false" href="<?php echo $this->Html->url('/',true); ?>home/how_to_buy">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i> &nbsp; How to Buy</a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="<?php echo $this->Html->url('/',true); ?>home/how_to_buy">How To Buy</a>
                 <a class="dropdown-item" href="<?php echo $this->Html->url('/',true); ?>home/request_car">Order a Car</a>
@@ -201,7 +202,7 @@ s0.parentNode.insertBefore(s1,s0);
         </div>
         <div class="pull-xs-left HeaderTopLink"> <a href="<?php echo $this->Html->url(array('controller' => 'pages', 'action' => 'Contactus'));?>"><i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp; Contact Us</a></div>
         <div class="pull-xs-left HeaderTopLink btn-group">
-        	<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-book" aria-hidden="true"></i> &nbsp; About Us</a>
+        	<a data-toggle="dropdown-item" aria-haspopup="true" aria-expanded="false" href="<?php echo $this->Html->url('/',true); ?>pages/aboutus"><i class="fa fa-book" aria-hidden="true"></i> &nbsp; About Us</a>
 
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="<?php echo $this->Html->url('/',true); ?>pages/aboutus">Company Info</a>
