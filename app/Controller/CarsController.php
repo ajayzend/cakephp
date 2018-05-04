@@ -1081,7 +1081,28 @@ class CarsController extends AppController {
 				)
 			);
 
-			$mydetail= $this->Paginator->paginate('Car');
+			//$mydetail= $this->Paginator->paginate('Car');
+			$mydetail = $this->Car->find('all', array('fields' =>
+				array('Car.uniqueid','CarName.car_name','Country.country_name','CarPayment.sale_price','Car.stock', 'Car.publish', 'Car.id',
+					'Car.cnumber', 'Car.doc_status', 'Car.user_doc_status',
+					'User1.first_name', 'User1.last_name', 'User2.first_name', 'User2.last_name'),
+				'conditions' => array(
+					'Car.cnumber LIKE' => '%'.$this->data['name'].'%',
+				), 'joins' => array(
+					array(
+						'alias' => 'User1',
+						'table' => 'users',
+						'type' => 'inner',
+						'conditions' => '`User1`.`id` = `Car`.`created_by`'
+					),
+					array(
+						'alias' => 'User2',
+						'table' => 'users',
+						'type' => 'inner',
+						'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+					)
+				)
+			));
 			// pr($mydetail); die;
 			$this->set('new',$status);
 			$this->set('carDetail',$mydetail);
@@ -1128,6 +1149,7 @@ class CarsController extends AppController {
 			}
 		}
 
+
 		$cars = $this->Car->find('all',array('conditions'=>$conditions, 'fields' =>array('Car.id','Car.cnumber')));
 
 		// Format the result for select1
@@ -1145,9 +1167,32 @@ class CarsController extends AppController {
 			$this->Car->unbindModel(array('hasMany' => array('CarImage')));
 			if($this->request->is('ajax')){
 
-				$Cardetail= $this->Car->find('all',array('conditions'=>array(
+				/*$Cardetail= $this->Car->find('all',array('conditions'=>array(
 					'Car.cnumber LIKE' => '%'.$this->data['name'].'%',
-				)));
+				)));*/
+
+				$Cardetail = $this->Car->find('all', array('fields' =>
+					array('Car.uniqueid','CarName.car_name','Country.country_name','CarPayment.sale_price','Car.stock', 'Car.publish', 'Car.id',
+						'Car.cnumber', 'Car.doc_status', 'Car.user_doc_status',
+						'User1.first_name', 'User1.last_name', 'User2.first_name', 'User2.last_name'),
+					'conditions' => array(
+						'Car.cnumber LIKE' => '%'.$this->data['name'].'%',
+					), 'joins' => array(
+						array(
+							'alias' => 'User1',
+							'table' => 'users',
+							'type' => 'inner',
+							'conditions' => '`User1`.`id` = `Car`.`created_by`'
+						),
+						array(
+							'alias' => 'User2',
+							'table' => 'users',
+							'type' => 'inner',
+							'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+						)
+					)
+				));
+
 				$this->set('carDetail',$Cardetail);
 				$this->set('new',$this->data['param']);
 				$this->set('ChassisData',count($Cardetail));
@@ -1157,10 +1202,30 @@ class CarsController extends AppController {
 			$this->Car->unbindModel(array('hasMany' => array('CarImage')));
 			if($this->request->is('ajax')){
 
-				$Cardetail= $this->Car->find('all',array('conditions'=>array(
+				/*$Cardetail= $this->Car->find('all',array('conditions'=>array(
 					'Car.cnumber LIKE' => '%'.$this->data['name'].'%',
-				)));
-
+				)));*/
+				$Cardetail = $this->Car->find('all', array('fields' => 
+					array('Car.uniqueid','CarName.car_name','Country.country_name','CarPayment.sale_price','Car.stock', 'Car.publish', 'Car.id',
+						'Car.cnumber', 'Car.doc_status', 'Car.user_doc_status',
+						'User1.first_name', 'User1.last_name', 'User2.first_name', 'User2.last_name'),
+					'conditions' => array(
+						'Car.cnumber LIKE' => '%'.$this->data['name'].'%',
+					), 'joins' => array(
+						array(
+							'alias' => 'User1',
+							'table' => 'users',
+							'type' => 'inner',
+							'conditions' => '`User1`.`id` = `Car`.`created_by`'
+						),
+						array(
+							'alias' => 'User2',
+							'table' => 'users',
+							'type' => 'inner',
+							'conditions' => '`User2`.`id` = `Car`.`modified_by`'
+						)
+					)
+				));
 
 				$this->set('carDetail',$Cardetail);
 				$this->set('ChassisData',count($Cardetail));

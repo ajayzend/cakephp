@@ -66,8 +66,11 @@
 					<td class="center" id="td_ship<?php echo $Detail['Car']['id']; ?>" ><input type="checkbox"  id='ship_checkbox_<?php echo $Detail['Car']['id']; ?>' onclick="docShipStatus('<?php echo $Detail['Car']['id']; ?>')" value='<?php echo $Detail['Car']['user_doc_status'] ;?>'  <?php  echo ($Detail['Car']['user_doc_status']==1 ? 'checked' : ''); ?>    >
 					
 					<img id="loading_ship<?php echo $Detail['Car']['id'];?>" src="<?php echo $this->webroot; ?>img/loading.gif" height="20px" width="15px" style="display:none;"/> 
-					</td>	
-						
+					</td>
+							<?php echo '							
+							<td>'.$Detail['User1']['first_name'].' '.$Detail['User1']['last_name'].'</td>
+							<td>'.$Detail['User2']['first_name'].' '.$Detail['User2']['last_name'];?></td>
+
 						<td class="right_bordr1">
 				 
                   <?php echo $this->Html->link('<i class="fa fa-pencil">&nbsp;</i>',array('action' => 'addnew_car', $Detail['Car']['id']),array('class' => 'btn btn-info hint--bottom','data-hint'=>'Edit','escape'=>false ));?>					  
