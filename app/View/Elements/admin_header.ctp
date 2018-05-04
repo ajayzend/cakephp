@@ -19,7 +19,7 @@
 					<ul class="dropdown-menu">
 						
 					    <li><a href="<?php echo $this->Html->url('/',true)?>users/myprofile">My Profile</a></li>
-						<?php if($this->Session->read('UserAuth.User.user_group_id') != 2) {?>
+						<?php if($this->Session->read('UserAuth.User.user_group_id') != 2 && $this->Session->read('UserAuth.User.user_group_id') != 5) {?>
 						<li>
 							<?php echo $this->Html->link('Change Password', array('controller' => 'users','action' => 'changePassword',$this->Session->read('UserAuth.User.id'))); ?>
 							</li>

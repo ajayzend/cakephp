@@ -173,6 +173,16 @@ class UserAuthComponent extends Component {
 		return false;
 	}
 
+	public function isBuyUserAdmin() {
+
+		$groupId = $this->Session->read('UserAuth.User.user_group_id');
+
+		if($groupId==DEFAULT_GROUP_ID) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Used to check is Client admin logged in Page Permission
 	 *

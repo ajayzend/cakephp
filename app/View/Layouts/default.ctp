@@ -449,7 +449,47 @@ s0.parentNode.insertBefore(s1,s0);
                     </a>
                 </div>
                 <?php
-            }
+            } else if($this->UserAuth->isLogged() && $this->UserAuth->isBuyUserAdmin())
+            {
+                ?>
+
+
+                <div class="pull-xs-left btn-group">
+                    <a title="You don't have permission to add cars." aria-haspopup="true" aria-expanded="false" href="#">
+                        <div class="HeaderTabs">
+                            <i class="fa fa-automobile" aria-hidden="true" style="color:#55b640"></i>  &nbsp;&nbsp; Add Cars&nbsp; &nbsp;
+                        </div>
+                    </a>
+                </div>
+
+                <div class="pull-xs-right TopBarProfileDetail btn-group">
+                    <a  class="dropdown-item" href="<?php echo $this->Html->url('/',true); ?>home/dashboard" title="<?php echo $this->Session->read('defaultUserName');?>">
+                        <i class="fa fa-user-circle-o" aria-hidden="true" style="color:#55b640"></i> &nbsp;&nbsp;
+                        Hi <span style="color:#55b640">
+                            <?php
+                            $fullname = $this->Session->read('defaultUserName');
+                            $length = 10;
+                            if(strlen($fullname)<= $length)
+                                echo $fullname;
+                            else{
+                                $fullname = substr($fullname,0,$length) . '...';
+                                echo $fullname;
+                            }
+                            ?>
+                        </span> &nbsp; &nbsp;
+
+                    </a>
+                </div>
+                <?php
+            }else{ ?>
+                <div class="pull-xs-left btn-group">
+                    <a title="Only sell users have permission to add cars." aria-haspopup="true" aria-expanded="false" href="<?php echo $this->Html->url('/',true); ?>login/">
+                        <div class="HeaderTabs">
+                            <i class="fa fa-automobile" aria-hidden="true"  style="color:#55b640"></i>  &nbsp;&nbsp; Add Cars&nbsp; &nbsp;
+                        </div>
+                    </a>
+                </div>
+            <?php }
 			?>
             <div class="clearfix"></div>
         </div>
