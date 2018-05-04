@@ -85,7 +85,7 @@ class UserGroup extends AppModel {
 			return true;
 		}
 
-		if ($userGroupID==DEFAULT_GROUP_ID && !ADMIN_PERMISSIONS) { // added by Ajay Date:22012018
+		if ($userGroupID==SellUser_GROUP_ID && !ADMIN_PERMISSIONS) { // added by Ajay Date:22012018
 			return true;
 		}
 

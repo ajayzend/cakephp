@@ -98,7 +98,7 @@ class UserAuthHelper extends AppHelper {
 
 		$groupId = $this->Session->read('UserAuth.User.user_group_id');
 
-		if($groupId==DEFAULT_GROUP_ID) {
+		if($groupId==SellUser_GROUP_ID) {
 			return true;
 		}
 		return false;

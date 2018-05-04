@@ -751,6 +751,9 @@ class UsersController extends AppController {
 						$this->Session->write('User_Group_ID', $user['User']['user_group_id']);
 						if($user['User']['user_group_id'] == 2)
 						{
+							$this->redirect('/home/dashboard/');
+						}else if($user['User']['user_group_id'] == 5)
+						{
 							//$this->redirect('/home/dashboard/');
 							//added by Ajay Date:22012018
 							$client_permission = json_encode($this->UserAuth->getClientAdminPagePermission());
