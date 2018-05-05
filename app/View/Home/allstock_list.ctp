@@ -308,7 +308,7 @@
     {
         $groupID_Saved = $SAC['Car']['groupid'];
 
-        if($groupID_Saved == 2){
+        if($groupID_Saved == 5){
             $ADDITIONAL_PRICE_Val = 0;
             $ADDITIONAL_YEN_PRICE_Val = 0;
         }else{
@@ -318,7 +318,7 @@
 
       if($SAC['Car']['publish']!=1)
          $sales = '<div class="ribbon"><span>Sold</span></div>';
-      else if($SAC['Car']['groupid'] == 2)
+      else if($SAC['Car']['groupid'] == 5)
           $sales = '<div class="ribbon"><span>ONE PRICE</span></div>';
         else
          $sales = '';
