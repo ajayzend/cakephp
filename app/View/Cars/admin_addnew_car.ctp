@@ -2,7 +2,7 @@
 <?php echo $this->Html->script('uploadfile');?>
 <?php @$SaleData=$this->params->query['data'];?>
 <?php $groupId = $this->Session->read('UserAuth.User.user_group_id');?>
-
+<?php $add_car_permission = 5; ?>
 <?php echo $this->Html->css('/js/datetimepicker/jquery.datetimepicker');?>
 <?php echo $this->Html->script('/js/datetimepicker/jquery.datetimepicker');?>
 
@@ -16,7 +16,7 @@
 	<div class="row sortable">
 		<div class="box col-md-12">
 			<div class="box-header well">
-				<?php if($groupId == 5) {?>
+				<?php if($groupId  == $add_car_permission) {?>
 					<a href="<?php echo $this->Html->url('/home/dashboard',true);?>"><button class=" btn btn-success pull-right" >Go Back</button></a>
 				<?php } else { ?>
 					<a href="<?php echo $this->Html->url('/admin/cars',true);?>"><button class=" btn btn-success pull-right" >Go Back</button></a>
@@ -38,7 +38,7 @@
 						<ul class="nav nav-tabs admin_tab" id="myTab" >
 							<li class="active" ><a href="#about_content" id="about" class="rounded_tab" data-toggle="tab" >Overview</a></li>
 
-							<?php if($groupId == 2) {?>
+							<?php if($groupId  == $add_car_permission) {?>
 								<?php if(!empty($carDetails)) {?>
 									<li><a href="#image_upload" id="Image" class="rounded_tab" data-toggle="tab" >Upload Image</a></li>
 									<li><a href="#additional_detail" id="additional" class="rounded_tab" data-toggle="tab" >Additional</a></li>
@@ -149,7 +149,7 @@
 								</div>
 
 
-								<?php if($groupId != 2){?>
+								<?php if($groupId != $add_car_permission){?>
 									<div class="form-group col-md-3">
 										<label for="inputLocation">Purchase Country</label>
 										<?php
@@ -166,7 +166,7 @@
 
 
 							<div class="addcar">
-								<?php if($groupId != 2){?>
+								<?php if($groupId != $add_car_permission){?>
 									<div class="form-group col-md-3">
 										<label for="inputLocation"> Sale Country</label>
 										<?php
@@ -190,7 +190,7 @@
 									<?php echo $this->Form->input('car_name_id',array('type'=>'select','options'=>$Car,'class'=>'form-control','label'=>false,'empty'=>'Select Car','data-rel'=>'chosen','id'=>'Car_name_id','value'=>@$carDetails['Car']['car_name_id'])); ?>
 								</div>
 
-								<?php if($groupId == 2) {?>
+								<?php if($groupId  == $add_car_permission) {?>
 										<!--<label for="inputDrive">UniqueId</label>-->
 										<div class="controls">
 											<input type="hidden" value="<?php echo (isset($carDetails['Car']['uniqueid'])? $carDetails['Car']['uniqueid']:'');?>" id="inputDrive" data-toggle="tooltip" title="<?php echo (isset($carDetails['Car']['uniqueid'])? $carDetails['Car']['uniqueid']:'');?>"  name="uniqueid" class="form-control" readonly='true' required="true">
@@ -215,7 +215,7 @@
 									</div>
 								</div>
 
-								<?php if($groupId == 2){
+								<?php if($groupId  == $add_car_permission){
 									$temp_lot_number = @$carDetails['Car']['lot_number'];
 									$temp_lot_number_val  = ($temp_lot_number) ? $temp_lot_number : 0;
 									?>
@@ -269,7 +269,7 @@
 									</div>
 								</div>
 
-								<?php if($groupId == 2){ ?>
+								<?php if($groupId  == $add_car_permission){ ?>
 										<div class="controls">
 											<?php
 											if(isset($carDetails['Car']['pdate']))
@@ -323,7 +323,7 @@
 									</div>
 								</div>
 
-								<?php if($groupId != 2){?>
+								<?php if($groupId != $add_car_permission){?>
 									<div class="control-group col-md-3">
 										<label class="control-label" for="inputbodystyle">Auction</label>
 										<div class="controls">
@@ -380,7 +380,7 @@
 							<hr>
 
 							<div class="dollar_exchange">
-								<?php if($groupId == 2){
+								<?php if($groupId  == $add_car_permission){
 									$push_price = "Selling Price";
 									$net_push_price = "Net Selling Price";
 									$default_recycle = 20000;
@@ -402,7 +402,7 @@
 										</div>
 									</div>
 
-									<?php if($groupId == 2){
+									<?php if($groupId  == $add_car_permission){
 										$temp_recycle_price = @$carDetails['CarPayment']['recycle_price'];
 										$temp_recycle_price_val  = ($temp_recycle_price) ? $temp_recycle_price : 20000;
 										?>
@@ -428,7 +428,7 @@
 									</div>
 
 
-									<?php if($groupId == 2){
+									<?php if($groupId  == $add_car_permission){
 										$temp_auction_fee = @$carDetails['CarPayment']['auction_fee'];
 										$temp_auction_fee_val  = ($temp_auction_fee) ? $temp_auction_fee : 0;
 										?>
@@ -450,7 +450,7 @@
 
 								<div class="row">
 
-									<?php if($groupId == 2){
+									<?php if($groupId  == $add_car_permission){
 										$temp_rickshaw = @$carDetails['CarPayment']['rickshaw'];
 										$temp_rickshaw_val  = ($temp_rickshaw) ? $temp_rickshaw : 0;
 										?>
@@ -467,7 +467,7 @@
 									<?php } ?>
 
 
-									<?php if($groupId == 2){
+									<?php if($groupId  == $add_car_permission){
 										$temp_shiping_fee = @$carDetails['CarPayment']['shiping_fee'];
 										$temp_shiping_fee_val  = ($temp_shiping_fee) ? $temp_shiping_fee : 0;
 										?>
@@ -484,7 +484,7 @@
 									<?php } ?>
 
 
-									<?php if($groupId == 2){
+									<?php if($groupId  == $add_car_permission){
 										$temp_freight = @$carDetails['CarPayment']['freight'];
 										$temp_freight_val  = ($temp_freight) ? $temp_freight : 0;
 										?>
@@ -501,7 +501,7 @@
 									<?php } ?>
 
 
-									<?php if($groupId == 2){
+									<?php if($groupId  == $add_car_permission){
 										$temp_other = @$carDetails['CarPayment']['other'];
 										$temp_other_val  = ($temp_other) ? $temp_other : 0;
 										?>
@@ -519,7 +519,7 @@
 
 
 									<div class="row">
-										<?php if($groupId != 2){?>
+										<?php if($groupId != $add_car_permission){?>
 										<div class="control-group col-md-3">
 											<label class="control-label" for="inputbodystyle">RECYCLE</label>
 											<div class="controls">
@@ -529,7 +529,7 @@
 										<?php } ?>
 
 
-										<?php if($groupId == 2){
+										<?php if($groupId  == $add_car_permission){
 											$temp_minimum_price_doller = @$carDetails['CarPayment']['minimum_price_doller'];
 											$temp_minimum_price_doller_val  = ($temp_minimum_price_doller) ? $temp_minimum_price_doller : 0;
 											?>
@@ -547,7 +547,7 @@
 										<?php } ?>
 
 
-										<?php if($groupId == 2){
+										<?php if($groupId  == $add_car_permission){
 											$temp_minimum_price_yen = @$carDetails['CarPayment']['minimum_price_yen'];
 											$temp_minimum_price_yen_val  = ($temp_minimum_price_yen) ? $temp_minimum_price_yen : 0;
 											?>
@@ -647,7 +647,7 @@
 										<?php echo $this->Form->input('tab_id',array('type'=>'hidden','id'=>'tab1')); ?>
 										<input type="hidden" value="<?php echo (isset($car_id)? $car_id:'0');?>" name="data[Car][car_id]" data-id="car_id">
 
-										<?php if($groupId == 2) {?>
+										<?php if($groupId  == $add_car_permission) {?>
 											<?php if(@$carDetails['Car']['publish'] == 1 || $car_id == '') {?>
 												<button type="submit" class="btn btn-primary" id="submit">Save</button>
 											<?php } ?>
@@ -666,7 +666,7 @@
 					<!--  end Firts Tab -->
 
 					<!--  started image upload -->
-					<?php if($groupId == 2) {?>
+					<?php if($groupId  == $add_car_permission) {?>
 						<div class="tab-pane" id ="image_upload">
 							<div class="row">
 								<div class="control-group col-md-12">

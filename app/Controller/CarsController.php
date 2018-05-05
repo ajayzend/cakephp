@@ -51,7 +51,7 @@ class CarsController extends AppController {
 
 		if($status == 'unpublish')
 		{
-			if($groupId == 2) {
+			if($groupId == 5) {
 				$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('CarPayment.updated_on' => 'DESC'), 'conditions' => array('AND' => array('Car.publish' => 0, 'Car.created_by' => $userid, 'OR' => array('CarPayment.sale_price !=' => null)))
 				, 'joins' => array(
 						array(
@@ -89,7 +89,7 @@ class CarsController extends AppController {
 		}
 		else
 		{
-			if($groupId == 2) {
+			if($groupId == 5) {
 				$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('AND' => array('Car.created_by' => $userid))
 				, 'joins' => array(
 						array(
@@ -130,7 +130,7 @@ class CarsController extends AppController {
 		{
 			$status = $this->params->query['new'];
 			$this->set('new',$this->params->query['new']);
-			if($groupId == 2) {
+			if($groupId == 5) {
 				$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'DESC'), 'conditions' => array('Car.publish' => 1, 'Car.created_by' => $userid, 'CarPayment.sale_price' => null, 'Car.new_arrival' => 1)
 				, 'joins' => array(
 						array(
@@ -171,7 +171,7 @@ class CarsController extends AppController {
 		{
 			$status = $this->params->query['sold'];
 			$this->set('sold',$this->params->query['sold']);
-			if($groupId == 2) {
+			if($groupId == 5) {
 				$this->paginate = array('fields' => $fields, 'limit' => 10, 'order' => array('id' => 'desc'), 'conditions' => array('Car.publish' => 0, 'Car.created_by' => $userid, 'CarPayment.sale_price' => null)
 				, 'joins' => array(
 						array(
@@ -217,7 +217,7 @@ class CarsController extends AppController {
 	{
 		$groupId = $this->Session->read('UserAuth.User.user_group_id');
 		$userid = $this->Session->read('UserAuth.User.id');
-		$created_user_groupID = ($groupId == 2) ? $groupId : 0;
+		$created_user_groupID = ($groupId == 5) ? $groupId : 0;
 		if($this->request->is('post'))
 		{
 			$data=array();
@@ -295,7 +295,7 @@ class CarsController extends AppController {
 				$price =  @$Cardata['CarPayment']['push_price']/10000;
 				$auc= explode('-',@$Cardata['CarPayment']['auction_name']);
 				$date= explode('-',date('d-m-Y',strtotime(@$Cardata['Car']['pdate'])));
-				if($groupId == 2){
+				if($groupId == 5){
 					$fullname = $this->Session->read('defaultUserName');
 					$fullname = preg_replace('/\s+/', '', $fullname);
 					$uid = uniqid();
@@ -338,7 +338,7 @@ class CarsController extends AppController {
 					$created_user_group = $this->User->find('list',array('fields'=>array('user_group_id'),'conditions'=>array('id'=>$created_by)));
 					$created_user_groupID = $created_user_group[$created_by];
 
-					if( $groupId  == 2){
+					if( $groupId  == 5){
 						if($created_by != $userid){
 							die('you are not permitted to access it. Please go back.');
 						}
@@ -984,7 +984,7 @@ class CarsController extends AppController {
 
 		$status = $this->request->query['status'];
 
-		if($groupId == 2){
+		if($groupId == 5){
 			if ($status == 'unpublish') {
 				$conditions = array('Car.created_by' => $userid, 'CarName.car_name LIKE' => '%' . $term . '%', 'Car.publish' => 0, 'Car.new_arrival' => 0, 'CarPayment.user_id !=' => 0);
 			} else if ($status == 'not sold') {
@@ -1123,7 +1123,7 @@ class CarsController extends AppController {
 
 		$status=$this->request->query['status'];
 
-		if($groupId == 2) {
+		if($groupId == 5) {
 			if ($status == 'unpublish') {
 				$conditions = array('Car.created_by' =>  $userid , 'Car.cnumber LIKE' => '%' . $term . '%', 'Car.publish' => 0, 'Car.new_arrival' => 0, 'CarPayment.user_id !=' => 0);
 			} else if ($status == 'not sold') {

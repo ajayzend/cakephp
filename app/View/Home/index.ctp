@@ -29,7 +29,6 @@ function showCarName(){
 <?php
 $userid = $this->Session->read('UserAuth.User.id');
 $groupid = $this->Session->read('UserAuth.User.user_group_id');
-
 ?>
 
 <div class="col-lg-3">

@@ -79,10 +79,20 @@ class CommonHelper extends AppHelper {
 	}
 
 
-        function getBrandinfo()
+        function getBrandinfo($userid, $groupid)
         {
+			if(!$userid)
+				$condition = " AND c.groupid IN(1, 4)";
+			else if($groupid == 5)
+				$condition = " AND c.groupid IN(5)";
+			else
+				$condition = " ";
                $user= ClassRegistry::init('User');
-               $result = $user->query('SELECT b.id,b.brand_name,b.brand_image,COUNT(c.id) as total  FROM `brands` b LEFT JOIN cars c ON c.brand_id=b.id where c.publish=1 AND c.deleted=0 GROUP BY c.brand_id order by total desc');
+			$query = "SELECT b.id,b.brand_name,b.brand_image,COUNT(c.id) as total  
+						FROM `brands` b 
+						LEFT JOIN cars c ON c.brand_id=b.id 
+						where c.publish=1 AND c.deleted=0 $condition GROUP BY c.brand_id order by total desc";
+               $result = $user->query($query);
 		return $result;
         }
 

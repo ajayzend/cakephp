@@ -730,7 +730,7 @@ $(function() {
 							<ul class="listing">
 							<?php
 
-							$getbrandinfo = $this->Common->getBrandinfo();
+							$getbrandinfo = $this->Common->getBrandinfo($userid, $groupid);
 
 
 								$BrandSrn = 0;

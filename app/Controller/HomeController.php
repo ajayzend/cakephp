@@ -57,18 +57,24 @@ class HomeController extends AppController
 
 		$this->Car->unbindModelAll();
 		$this->Car->bindModel(array('belongsTo' => array('Brand' => array('fields' => array('')))));
-		$condition = array('Car.publish' => 1, 'Car.new_arrival' => 0);
+		if($this->getGuestPermission())
+			$condition = array('Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.groupid' => $this->getGuestPermissionAccess());
+		else if($this->getGroupID() == 5)
+			$condition = array('Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.groupid' => $this->getSellUserPermissionAccess());
+		else
+			$condition = array('Car.publish' => 1, 'Car.new_arrival' => 0);
 		$fields = array('COUNT(Car.brand_id) as TotalCar', 'Brand.id', 'Brand.brand_name', 'Brand.brand_image', 'Car.car_type_id');
 		$group = array('Car.brand_id');
 		$order = array('Brand.priority');
 		$CBrand = $this->Car->find('all', array('fields' => $fields, 'group' => $group, 'order' => $order, 'conditions' => $condition, 'recursive' => 2));
 		$this->set('CBrand', $CBrand);
 
-
 		$this->Car->unbindModelAll();
 		$this->Car->bindModel(array('belongsTo' => array('CarName' => array('fields' => 'car_name,id')), 'hasMany' => array('CarPayment' => array('fields' => 'sale_price,id,yen,user_id,asking_price,push_price'), 'CarImage' => array('fields' => 'car_id,image_source,image_name', 'order' => array('image_name' => 'ASC')))));
 		if($this->getGuestPermission())
 			$condition = array('Car.publish' => 1, 'Car.isrecent' => 0, 'Car.groupid' => $this->getGuestPermissionAccess());
+		else if($this->getGroupID() == 5)
+			$condition = array('Car.publish' => 1, 'Car.isrecent' => 0, 'Car.groupid' => $this->getSellUserPermissionAccess());
 		else
 			$condition = array('Car.publish' => 1, 'Car.isrecent' => 0);
 		$showAllCar = $this->Car->find('all', array('conditions' => $condition, 'recursive' => 2, 'limit' => 12, 'order' => array('Car.id' => "DESC")));
@@ -80,6 +86,8 @@ class HomeController extends AppController
 		$this->Car->unbindModelAll();
 		if($this->getGuestPermission())
 			$condition = array('Car.publish' => 1, 'Car.groupid' => $this->getGuestPermissionAccess());
+		else if($this->getGroupID() == 5)
+			$condition = array('Car.publish' => 1, 'Car.groupid' => $this->getSellUserPermissionAccess());
 		else
 			$condition = array('Car.publish' => 1);
 		$fields = array('COUNT(Car.vehicle_type_id) as TotalCar', 'vehicle_type_id');
@@ -91,6 +99,7 @@ class HomeController extends AppController
 			$BdyType[$Bdt['Car']['vehicle_type_id']] = $Bdt['0']['TotalCar'];
 		}
 		$this->set('BodyTypes', $BdyType);
+
 	}
 
 
@@ -102,6 +111,8 @@ class HomeController extends AppController
 		$this->Car->bindModel(array('belongsTo' => array('Brand' => array('order' => array('Brand.priority ASC')))));
 		if($this->getGuestPermission())
 			$condition = array('Car.country_id' => $this->data['countryId'], 'Car.car_type_id' => 1, 'Car.publish' => 1, 'Car.new_arrival != ' => 1, 'Car.groupid' => $this->getGuestPermissionAccess());
+		else if($this->getGroupID() == 5)
+			$condition = array('Car.country_id' => $this->data['countryId'], 'Car.car_type_id' => 1, 'Car.publish' => 1, 'Car.new_arrival != ' => 1, 'Car.groupid' => $this->getSellUserPermissionAccess());
 		else
 			$condition = array('Car.country_id' => $this->data['countryId'], 'Car.car_type_id' => 1, 'Car.publish' => 1, 'Car.new_arrival != ' => 1);
 
@@ -129,6 +140,8 @@ class HomeController extends AppController
 
 		if($this->getGuestPermission())
 			$condition = array('Car.country_id' => @$this->passedArgs['country'], 'Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.groupid' => $this->getGuestPermissionAccess());
+		else if($this->getGroupID() == 5)
+			$condition = array('Car.country_id' => @$this->passedArgs['country'], 'Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.groupid' => $this->getSellUserPermissionAccess());
 		else
 			$condition = array('Car.country_id' => @$this->passedArgs['country'], 'Car.publish' => 1, 'Car.new_arrival' => 0);
 
@@ -188,6 +201,8 @@ class HomeController extends AppController
 
 			if($this->getGuestPermission())
 				$condition = array('Car.country_id' => $countryId, 'Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.car_type_id' => $carType, 'Car.groupid' => $this->getGuestPermissionAccess());
+			else if($this->getGroupID() == 5)
+				$condition = array('Car.country_id' => $countryId, 'Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.car_type_id' => $carType, 'Car.groupid' => $this->getSellUserPermissionAccess());
 			else
 				$condition = array('Car.country_id' => $countryId, 'Car.publish' => 1, 'Car.new_arrival' => 0, 'Car.car_type_id' => $carType);
 
@@ -411,8 +426,18 @@ class HomeController extends AppController
 	{
 
 		//$sql ="SELECT cm.id as id, cm.car_name as car_name,count(c.id) as total FROM `car_names` cm left join cars c on cm.id=c.car_name_id where cm.brand_id=".$_REQUEST['id']." AND c.deleted=0 GROUP by c.car_name_id";
+		if($this->getGuestPermission())
+			$condition = " AND c.groupid IN(1, 4)";
+		else if($this->getGroupID() == 5)
+			$condition = " AND c.groupid IN(5)";
+		else
+			$condition = " ";
 
-		$sql = "SELECT c.id,c.uniqueid,COUNT(c.id) as total,c.car_name_id,cm.car_name FROM `cars` c left join car_names cm ON cm.id=c.car_name_id WHERE c.brand_id=" . $_REQUEST['id'] . " AND c.publish=1 AND c.deleted=0 GROUP BY c.car_name_id order by cm.car_name ASC ";
+
+		$sql = "SELECT c.id,c.uniqueid,COUNT(c.id) as total,c.car_name_id,cm.car_name 
+				FROM `cars` c left join car_names cm ON cm.id=c.car_name_id 
+				WHERE c.brand_id=" . $_REQUEST['id'] . " AND c.publish=1 AND c.deleted=0 $condition
+				GROUP BY c.car_name_id order by cm.car_name ASC ";
 		//$carName = $this->CarName->find('list',array('fields'=>array('id','car_name'), 'conditions' => array("brand_id" => $_REQUEST['id'])));
 
 		$carName = $this->Car->query($sql);
@@ -1221,7 +1246,9 @@ class HomeController extends AppController
 		$GerViewCounter = $this->Car->query("select * from cars where id = '" . $carId . "'");
 		//ChromePhp::log(print_r($GerViewCounter));
 		$groupid = $GerViewCounter[0]['cars']['groupid'];
-		if($groupid == 2 && $this->getGuestPermission())
+		if($groupid == 5 && $this->getGuestPermission())
+			die('Permission denied. Please go back.');
+		elseif($groupid != 5 && $this->getGroupID() == 5)
 			die('Permission denied. Please go back.');
 		$Viewed = $GerViewCounter[0]['cars']['most_view'] + 1;
 		$this->Car->query("update cars set most_view = '" . $Viewed . "' where id = '" . $carId . "'");
@@ -1233,7 +1260,14 @@ class HomeController extends AppController
 
 		$this->Car->unbindModelAll();
 		$this->Car->bindModel(array('belongsTo' => array('CarName' => array('fields' => 'car_name,id')), 'hasMany' => array('CarPayment' => array('fields' => 'sale_price,id,yen,user_id,asking_price,push_price'), 'CarImage' => array('fields' => 'car_id,image_source,image_name', 'order' => array('image_name' => 'ASC')))));
-		$this->paginate = array('limit' => 12, 'conditions' => array(array('Car.publish' => 1, 'Car.id !=' => $carId, "CarPaymentAls.yen" => $showAllArrival[0]['CarPayment'][0]['yen'])), 'order' => 'Car.id DESC', 'joins' => array(
+		if($this->getGuestPermission())
+			$condition = array('Car.publish' => 1, 'Car.groupid' => $this->getGuestPermissionAccess(), 'Car.id !=' => $carId, "CarPaymentAls.yen" => $showAllArrival[0]['CarPayment'][0]['yen']);
+		else if($this->getGroupID() == 5)
+			$condition = array('Car.publish' => 1, 'Car.groupid' => $this->getSellUserPermissionAccess(), 'Car.id !=' => $carId, "CarPaymentAls.yen" => $showAllArrival[0]['CarPayment'][0]['yen']);
+		else
+			$condition = array('Car.publish' => 1, 'Car.id !=' => $carId, "CarPaymentAls.yen" => $showAllArrival[0]['CarPayment'][0]['yen']);
+
+		$this->paginate = array('limit' => 12, 'conditions' => array($condition), 'order' => 'Car.id DESC', 'joins' => array(
 			array(
 				'alias' => 'CarPaymentAls',
 				'table' => 'car_payments',
@@ -1249,7 +1283,14 @@ class HomeController extends AppController
 
 		$this->Car->unbindModelAll();
 		$this->Car->bindModel(array('belongsTo' => array('CarName' => array('fields' => 'car_name,id')), 'hasMany' => array('CarPayment' => array('fields' => 'sale_price,id,yen,user_id,asking_price,push_price'), 'CarImage' => array('fields' => 'car_id,image_source,image_name', 'order' => array('image_name' => 'ASC')))));
-		$this->paginate = array('limit' => 12, 'conditions' => array(array('Car.publish' => 1, 'Car.id !=' => $carId, "Car.vehicle_type_id" => $showAllArrival[0]['Car']['vehicle_type_id'])), 'order' => 'Car.id DESC', 'joins' => array(
+		if($this->getGuestPermission())
+			$condition = array('Car.publish' => 1, 'Car.groupid' => $this->getGuestPermissionAccess(), 'Car.id !=' => $carId, "Car.vehicle_type_id" => $showAllArrival[0]['Car']['vehicle_type_id']);
+		else if($this->getGroupID() == 5)
+			$condition = array('Car.publish' => 1, 'Car.groupid' => $this->getSellUserPermissionAccess(), 'Car.id !=' => $carId, "Car.vehicle_type_id" => $showAllArrival[0]['Car']['vehicle_type_id']);
+		else
+			$condition = array('Car.publish' => 1, 'Car.id !=' => $carId, "Car.vehicle_type_id" => $showAllArrival[0]['Car']['vehicle_type_id']);
+
+		$this->paginate = array('limit' => 12, 'conditions' => array($condition), 'order' => 'Car.id DESC', 'joins' => array(
 			array(
 				'alias' => 'CarPaymentAls',
 				'table' => 'car_payments',
@@ -1265,7 +1306,14 @@ class HomeController extends AppController
 
 		$this->Car->unbindModelAll();
 		$this->Car->bindModel(array('belongsTo' => array('CarName' => array('fields' => 'car_name,id')), 'hasMany' => array('CarPayment' => array('fields' => 'sale_price,id,yen,user_id,asking_price,push_price'), 'CarImage' => array('fields' => 'car_id,image_source,image_name', 'order' => array('image_name' => 'ASC')))));
-		$this->paginate = array('limit' => 12, 'conditions' => array(array('Car.publish' => 1, 'Car.id !=' => $carId, "Car.car_type_id" => $showAllArrival[0]['Car']['car_type_id'])), 'order' => 'Car.id DESC', 'joins' => array(
+		if($this->getGuestPermission())
+			$condition = array('Car.publish' => 1, 'Car.groupid' => $this->getGuestPermissionAccess(), 'Car.id !=' => $carId, "Car.car_type_id" => $showAllArrival[0]['Car']['car_type_id']);
+		else if($this->getGroupID() == 5)
+			$condition = array('Car.publish' => 1, 'Car.groupid' => $this->getSellUserPermissionAccess(), 'Car.id !=' => $carId, "Car.car_type_id" => $showAllArrival[0]['Car']['car_type_id']);
+		else
+			$condition = array('Car.publish' => 1, 'Car.id !=' => $carId, "Car.car_type_id" => $showAllArrival[0]['Car']['car_type_id']);
+
+		$this->paginate = array('limit' => 12, 'conditions' => array($condition), 'order' => 'Car.id DESC', 'joins' => array(
 			array(
 				'alias' => 'CarPaymentAls',
 				'table' => 'car_payments',
@@ -2265,7 +2313,12 @@ Logistic.remark, Shipping.company_name, CarPayment.psale_freight
 						)
 					));
 			}else{
-				$this->paginate = array('limit' => 12, 'conditions' => array('OR' => array(array('Car.publish' => array(1, 0), 'Car.deleted' => 0, $Condition))),
+				if($this->getGroupID() == 5)
+					$condition2 = array('OR' => array(array('Car.publish' => array(1, 0), 'Car.groupid' => $this->getSellUserPermissionAccess(), 'Car.deleted' => 0, $Condition)));
+				else
+					$condition2 = array('OR' => array(array('Car.publish' => array(1, 0), 'Car.deleted' => 0, $Condition)));
+
+				$this->paginate = array('limit' => 12, 'conditions' => $condition2,
 					'order' => 'Car.id DESC', 'joins' => array(
 						array(
 							'alias' => 'Carmis',
@@ -2314,7 +2367,12 @@ Logistic.remark, Shipping.company_name, CarPayment.psale_freight
 					));
 			}else{ // loggedin
 				if($global_search_flag == 0){
-					$this->paginate = array('limit' => 12, 'conditions' => array('Car.publish' => array(1), 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $globalCondition)),
+					if($this->getGroupID() == 5)
+						$condition2 = array('Car.publish' => array(1), 'Car.groupid' => $this->getSellUserPermissionAccess(), 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $globalCondition));
+					else
+						$condition2 = array('Car.publish' => array(1), 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $globalCondition));
+
+					$this->paginate = array('limit' => 12, 'conditions' => $condition2,
 						'order' => 'Car.id DESC', 'joins' => array(
 							array(
 								'alias' => 'CarPaymentAls',
@@ -2343,7 +2401,12 @@ Logistic.remark, Shipping.company_name, CarPayment.psale_freight
 							)
 						));
 				}else {
-					$this->paginate = array('limit' => 12, 'conditions' => array('Car.publish' => array(1, 0), 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $globalCondition)),
+					if($this->getGroupID() == 5)
+						$condition2 = array('Car.publish' => array(1, 0), 'Car.groupid' => $this->getSellUserPermissionAccess(), 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $globalCondition));
+					else
+						$condition2 = array('Car.publish' => array(1, 0), 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $globalCondition));
+
+					$this->paginate = array('limit' => 12, 'conditions' => $condition2,
 						'order' => 'Car.id DESC', 'joins' => array(
 							array(
 								'alias' => 'Carmis',
@@ -2606,7 +2669,11 @@ Logistic.remark, Shipping.company_name, CarPayment.psale_freight
 		if ($userflag == 0) { // If user logged in\
 			$start = date('Y-m-d');
 			$end = date('Y-m-d', strtotime('-6 month'));
-			$cond = array('Car.publish' => array(1, $userflag), 'Car.deleted' => 0, 'CarPaymentAls.created_on <=' => $start, 'CarPaymentAls.created_on >=' => $end);
+			if($this->getGroupID() == 5)
+				$cond = array('Car.publish' => array(1, $userflag), 'Car.deleted' => 0, 'Car.groupid' => $this->getSellUserPermissionAccess(), 'CarPaymentAls.created_on <=' => $start, 'CarPaymentAls.created_on >=' => $end);
+			else
+				$cond = array('Car.publish' => array(1, $userflag), 'Car.deleted' => 0, 'CarPaymentAls.created_on <=' => $start, 'CarPaymentAls.created_on >=' => $end);
+
 		} else {
 			$cond = array('Car.groupid' => $this->getGuestPermissionAccess());
 		}
@@ -2628,6 +2695,8 @@ Logistic.remark, Shipping.company_name, CarPayment.psale_freight
 
 			if($this->getGuestPermission())
 				$condition2 = array('Car.publish' => 1, 'Car.deleted' => 0 , 'Car.groupid' => $this->getGuestPermissionAccess() , $Condition, 'AND' => array('OR' => $GlobalCondition));
+			else if($this->getGroupID() == 5)
+				$condition2 = array('Car.publish' => 1, 'Car.deleted' => 0 , 'Car.groupid' => $this->getSellUserPermissionAccess() , $Condition, 'AND' => array('OR' => $GlobalCondition));
 			else
 				$condition2 = array('Car.publish' => 1, 'Car.deleted' => 0, $Condition, 'AND' => array('OR' => $GlobalCondition));
 
@@ -3871,6 +3940,8 @@ Logistic.created,CarPayment.yen,CarPayment.sale_price, CarPayment.updated_on, In
 
 		if($this->getGuestPermission())
 			$condition2 = array('Car.publish' => 1, 'Car.deleted' => 0, 'Car.groupid' => $this->getGuestPermissionAccess(), 'AND' => array('OR' => $conditions));
+		else if($this->getGroupID() == 5)
+			$condition2 = array('Car.publish' => 1, 'Car.deleted' => 0, 'Car.groupid' => $this->getSellUserPermissionAccess(), 'AND' => array('OR' => $conditions));
 		else
 			$condition2 = array('Car.publish' => 1, 'Car.deleted' => 0, 'AND' => array('OR' => $conditions));
 		$this->Car->bindModel(array('belongsTo' => array('CarName' => array('fields' => 'car_name,id'))));

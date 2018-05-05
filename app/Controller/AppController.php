@@ -112,7 +112,17 @@ class AppController extends Controller {
 	}
 
 	function getGuestPermissionAccess(){
-		$guest_u_permission_access = array(1, 4);
+		$guest_u_permission_access = array(1, 4); // Admin & Staff user groupid
 		return $guest_u_permission_access;
+	}
+
+	function getSellUserPermissionAccess(){
+		$guest_u_permission_access = array(5); // Sell user groupid
+		return $guest_u_permission_access;
+	}
+
+	public function getGroupID() {
+		$groupId = $this->Session->read('UserAuth.User.user_group_id');
+		return $groupId;
 	}
 }
