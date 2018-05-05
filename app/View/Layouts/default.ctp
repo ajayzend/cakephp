@@ -1,4 +1,6 @@
 <?php
+$userid = $this->Session->read('UserAuth.User.id');
+$groupid = $this->Session->read('UserAuth.User.user_group_id');
 
 ?>
 <!DOCTYPE html>
@@ -291,7 +293,7 @@ s0.parentNode.insertBefore(s1,s0);
             <div class="LeftStockRow dropdown mega-dropdown hi">
                 <a href="<?php //echo $this->Html->url(array('controller' => 'home', 'action' => 'allstockList','type'=>$mct['CarType']['id']));?>" class="dropdown-toggle">
                 <div class="col-lg-2"><?=$mct['CarType']['car_icon']?></div>
-                <div class="col-lg-8 StockPanelText"><?=$mct['CarType']['type']?> (<?=$this->Common->CarCount($mct['CarType']['id'])?>)</div>
+                <div class="col-lg-8 StockPanelText"><?=$mct['CarType']['type']?> (<?=$this->Common->CarCount($mct['CarType']['id'], $userid, $groupid)?>)</div>
                 <div class="col-lg-1"><i class="fa fa-angle-right" aria-hidden="true"></i></div>
                 <div class="clearfix"></div>
                 </a>

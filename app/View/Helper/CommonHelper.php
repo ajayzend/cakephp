@@ -52,12 +52,20 @@ class CommonHelper extends AppHelper {
 		
 	}
 	
-	function CarCount($id)
+	function CarCount($id, $userid, $groupid)
 	{
+
 		App::import("Model", "Car");
 		$model = new Car();
 		$model->unbindModelAll();
-		$CarMainType = $model->find('count', array('conditions'=>array('car_type_id'=>$id, 'Car.publish'=>1),'recursive'=>-1,));
+
+		if(!$userid)
+			$condition = array('car_type_id'=>$id, 'Car.publish'=>1, 'Car.groupid' => array(1, 4));
+		else if($groupid == 5)
+			$condition = array('car_type_id'=>$id, 'Car.publish'=>1, 'Car.groupid' => array(5));
+		else
+			$condition = array('car_type_id'=>$id, 'Car.publish'=>1);
+		$CarMainType = $model->find('count', array('conditions'=>$condition,'recursive'=>-1,));
 		return $CarMainType;
 	}
 	
