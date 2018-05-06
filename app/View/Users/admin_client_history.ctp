@@ -365,6 +365,7 @@ $(function()
 										  <th><?php echo __('Sold Date');?></th>
 										  <th><?php echo __('Car Name');?></th>
 										  <th><?php echo __('Chassis');?></th>
+										  <th><?php echo __('Freight');?></th>
 										  <th><?php echo __('Sale price')."($)";?></th>
 										  <th><?php echo __('Sale price')."(￥)";?></th>
 										  <th><?php echo __('Invoice No.');?></th>
@@ -390,6 +391,7 @@ $(function()
 										  ?></td>
 										<td class="center"><?php  echo @$val['CarName']['car_name']; ?></td>
 										<td class="center"><?php  echo @$val['Car']['cnumber'] ; ?></td>
+										<td class="center"><?php  echo @$val['CarPayment']['psale_freight'] ; ?></td>
 										<td class="center">
 												<?php
 												if($val['CarPayment']['currency']=='$')
