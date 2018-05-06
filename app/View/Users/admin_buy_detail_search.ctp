@@ -14,6 +14,7 @@ if($BuyInvDetails)
                 ?></td>
             <td class="center"><?php  echo @$val['CarName']['car_name']; ?></td>
             <td class="center"><?php  echo @$val['Car']['cnumber'] ; ?></td>
+            <td class="center"><?php  echo @$val['CarPayment']['psale_freight'] ; ?></td>
             <td class="center"><?php  if($val['CarPayment']['currency']=='$')
                 {
                     echo $val['CarPayment']['sale_price'];

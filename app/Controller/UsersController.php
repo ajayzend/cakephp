@@ -1529,7 +1529,7 @@ class UsersController extends AppController {
 		LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
 		*/
 
-		$result = $this->User->query('SELECT CarPayment.yen,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.sale_price,CarPayment.currency, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock,Logistic.destination_port, Logistic.status, Logistic.remark, Shipping.company_name
+		$result = $this->User->query('SELECT CarPayment.yen,Car.user_doc_status,Car.doc_status,CarPayment.psale_freight, CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.sale_price,CarPayment.currency, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock,Logistic.destination_port, Logistic.status, Logistic.remark, Shipping.company_name
 		FROM  `car_payments` AS CarPayment
 		LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
 		LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
@@ -1562,7 +1562,7 @@ class UsersController extends AppController {
 	
 	public function getInvoiceDetailsSearchByUser($userId,$fromdate,$todate) {
 		
-		$result = $this->User->query('SELECT CarPayment.yen,Car.user_doc_status,Car.doc_status,CarPayment.car_id,CarPayment.id,Logistic.created,CarPayment.sale_price,CarPayment.currency, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock,Logistic.destination_port, Logistic.status, Logistic.remark, Shipping.company_name
+		$result = $this->User->query('SELECT CarPayment.yen,Car.user_doc_status,Car.doc_status,CarPayment.car_id, CarPayment.psale_freight,CarPayment.id,Logistic.created,CarPayment.sale_price,CarPayment.currency, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.cnumber, Car.country_id,Car.price_editable, Car.brand_id, Car.stock,Logistic.destination_port, Logistic.status, Logistic.remark, Shipping.company_name
 		FROM  `car_payments` AS CarPayment
 		LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
 		LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
