@@ -1454,10 +1454,10 @@ class HomeController extends AppController
         }*/
 
 		// Show sum of all sale details according user
-		$saleTotalDoller = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '$', 'CarPayment.user_id' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
+		$saleTotalDoller = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '$', 'CarPayment.user_id' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
 		));
 
-		$saleTotalYen = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '￥', 'CarPayment.user_id' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
+		$saleTotalYen = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '￥', 'CarPayment.user_id' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
 		));
 		/*For doller sale price*/
 		if ($saleTotalDoller) {
@@ -1467,6 +1467,7 @@ class HomeController extends AppController
 		} else {
 			$sTotalDoller = 0;
 		}
+
 
 		/*For yen sale price*/
 		if ($saleTotalYen) {

@@ -1,3 +1,4 @@
+<?php $groupid = $this->Session->read('UserAuth.User.user_group_id'); ?>
 <?php echo $this->Html->script('jquery-form'); ?>
 <?php echo $this->Html->css('select2');?>
 <?php echo $this->Html->script('select2.min'); ?>
@@ -74,8 +75,11 @@
 
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#all" role="tab">All History</a></li>
+        <?php if($groupid == 2) {?>
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#buy" role="tab">Buy History</a></li>
+        <?php } elseif($groupid == 5) {?>
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#sale" role="tab">Sale History</a></li>
+        <?php } ?>
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Balance" role="tab">Balance Overview</a></li>
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#payment" role="tab">Payment History</a></li>
     </ul>
@@ -113,9 +117,11 @@
                                 <th>Car Name</th>
                                 <th>Chassis Number</th>
                                 <th>Month/Year of Manufacture</th>
+                                <?php if($groupid == 2) { ?>
                                 <th>B/L No</th>
                                 <th>Consignee</th>
                                 <th>Freight</th>
+                                <?php } ?>
                                 <th>Price</th>
                                 <th>Sold Date</th>
                                 <th>Receipt of Money</th>
@@ -172,19 +178,23 @@
 
                                         <!--<td class="center"><?php /*echo $val['Car']['cnumber'] ; */?>
                                         </td>-->
+                                      <?php if($groupid == 5) { ?>
+                                      <td class="center"><?php echo $chasis_no ; ?> </td>
+                                          <td><?php $mYear = explode(" ",$val['Car']['manufacture_year']); echo $mYear[0]."/".@$mYear[1]; ?></td>
+                                      <?php }?>
 
+                                    <?php if($groupid == 2) { ?>
                                       <td class="center"><a title="Click to update Consignee." href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';
                                       document.getElementById('fade').style.display='block'; document.getElementById('his_carid').value = <?php echo $carId?>;
                                             document.getElementById('chasis_vale_id').innerHTML =  <?php echo "'$chasis_no'"?>;
                                               document.getElementById('consignee').value =  <?php echo "'$consignee'" ; ?>;">
                                               <?php echo $chasis_no ; ?></a></td>
 
-                                        <td><?php $mYear = explode(" ",$val['Car']['manufacture_year']); echo $mYear[0]."/".@$mYear[1]; ?>
-                                        </td>
+                                        <td><?php $mYear = explode(" ",$val['Car']['manufacture_year']); echo $mYear[0]."/".@$mYear[1]; ?></td>
                                       <td class="center"><?php echo $val['Logistic']['bl_no'] ; ?>
                                       <td class="center"><?php echo $val['Car']['consignee'] ; ?>
                                       <td class="center"><?php echo $val['CarPayment']['psale_freight'] ; ?>
-
+                                      <?php } ?>
                                         <td class="center"><span class="text">
                                         <?php  /*if($val['CarPayment']['currency']=='$')
                                                         {
