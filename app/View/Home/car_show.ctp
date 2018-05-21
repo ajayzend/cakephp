@@ -34,13 +34,16 @@
 
 <?php
 $groupID_Saved = $showAllArrival[0]['Car']['groupid'];
-
-if($groupID_Saved == 2){
+$created_by = $showAllArrival[0]['Car']['created_by'];
+$userid = $this->Session->read('UserAuth.User.id');
+if($groupID_Saved == 5){
+    $final_price = ' (Final Price)';
     $ADDITIONAL_PRICE_Val = 0;
     $ADDITIONAL_YEN_PRICE_Val = 0;
 }else{
     $ADDITIONAL_PRICE_Val = ADDITIONAL_PRICE;
     $ADDITIONAL_YEN_PRICE_Val = ADDITIONAL_YEN_PRICE;
+    $final_price = '';
 }
 
 ?>
@@ -313,11 +316,12 @@ if($groupID_Saved == 2){
 	<?php
     if($this->Session->read('LANGUAGE') == 2)
 	{
-		echo "$ ". $this->Round->round_number(($showAllArrival[0]['CarPayment'][0]['asking_price']+$ADDITIONAL_PRICE_Val));
+
+		echo "$ ". $this->Round->round_number(($showAllArrival[0]['CarPayment'][0]['asking_price']+$ADDITIONAL_PRICE_Val)).$final_price;
 	}
 	else
 	{
-		echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(($showAllArrival[0]['CarPayment'][0]['yen']+$ADDITIONAL_YEN_PRICE_Val));
+		echo '<i class="fa fa-jpy" aria-hidden="true"></i> ' . $this->Round->round_number_yen(($showAllArrival[0]['CarPayment'][0]['yen']+$ADDITIONAL_YEN_PRICE_Val)).$final_price;
 	}
 	?>
     </div>
@@ -503,21 +507,25 @@ if($groupID_Saved == 2){
     </div>
 
     <?php if($this->UserAuth->isLogged() && !$this->UserAuth->isAdmin()){ ?>
-	
-	<div class="col-lg-4 DivPadding5PX" data-toggle="modal" data-target="#sendimage"><div class="hvr-pulse-grow ProductDetailBuyNowButton" style="background: #55b640;margin-top:7px;">Send Pic</div></div>
+    <?php if($userid == $created_by) {?>
 
+	<div class="col-lg-11 DivPadding5PX" data-toggle="modal" data-target="#sendimage"><div class="hvr-pulse-grow ProductDetailBuyNowButton" style="background: #55b640;margin-top:7px;">Send Pic</div></div>
+        <?php } else {?>
+            <div class="col-lg-4 DivPadding5PX" data-toggle="modal" data-target="#sendimage"><div class="hvr-pulse-grow ProductDetailBuyNowButton" style="background: #55b640;margin-top:7px;">Send Pic</div></div>
+        <?php } ?>
                 <?php if(!$showAllArrival[0]['Car']['publish']==0){ ?>
-
-    <div class="col-lg-3 DivPadding5PX" data-toggle="modal" data-target="#myModal"><div class="hvr-pulse-grow ProductDetailBuyNowButton" style="background:#798899;margin-top:7px">Buy</div></div>    
+                    <?php if($userid != $created_by) {?>
+    <div class="col-lg-3 DivPadding5PX" data-toggle="modal" data-target="#myModal"><div class="hvr-pulse-grow ProductDetailBuyNowButton" style="background:#798899;margin-top:7px">Buy</div></div>
+            <?php } ?>
     <?php } } ?> 
 
 
 <?php //print_r($showAllArrival) ?>
     <div class="col-lg-5 DivPadding5PX hide" data-toggle="modal" data-target="#queryModal"><div class="hvr-pulse-grow ProductDetailBuyNowButton" style="background:#798899; margin-top:7px;">Query</div></div>
 	        <?php if(!$this->UserAuth->isAdmin() && $showAllArrival[0]['Car']['publish']==1){ ?>
-
+<?php if($userid != $created_by) {?>
     <div class="col-lg-4 DivPadding5PX" data-toggle="modal" data-target="#CifModal"><div class="hvr-pulse-grow ProductDetailBuyNowButton" style="background:#FFA500; margin-top:7px;">Ask Price</div></div>
-
+<?php } ?>
     <div class="col-lg-12 DivPadding5PX PrductDetailAcceptTerms">Don't forget to check the Bizupon <a href="<?php echo $this->base;?>/pages/terms_condition/" target="_blank">Terms & Conditions</a> & Bizupon <a href="<?php echo $this->base;?>/pages/policy/" target="_blank">Payment Policy</a></div>
 	
 		<?php } ?>
@@ -536,9 +544,15 @@ if($groupID_Saved == 2){
 		{
 			break;
 		}
+
+        if($rldprc['Car']['groupid'] == 5)
+            $sales = '<div class="ribbon"><span>ONE PRICE</span></div>';
+        else
+            $sales = '';
     ?>
         <a href="<?php echo $this->base;?>/home/car_show/<?=$rldprc['Car']['id']?>">
             <div class="col-lg-2 HoveTile" style="margin-bottom:15px; height:250px;">
+                <?php print $sales; ?>
                 <div class="HomePageCarImageDiv"><img src="<?php echo $this->webroot.$rldprc['CarImage'][0]['image_source'];?>" alt="<?php echo $this->webroot.$rldprc['CarName']['car_name']?>" title="<?php echo $this->webroot.$rldprc['CarName']['car_name']?>" style="height:150px; width:100%;"></div>
 				<div class="HomePageCarNameDiv" style="min-height:40px;font-size:14px;overflow:hidden"><?php echo $rldprc['CarName']['car_name'] . ":" . $rldprc['Car']['package'];?></div>
 
@@ -583,9 +597,15 @@ if($groupID_Saved == 2){
 		{
 			break;
 		}
+
+        if($rldprc['Car']['groupid'] == 5)
+            $sales = '<div class="ribbon"><span>ONE PRICE</span></div>';
+        else
+            $sales = '';
     ?>
         <a href="<?php echo $this->base;?>/home/car_show/<?=$rldprc['Car']['id']?>">
             <div class="col-lg-2 HoveTile" style="margin-bottom:15px; height:250px;">
+                <?php print $sales; ?>
                 <div class="HomePageCarImageDiv"><img src="<?php echo $this->webroot.$rldprc['CarImage'][0]['image_source'];?>" alt="<?php echo $this->webroot.$rldprc['CarName']['car_name']?>" title="<?php echo $this->webroot.$rldprc['CarName']['car_name']?>" style="height:150px; width:100%;"></div>
 				<div class="HomePageCarNameDiv" style="min-height:40px;font-size:14px;overflow:hidden"><?php echo $rldprc['CarName']['car_name'] . ":" . $rldprc['Car']['package'];?></div>
 
