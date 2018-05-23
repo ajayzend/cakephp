@@ -1390,6 +1390,7 @@ class HomeController extends AppController
 	public function dashboard()
 	{
 		$this->layout = 'default';
+		$groupid = $this->Session->read('UserAuth.User.user_group_id');
 		$id = $this->Session->read('UserAuth.User.id');
 		$pTotal = 0;
 		$sTotalDoller = 0;
@@ -1454,11 +1455,20 @@ class HomeController extends AppController
         }*/
 
 		// Show sum of all sale details according user
-		$saleTotalDoller = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '$', 'CarPayment.user_id' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
-		));
+		if($groupid == 5) {
+			$saleTotalDoller = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '$', 'Car.created_by' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
+			));
 
-		$saleTotalYen = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '￥', 'CarPayment.user_id' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
-		));
+			$saleTotalYen = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '￥', 'Car.created_by' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
+			));
+		}else{
+			$saleTotalDoller = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '$', 'CarPayment.user_id' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
+			));
+
+			$saleTotalYen = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '￥', 'CarPayment.user_id' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
+			));
+		}
+
 		/*For doller sale price*/
 		if ($saleTotalDoller) {
 			foreach ($saleTotalDoller as $k => $v) {
@@ -1535,7 +1545,10 @@ class HomeController extends AppController
 		$this->set('PaymentDetails', $PaymentDetails);
 		// Show all sale details according user
 		//$SaleDetais = $this->CarPayment->find('all',array('conditions' => array('CarPayment.user_id' => $id),'order'=>array('CarPayment.updated_on'=>'DESC')));
-		$SaleDetais = $this->User->getAllHistoryByUserId($id);
+		if($groupid == 5)
+			$SaleDetais = $this->User->getAllHistoryBySellUserId($id);
+		else
+			$SaleDetais = $this->User->getAllHistoryByUserId($id);
 		$this->set('SaleDetais', $SaleDetais);
 	}
 

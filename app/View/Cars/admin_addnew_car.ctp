@@ -1430,7 +1430,16 @@
 						<div class="col-md-12">
 							<div class="form-group col-md-12">
 								<input type="hidden" value="<?php echo (isset($car_id)? $car_id:'0');?>" name="data[Car][car_id]" data-id="car_id">
-								<?php echo $this->Form->submit('Save',array('type'=>'button','class'=>'btn btn-primary','id'=>'additional_car'));?>
+
+
+								<?php if($groupId  == $add_car_permission) {?>
+									<?php if(@$carDetails['Car']['publish'] == 1) {?>
+										<?php echo $this->Form->submit('Save',array('type'=>'button','class'=>'btn btn-primary','id'=>'additional_car'));?>
+									<?php } ?>
+								<?php } else {?>
+									<?php echo $this->Form->submit('Save',array('type'=>'button','class'=>'btn btn-primary','id'=>'additional_car'));?>
+								<?php }?>
+
 								<div class="submit">
 									<a  class="btn btn-danger" href="<?php echo $this->Html->url('/admin/cars',true);?>">Cancel</a>
 								</div>
@@ -2161,7 +2170,7 @@
 	});
 
 	function calculateNetPushRecyclePrice(){
-		if($("#Created_User_GroupID").val() == 2) {
+		if($("#Created_User_GroupID").val() == 5) {
 			if ($("#push_id").val() != " " && $("#tax_id").val() != " ") {
 				$("#net_push_id").val(updatepushrecycleprice($("#push_id").val(), $("#recycle_price").val(), $("#tax_id").val()));
 			}
@@ -2179,7 +2188,7 @@
 
 
 	function calculateFinalPrice(){
-		if($("#Created_User_GroupID").val() == 2) {
+		if($("#Created_User_GroupID").val() == 5) {
 			$("#car_price_id").val("");
 			$("#main_yenamount_id").val(calculateUserprice);
 			$("#car_price_id").val(calculateexchange($("#main_yenamount_id").val(), $("#main_exchange_id").val()));
