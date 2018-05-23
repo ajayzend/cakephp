@@ -1472,7 +1472,7 @@ class HomeController extends AppController
 		/*For doller sale price*/
 		if ($saleTotalDoller) {
 			foreach ($saleTotalDoller as $k => $v) {
-				$sTotalDoller = $v['0']['Sale_Amount'];
+				$sTotalDoller = $sTotalDoller + $v['0']['Sale_Amount'];
 			}
 		} else {
 			$sTotalDoller = 0;
@@ -1482,7 +1482,7 @@ class HomeController extends AppController
 		/*For yen sale price*/
 		if ($saleTotalYen) {
 			foreach ($saleTotalYen as $k => $v) {
-				$sTotalYen = $v['0']['Sale_Amount'];
+				$sTotalYen = $sTotalYen + $v['0']['Sale_Amount'];
 			}
 		} else {
 			$sTotalYen = 0;

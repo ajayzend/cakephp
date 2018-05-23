@@ -430,6 +430,24 @@ EMAIL_FROM_NAME;
 		return false;
 	}
 	
+	public function getAllHistoryBySellUserId($userId) {
+		$result = $this->query('SELECT Car.stock,Car.cnumber, Logistic.ship_port,Logistic.car_in,Logistic.car_out ,Logistic.destination_port,Logistic.departure_date,
+Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,CarPayment.currency,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,
+CarPayment.id,Logistic.created,CarPayment.sale_price, CarPayment.updated_on,CarPayment.created_on, Invoice.invoice_no, CarName.car_name, Car.country_id,Car.price_editable, 
+Car.brand_id, Logistic.status, Logistic.remark, Shipping.company_name, Car.consignee, Logistic.bl_no, CarPayment.psale_freight
+					FROM  `car_payments` AS CarPayment
+					LEFT JOIN cars AS Car ON Car.id = CarPayment.car_id
+					LEFT JOIN logistics AS Logistic ON Logistic.car_id = Car.id
+					LEFT JOIN shippings AS Shipping ON Logistic.shipping_id = Shipping.id
+					LEFT JOIN car_names AS CarName ON CarName.id = Car.car_name_id
+					LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
+					LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
+					LEFT JOIN ports AS Port ON Port.id = Logistic.port_id
+					WHERE Car.created_by ='.$userId.' and Car.deleted =0 and CarPayment.deleted =0 group by Car.stock order by CarPayment.updated_on DESC');
+		return $result;
+		
+	}
+
 	public function getAllHistoryByUserId($userId) {
 		$result = $this->query('SELECT Car.stock,Car.cnumber, Logistic.ship_port,Logistic.car_in,Logistic.car_out ,Logistic.destination_port,Logistic.departure_date,
 Logistic.arrival_date,Logistic.port_remark,Port.port_name,CarPayment.updated_on,CarPayment.currency,Car.manufacture_year,Car.user_doc_status,Car.doc_status,CarPayment.car_id,
@@ -443,9 +461,9 @@ Car.brand_id, Logistic.status, Logistic.remark, Shipping.company_name, Car.consi
 					LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
 					LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
 					LEFT JOIN ports AS Port ON Port.id = Logistic.port_id
-					WHERE CarPayment.user_id ='.$userId.' and Car.deleted =0 and CarPayment.deleted =0 group by Car.stock order by CarPayment.updated_on DESC'); 
+					WHERE CarPayment.user_id ='.$userId.' and Car.deleted =0 and CarPayment.deleted =0 group by Car.stock order by CarPayment.updated_on DESC');
 		return $result;
-		
+
 	}
 
 	public function getAllHistoryByUserIdAndDate($userId,$fromdate,$todate) {
