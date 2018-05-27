@@ -117,6 +117,10 @@ class UsersController extends AppController {
 	
 	public function admin_clientHistory($id=null) 
 	{
+		$pTotal = 0;
+		$sTotal = 0;
+		$pTotalYen = 0;
+		$sYenTotal = 0;
 				if($id){
 					$userId = $id;
 				}else{
@@ -131,6 +135,9 @@ class UsersController extends AppController {
 				
 				
 				$userDetails = $this->User->find('first', array('order'=>'User.id desc','conditions' => array('User.user_group_id !=' => 1,'User.id'=>$id)));
+				$user_group_id = $userDetails['User']['user_group_id'];
+
+
 				$this->set('userDetails',$userDetails);
 				
 				$paymentTotal =  $this->ClientPaymentHistory->find('all', array('fields' =>
@@ -161,44 +168,56 @@ class UsersController extends AppController {
 				// change query for get doller sum  data
 				
 				//$saleTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price) as Sale_Amount','conditions'=>array('CarPayment.user_id'=>$id,'CarPayment.sale_price !='=>''),'group'=>array('CarPayment.user_id')));	
-				
-				$saleTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price) as Sale_Amount','conditions'=>array('CarPayment.user_id'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'$'),'group'=>array('CarPayment.user_id')
-				));
+
+		if($user_group_id == 5) {
+			$saleTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price  + CarPayment.psale_freight ) as Sale_Amount','conditions'=>array('Car.created_by'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'$'),'group'=>array('CarPayment.user_id')
+			));
+		}else{
+			$saleTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price  + CarPayment.psale_freight ) as Sale_Amount','conditions'=>array('CarPayment.user_id'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'$'),'group'=>array('CarPayment.user_id')
+			));
+		}
+
 				
 				
 				if($saleTotal)
 				{
 					foreach($saleTotal as $k=>$v)
 					{
-						$sTotal = $v['0']['Sale_Amount'];
-						$this->set('sTotal',$sTotal);
+						$sTotal = $sTotal + $v['0']['Sale_Amount'];
 					}
 				}
 				else
 				{
 					$sTotal = 0;
-					$this->set('sTotal',$sTotal);
 				}
-				
+		$this->set('sTotal',$sTotal);
+
+		if($user_group_id == 5) {
+			$saleYenTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount','conditions'=>array('Car.created_by'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'￥'),'group'=>array('CarPayment.user_id')
+			));
+		}else{
+			$saleYenTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount','conditions'=>array('CarPayment.user_id'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'￥'),'group'=>array('CarPayment.user_id')
+			));
+		}
+
+
 				// change query for get Yen sum  data
-				$saleYenTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price) as Sale_Amount','conditions'=>array('CarPayment.user_id'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'￥'),'group'=>array('CarPayment.user_id')
-				));	
+
 				
 				if($saleYenTotal)
 				{
 					foreach($saleYenTotal as $k=>$v)
 					{
-						$sYenTotal = $v['0']['Sale_Amount'];
-						$this->set('sYenTotal',$sYenTotal);
+						$sYenTotal = $sYenTotal + $v['0']['Sale_Amount'];
+
 					}
 				}
 				else
 				{
 					$sYenTotal = 0;
-					$this->set('sYenTotal',$sYenTotal);
 				}
-				
 
+				$this->set('sYenTotal',$sYenTotal);
 				$balanceDollerTotal = @$pTotal - $sTotal;
 				$this->set('balanceTotal',$balanceDollerTotal);
 				
@@ -225,7 +244,7 @@ class UsersController extends AppController {
 
 				
 				//all history
-				$SaleDetails = $this->User->getAllHistoryByUserId($id);
+				$SaleDetails = ($user_group_id == 5) ? $this->User->getAllHistoryBySellUserId($id) : $this->User->getAllHistoryByUserId($id);
 				$this->set('SaleDetails',$SaleDetails); 
 		
 	}
@@ -1555,7 +1574,7 @@ class UsersController extends AppController {
 		LEFT JOIN car_names AS CarName ON CarName.id = Car.car_name_id
 		LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
 		LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
-		WHERE CarPayment.created_by ="'.$userId.'" AND Car.deleted =0 AND CarPayment.deleted =0 AND Car.groupid = 2 
+		WHERE Car.created_by ="'.$userId.'" AND Car.deleted =0 AND CarPayment.deleted =0 AND Car.groupid = 5 
 		AND CarPayment.updated_on BETWEEN "'.$fromdate.'" AND "'.$todate.'" order by CarPayment.updated_on DESC');
 		return $result;
 	}
@@ -1584,7 +1603,7 @@ class UsersController extends AppController {
 		LEFT JOIN car_names AS CarName ON CarName.id = Car.car_name_id
 		LEFT JOIN invoice_details AS InvoiceDetail ON CarPayment.car_id = InvoiceDetail.car_id
 		LEFT JOIN invoices AS Invoice ON Invoice.id = InvoiceDetail.invoice_id
-		WHERE CarPayment.created_by ="'.$userId.'" AND Car.deleted =0 AND Car.groupid = 2 AND CarPayment.updated_on BETWEEN "'.$todate.'" AND "'.$fromdate.'" order by CarPayment.updated_on DESC ');
+		WHERE Car.created_by ="'.$userId.'" AND Car.deleted =0 AND Car.groupid = 5 AND CarPayment.updated_on BETWEEN "'.$todate.'" AND "'.$fromdate.'" order by CarPayment.updated_on DESC ');
 		return $result;
 	}
 	
