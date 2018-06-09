@@ -1455,11 +1455,17 @@ class HomeController extends AppController
         }*/
 
 		// Show sum of all sale details according user
-		if($groupid == 5) {
-			$saleTotalDoller = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '$', 'Car.created_by' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
+		if($groupid == 5) { // logged in user group id
+			/*$saleTotalDoller = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '$', 'Car.created_by' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
 			));
 
 			$saleTotalYen = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '￥', 'Car.created_by' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
+			));*/
+
+			$saleTotalDoller = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '$', 'Car.created_by' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
+			));
+
+			$saleTotalYen = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '￥', 'Car.created_by' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
 			));
 		}else{
 			$saleTotalDoller = $this->CarPayment->find('all', array('fields' => 'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount', 'conditions' => array('CarPayment.currency' => '$', 'CarPayment.user_id' => $id, 'CarPayment.sale_price !=' => ''), 'group' => array('CarPayment.user_id')
@@ -1489,16 +1495,21 @@ class HomeController extends AppController
 
 		}
 
-		$this->set('pTotalYen', $pTotalYen);
+		if($groupid == 5) {
+			$balanceTotalDoller = $sTotalDoller - $pTotal;
+			$balanceTotalYen = $sTotalYen - $pTotalYen;
+		}else{
+			$balanceTotalDoller = $pTotal - $sTotalDoller;
+			$balanceTotalYen = $pTotalYen - $sTotalYen;
+		}
+
 		$this->set('pTotal', $pTotal);
 		$this->set('sTotalDoller', $sTotalDoller);
-		$this->set('sTotalYen', $sTotalYen);
-		$balanceTotalDoller = $pTotal - $sTotalDoller;
 		$this->set('balanceTotalDoller', $balanceTotalDoller);
 
-		$balanceTotalYen = $pTotalYen - $sTotalYen;
+		$this->set('pTotalYen', $pTotalYen);
+		$this->set('sTotalYen', $sTotalYen);
 		$this->set('balanceTotalYen', $balanceTotalYen);
-
 		/*$balanceTotalDoller = $sTotalDoller - $pTotal;
 				$this->set('balanceTotalDoller',$balanceTotalDoller);
 

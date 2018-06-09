@@ -170,7 +170,7 @@ class UsersController extends AppController {
 				//$saleTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price) as Sale_Amount','conditions'=>array('CarPayment.user_id'=>$id,'CarPayment.sale_price !='=>''),'group'=>array('CarPayment.user_id')));	
 
 		if($user_group_id == 5) {
-			$saleTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price  + CarPayment.psale_freight ) as Sale_Amount','conditions'=>array('Car.created_by'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'$'),'group'=>array('CarPayment.user_id')
+			$saleTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price) as Sale_Amount','conditions'=>array('Car.created_by'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'$'),'group'=>array('CarPayment.user_id')
 			));
 		}else{
 			$saleTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price  + CarPayment.psale_freight ) as Sale_Amount','conditions'=>array('CarPayment.user_id'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'$'),'group'=>array('CarPayment.user_id')
@@ -193,7 +193,7 @@ class UsersController extends AppController {
 		$this->set('sTotal',$sTotal);
 
 		if($user_group_id == 5) {
-			$saleYenTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount','conditions'=>array('Car.created_by'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'￥'),'group'=>array('CarPayment.user_id')
+			$saleYenTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price) as Sale_Amount','conditions'=>array('Car.created_by'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'￥'),'group'=>array('CarPayment.user_id')
 			));
 		}else{
 			$saleYenTotal =  $this->CarPayment->find('all', array('fields' =>'SUM(CarPayment.sale_price + CarPayment.psale_freight) as Sale_Amount','conditions'=>array('CarPayment.user_id'=>$id,'CarPayment.sale_price !='=>'','CarPayment.currency '=>'￥'),'group'=>array('CarPayment.user_id')
@@ -217,11 +217,19 @@ class UsersController extends AppController {
 					$sYenTotal = 0;
 				}
 
+		if($user_group_id == 5) {
+			$balanceDollerTotal = $sTotal - @$pTotal;
+			$balanceYenTotal = $sYenTotal - @$pTotalYen;
+		}else{
+			$balanceDollerTotal = @$pTotal - $sTotal;
+			$balanceYenTotal = @$pTotalYen - $sYenTotal;
+		}
+
 				$this->set('sYenTotal',$sYenTotal);
-				$balanceDollerTotal = @$pTotal - $sTotal;
+
 				$this->set('balanceTotal',$balanceDollerTotal);
 				
-				$balanceYenTotal = @$pTotalYen - $sYenTotal;
+
 				$this->set('balanceYenTotal',$balanceYenTotal);
 
 				$balanceTotalYen = @$allPaymentTotal * $this->Session->read('yenRate');

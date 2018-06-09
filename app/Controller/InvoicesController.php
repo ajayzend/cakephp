@@ -277,7 +277,7 @@ class InvoicesController extends AppController
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $cell1, $InvoVal['Car']['CarPayment']['currency'] . '' . $InvoVal['Car']['CarPayment']['sale_price']);
 						$objPHPExcel->getActiveSheet()->getStyle('D' . $cell1, $InvoVal['Car']['CarPayment']['currency'] . '' . $InvoVal['Car']['CarPayment']['sale_price'])->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 
-						if ($counter == 0) { // Added by Ajay Date:25032018
+						if ($counter == 0 && $freight_price != '' && $freight_price != null) { // Added by Ajay Date:25032018
 							$cell1++;
 							$cell1++;
 							$counter++;
@@ -294,7 +294,10 @@ class InvoicesController extends AppController
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $cell2, "TOTAL(" . $totalCount . ")");
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C' . $cell2, "PRICE");
 
-						$price += $InvoVal['Car']['CarPayment']['sale_price'] + $freight_price;
+						if($freight_price != '' && $freight_price != null)
+							$price += $InvoVal['Car']['CarPayment']['sale_price'] + $freight_price;
+						else
+							$price += $InvoVal['Car']['CarPayment']['sale_price'];
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $cell2, $InvoVal['Car']['CarPayment']['currency'] . '' . $price);
 						$objPHPExcel->getActiveSheet()->getStyle('D' . $cell2, $InvoVal['Car']['CarPayment']['currency'] . '' . $price)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 						$c++;
@@ -678,7 +681,7 @@ class InvoicesController extends AppController
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$cell1, $InvoVal['Car']['CarPayment']['currency'].''.$InvoVal['Car']['CarPayment']['sale_price']);
 						$objPHPExcel->getActiveSheet()->getStyle('D'.$cell1, $InvoVal['Car']['CarPayment']['currency'].''.$InvoVal['Car']['CarPayment']['sale_price'])->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 
-						if ($counter == 0) { // Added by Ajay Date:25032018
+						if ($counter == 0 && $freight_price != '' && $freight_price != null) { // Added by Ajay Date:25032018
 							$cell1++;
 							$cell1++;
 							$counter++;
@@ -694,8 +697,11 @@ class InvoicesController extends AppController
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$cell2, "");
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$cell2, "TOTAL(".$totalCount.")");
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$cell2, "PRICE");
-					
-						$price += $InvoVal['Car']['CarPayment']['sale_price'] + $freight_price;
+
+						if($freight_price != '' && $freight_price != null)
+							$price += $InvoVal['Car']['CarPayment']['sale_price'] + $freight_price;
+						else
+							$price += $InvoVal['Car']['CarPayment']['sale_price'];
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$cell2, $InvoVal['Car']['CarPayment']['currency'].''.$price);
 						$objPHPExcel->getActiveSheet()->getStyle('D'.$cell2, $InvoVal['Car']['CarPayment']['currency'].''.$price)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 						$c++;
